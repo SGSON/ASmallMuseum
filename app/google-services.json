@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "337560859409",
+    "project_id": "asmallmuseum",
+    "storage_bucket": "asmallmuseum.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337560859409:android:b9d2859f57dc20f09412b0",
+        "android_client_info": {
+          "package_name": "sg.asmallmuseum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337560859409-6fklu1aicc01ood0t2bqv9jijm4h5tma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsZTS_YgEPT7j6PR2z4rkkUgNM9FX2REI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337560859409-6fklu1aicc01ood0t2bqv9jijm4h5tma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
