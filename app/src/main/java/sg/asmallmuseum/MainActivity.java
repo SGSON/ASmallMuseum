@@ -2,8 +2,12 @@ package sg.asmallmuseum;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -14,10 +18,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView t = (TextView)findViewById(R.id.textas);
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("message");
-        dbRef.child("users").child("sons").setValue("sd");;
-        t.setText("Connected");
+
     }
+
+    public void onMainButtonPressed(View view) {
+        Toast.makeText(this, "Pressed Main Button", Toast.LENGTH_LONG).show();
+    }
+
+    public void onMenuButtonPressed(View view) {
+        Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_LONG).show();
+    }
+
+    public void onBackButtonPressed(View view) {
+        Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_LONG).show();
+    }
+
 }
