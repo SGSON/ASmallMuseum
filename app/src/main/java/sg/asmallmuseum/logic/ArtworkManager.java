@@ -15,21 +15,21 @@ public class ArtworkManager {
         this.database = new DBConnect();
         database.connection();
     }
-    public void addArtwork(String path, String id, String author, String date, String desc){
-        String uuID = createUniqueID(path, id, author);
+    public void addArtwork(String path, String aID, String aAuthor, String aDate, String aDesc){
+        String uuID = createUniqueID(path, aID, aAuthor);
 
         switch (path){
-            case "Paint":
-                artwork = new Paint(id, author, date, desc);
+            case "Paints":
+                artwork = new Paint(aID, aAuthor, aDate, aDesc);
                 break;
-            case "Book":
-                artwork = new Book(id, author, date, desc);
+            case "Books":
+                artwork = new Book(aID, aAuthor, aDate, aDesc);
                 break;
             case "Music":
-                artwork = new Music(id, author, date, desc);
+                artwork = new Music(aID, aAuthor, aDate, aDesc);
                 break;
-            case "Picture":
-                artwork = new Picture(id, author, date, desc);
+            case "Pictures":
+                artwork = new Picture(aID, aAuthor, aDate, aDesc);
                 break;
         }
 

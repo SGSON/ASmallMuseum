@@ -1,47 +1,51 @@
 package sg.asmallmuseum.Domain;
 
 public abstract class Artwork {
-    private String id;
-    private String author;
-    private String date;
-    private String desc;
+    private String aID;
+    private String aAuthor;
+    private String aDate;
+    private String aDesc;
 
-    public Artwork(String id, String author, String date, String desc){
-        this.id = id;
-        this.author = author;
-        this.date = date;
-        this.desc = desc;
+    public Artwork(){
+
+    }
+
+    public Artwork(String aID, String aAuthor, String aDate, String aDesc){
+        this.aID = aID;
+        this.aAuthor = aAuthor;
+        this.aDate = aDate;
+        this.aDesc = aDesc;
     }
 
     public String getId() {
-        return id;
+        return aID;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.aID = id;
     }
 
     public String getAuthor() {
-        return author;
+        return aAuthor;
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        this.aAuthor = author;
     }
 
     public String getDate() {
-        return date;
+        return aDate;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.aDate = date;
     }
 
     public String getDesc() {
-        return desc;
+        return aDesc;
     }
 
     public void setDesc(String desc) {
-        this.desc = desc;
+        this.aDesc = desc;
     }
 }
