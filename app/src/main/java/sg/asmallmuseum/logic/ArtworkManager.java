@@ -9,14 +9,15 @@ import sg.asmallmuseum.persistence.DBConnect;
 
 public class ArtworkManager {
     private DBConnect database;
-    private Artwork artwork;
 
     public ArtworkManager() {
         this.database = new DBConnect();
         database.connection();
     }
+
     public void addArtwork(String path, String aID, String aAuthor, String aDate, String aDesc){
-        String uuID = createUniqueID(path, aID, aAuthor);
+        String uaID = createUniqueID(path, aID, aAuthor);
+        Artwork artwork = null;
 
         switch (path){
             case "Paints":
@@ -33,14 +34,14 @@ public class ArtworkManager {
                 break;
         }
 
-        addToDB(path, uuID, artwork);
+        addToDB(path, uaID, artwork);
     }
 
     private String createUniqueID(String path, String id, String author){
         return path + id + author;
     }
 
-    private void addToDB(String path, String uuID, Artwork artwork){
-        database.addArtwork(path, uuID, artwork);
+    private void addToDB(String path, String uaID, Artwork artwork){
+        database.addArtwork(path, uaID, artwork);
     }
 }

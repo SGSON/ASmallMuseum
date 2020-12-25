@@ -27,7 +27,7 @@ public class DBConnect {
         dbRef.child(path).child(uuID).setValue(user);
     }
 
-    public void addArtwork(String path, String uuID, Artwork artwork){
-        dbRef.child(path).child(uuID).setValue(artwork);
+    public void addArtwork(String path, String uaID, Artwork artwork){
+        dbRef.child(path).child(uaID).setValue(artwork);
     }
 }

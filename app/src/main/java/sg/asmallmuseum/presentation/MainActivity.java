@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 userManager.addNewUser("asd", "asd", "s", "s", "asd@ads","1313");
-                artworkManager.addArtwork("Pictures", "asd", "qwe", "1-1--", "Wow");
+                artworkManager.addArtwork("Pictures", "asdqweqes", "qwe", "1-1--", "Wow");
                 makeText();
             }
         });

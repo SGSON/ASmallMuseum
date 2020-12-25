@@ -2,10 +2,11 @@ package sg.asmallmuseum.Domain;
 
 public class Picture extends Artwork {
     public Picture(){
-        super();
     }
 
-    public Picture(String pid, String pauthor, String pdate, String pdesc) {
-        super(pid, pauthor, pdate, pdesc);
+    public Picture(String aID, String aAuthor, String aDate, String aDesc) {
+        super(aID, aAuthor, aDate, aDesc);
     }
+
+
 }
