@@ -1,6 +1,7 @@
-package sg.asmallmuseum;
+package sg.asmallmuseum.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import sg.asmallmuseum.R;
 
 import android.content.Context;
 import android.content.Intent;
