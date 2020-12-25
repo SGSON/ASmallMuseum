@@ -8,9 +8,15 @@ public class UserManager {
 
     public UserManager(){
         database = new DBConnect();
-        database.connection("user");
+        database.connection();
     }
-    public void addNewUser(User user){
-        
+    public void addNewUser(String uID, String password, String lastname, String firstname, String email, String birth){
+        String newUniqueID = createUniqueID();
+        User newUser = new User(uID, password, lastname, firstname, email, birth);
+        database.addUser("Users", newUniqueID, newUser);
+    }
+
+    private String createUniqueID(){
+        return "asd";
     }
 }
