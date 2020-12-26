@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,11 +53,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void onMenuButtonPressed(View view) {
         Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_LONG).show();
-
+        showPopup(view);
     }
 
     public void onBackButtonPressed(View view) {
         Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_LONG).show();
+    }
+
+    public void showPopup(View v){
+        PopupMenu popupMenu = new PopupMenu(this, v);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, popupMenu.getMenu());
+        popupMenu.show();
     }
 
 }

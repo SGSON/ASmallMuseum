@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">ASmallMuseum</string>
 
+    <string name="test1">TEST 1</string>
+    <string name="test2">LONG TEXT TEST</string>
+    <string name="test3">LONG LONG LONG LONG TEXT TEST</string>
+
     <string name="cat_music">Music</string>
     <string name="cat_paints">Paints</string>
     <string name="cat_pictures">Pictures</string>
