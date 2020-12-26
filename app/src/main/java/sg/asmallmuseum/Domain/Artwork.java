@@ -5,47 +5,57 @@ public abstract class Artwork {
     private String aAuthor;
     private String aDate;
     private String aDesc;
+    private String aFileName;
 
     public Artwork(){
 
     }
 
-    public Artwork(String aID, String aAuthor, String aDate, String aDesc){
+    public Artwork(String aID, String aAuthor, String aDate, String aDesc, String aFileName){
         this.aID = aID;
         this.aAuthor = aAuthor;
         this.aDate = aDate;
         this.aDesc = aDesc;
+        this.aFileName = aFileName;
     }
 
-    public String getId() {
+    public String getaID() {
         return aID;
     }
 
-    public void setId(String id) {
-        this.aID = id;
+    public void setaID(String aID) {
+        this.aID = aID;
     }
 
-    public String getAuthor() {
+    public String getaAuthor() {
         return aAuthor;
     }
 
-    public void setAuthor(String author) {
-        this.aAuthor = author;
+    public void setaAuthor(String aAuthor) {
+        this.aAuthor = aAuthor;
     }
 
-    public String getDate() {
+    public String getaDate() {
         return aDate;
     }
 
-    public void setDate(String date) {
-        this.aDate = date;
+    public void setaDate(String aDate) {
+        this.aDate = aDate;
     }
 
-    public String getDesc() {
+    public String getaDesc() {
         return aDesc;
     }
 
-    public void setDesc(String desc) {
-        this.aDesc = desc;
+    public void setaDesc(String aDesc) {
+        this.aDesc = aDesc;
+    }
+
+    public String getaFileName() {
+        return aFileName;
+    }
+
+    public void setaFileName(String aFileName) {
+        this.aFileName = aFileName;
     }
 }
