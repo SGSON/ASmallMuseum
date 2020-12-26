@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu"
+        android:title="@string/cat_menu"/>
+    <item android:id="@+id/profile"
+        android:title="@string/cat_profile"/>
+    <item android:id="@+id/pictures"
+        android:title="@string/cat_pictures"/>
+    <item android:id="@+id/music"
+        android:title="@string/cat_music"/>
+    <item android:id="@+id/paints"
+        android:title="@string/cat_paints"/>
+    <item android:id="@+id/upload"
+        android:title="@string/cat_Upload"/>
+    <item android:id="@+id/support"
+        android:title="@string/cat_support"/>
+</menu>
