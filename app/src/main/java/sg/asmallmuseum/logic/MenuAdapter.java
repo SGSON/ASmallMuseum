@@ -57,8 +57,6 @@ public class MenuAdapter extends BaseAdapter {
         viewHolder.item_txt.setText(item);
         viewHolder.item_img.setImageResource(R.drawable.arrow_back);
 
-
-
         return view;
     }
 

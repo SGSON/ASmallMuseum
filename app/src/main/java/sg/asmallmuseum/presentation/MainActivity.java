@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
+import sg.asmallmuseum.logic.MenuAction;
 import sg.asmallmuseum.logic.MenuAdapter;
 import sg.asmallmuseum.logic.UserManager;
 
@@ -57,28 +58,15 @@ public class MainActivity extends AppCompatActivity {
     public void onMenuButtonPressed(View view) {
         Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_LONG).show();
         //showPopup(view);
-        setMenuAdapter(view);
+        MenuAction menuAction = new MenuAction();
+        menuAction.openMenu(this);
     }
 
     public void onBackButtonPressed(View view) {
         Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_LONG).show();
     }
 
-    private void setMenuAdapter(View view){
-        ConstraintLayout layout = (ConstraintLayout)findViewById(R.id.main_menu);
-        layout.setVisibility(View.VISIBLE);
 
-        MenuAdapter menuAdapter = new MenuAdapter();
-        ListView list_menu = (ListView) findViewById(R.id.list_menu);
-        list_menu.setAdapter(menuAdapter);
-
-        list_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                makeText("Item NUmber: "+i);
-            }
-        });
-    }
 
     public void showPopup(View v){
         PopupMenu popupMenu = new PopupMenu(this, v);
