@@ -1,9 +1,11 @@
 package sg.asmallmuseum.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
+import sg.asmallmuseum.logic.MenuAdapter;
 import sg.asmallmuseum.logic.UserManager;
 
 import android.content.Context;
@@ -14,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,13 +42,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 userManager.addNewUser("asd", "asd", "s", "s", "asd@ads","1313");
                 artworkManager.addArtwork("Pictures", "asdqweqes", "qwe", "1-1--", "Wow", "WOWOWO");
-                //artworkManager.addArtwork("Pictures", "asdasdasd");
-                makeText();
+                makeText("Success!!");
             }
         });
     }
-    private void makeText(){
-        Toast.makeText(this, "Success!", Toast.LENGTH_LONG).show();
+    private void makeText(String text){
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 
     public void onMainButtonPressed(View view) {
@@ -53,11 +56,28 @@ public class MainActivity extends AppCompatActivity {
 
     public void onMenuButtonPressed(View view) {
         Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_LONG).show();
-        showPopup(view);
+        //showPopup(view);
+        setMenuAdapter(view);
     }
 
     public void onBackButtonPressed(View view) {
         Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_LONG).show();
+    }
+
+    private void setMenuAdapter(View view){
+        ConstraintLayout layout = (ConstraintLayout)findViewById(R.id.main_menu);
+        layout.setVisibility(View.VISIBLE);
+
+        MenuAdapter menuAdapter = new MenuAdapter();
+        ListView list_menu = (ListView) findViewById(R.id.list_menu);
+        list_menu.setAdapter(menuAdapter);
+
+        list_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                makeText("Item NUmber: "+i);
+            }
+        });
     }
 
     public void showPopup(View v){
