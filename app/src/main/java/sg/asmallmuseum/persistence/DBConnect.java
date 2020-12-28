@@ -19,8 +19,8 @@ public class DBConnect {
         dbRef = database.getReference();
     }
 
-    public void getDB(){
-
+    public User getUser(String uuID){
+        return null;
     }
 
     public void addUser(String path, String uuID, User user){

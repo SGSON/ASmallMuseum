@@ -16,6 +16,14 @@ public class UserManager {
         database.addUser("Users", newUniqueID, newUser);
     }
 
+    public User getUser(String uID, String password){
+        String uuID = createUniqueID(uID, password);
+
+        User user = database.getUser(uuID);
+
+        return user;
+    }
+
     private String createUniqueID(String uID, String password){
         //should be encrypt ID and password
         // it would be uuID.
