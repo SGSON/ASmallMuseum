@@ -16,7 +16,7 @@ import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import sg.asmallmuseum.R;
 
-public class MenuAction {
+public class MenuAction implements View.OnClickListener {
 
     public MenuAction(){}
 
@@ -56,12 +56,11 @@ public class MenuAction {
 
     private void closePopupWindow(View view, PopupWindow popupWindow){
         ImageButton close = (ImageButton) view.findViewById(R.id.menu_close);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupWindow.dismiss();
-            }
-        });
+        close.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View view) {
+
+    }
 }
