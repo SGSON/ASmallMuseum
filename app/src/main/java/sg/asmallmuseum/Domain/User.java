@@ -13,9 +13,8 @@ public class User {
         //do not delete this constructor
     }
 
-    public User(String uID, String password, String lastname, String firstname, String email, String birth){
+    public User(String uID, String lastname, String firstname, String email, String birth){
         this.uID = uID;
-        this.uPassword = password;
         this.uFirstName = firstname;
         this.uLastName = lastname;
         this.uEmail = email;

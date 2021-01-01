@@ -1,6 +1,7 @@
 package sg.asmallmuseum.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import sg.asmallmuseum.Domain.CustomException;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.MenuAction;
@@ -11,22 +12,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        UserManager userManager = new UserManager();
+        UserManager userManager = new UserManager("eMail");
         ArtworkManager artworkManager = new ArtworkManager();
+        mAuth = FirebaseAuth.getInstance();
 
         Button button = (Button) findViewById(R.id.textas);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userManager.addNewUser("asd", "asd", "s", "s", "asd@ads","1313");
-                artworkManager.addArtwork("Pictures", "asdqweqes", "qwe", "1-1--", "Wow", "WOWOWO");
+                try {
+                    userManager.addNewUser(mAuth, "asdasd", "ASDasd123!@#", "asd", "asd", "asd@asd.com", "123");
+                } catch (CustomException e) {
+                    e.printStackTrace();
+                }
+                //artworkManager.addArtwork("Pictures", "asdqweqes", "qwe", "1-1--", "Wow", "WOWOWO");
                 makeText("Success!!");
             }
         });

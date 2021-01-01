@@ -5,13 +5,13 @@ import sg.asmallmuseum.Domain.Book;
 import sg.asmallmuseum.Domain.Music;
 import sg.asmallmuseum.Domain.Paint;
 import sg.asmallmuseum.Domain.Picture;
-import sg.asmallmuseum.persistence.DBConnect;
+import sg.asmallmuseum.persistence.GoogleUserDB;
 
 public class ArtworkManager {
-    private DBConnect database;
+    private GoogleUserDB database;
 
     public ArtworkManager() {
-        this.database = new DBConnect();
+        this.database = new GoogleUserDB();
         database.connection();
     }
 
