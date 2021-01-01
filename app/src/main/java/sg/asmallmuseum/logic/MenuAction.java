@@ -1,6 +1,7 @@
 package sg.asmallmuseum.logic;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.presentation.MainActivity;
 
 public class MenuAction implements View.OnClickListener {
 
@@ -62,5 +64,6 @@ public class MenuAction implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+
     }
 }
