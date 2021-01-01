@@ -12,7 +12,7 @@ public class ArtworkManager {
 
     public ArtworkManager() {
         this.database = new GoogleUserDB();
-        database.connection();
+        //database.connection();
     }
 
     public void addArtwork(String path, String aID, String aAuthor, String aDate, String aDesc, String aFileName){
@@ -66,6 +66,6 @@ public class ArtworkManager {
     }
 
     private void addToDB(String path, String uaID, Artwork artwork){
-        database.addArtwork(path, uaID, artwork);
+        //database.addArtwork(path, uaID, artwork);
     }
 }

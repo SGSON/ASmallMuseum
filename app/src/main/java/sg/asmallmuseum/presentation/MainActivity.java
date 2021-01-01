@@ -1,7 +1,11 @@
 package sg.asmallmuseum.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.CustomException;
+import sg.asmallmuseum.Domain.Picture;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.MenuAction;
@@ -14,49 +18,52 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private RecyclerView recent_view;
+    private List<Artwork> mArtList;
+    private CardViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        UserManager userManager = new UserManager("eMail");
-        ArtworkManager artworkManager = new ArtworkManager();
-        mAuth = FirebaseAuth.getInstance();
-
-        Button button = (Button) findViewById(R.id.textas);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    userManager.addNewUser(mAuth, "asdasd", "ASDasd123!@#", "asd", "asd", "asd@asd.com", "123");
-                } catch (CustomException e) {
-                    e.printStackTrace();
-                }
-                //artworkManager.addArtwork("Pictures", "asdqweqes", "qwe", "1-1--", "Wow", "WOWOWO");
-                makeText("Success!!");
-            }
-        });
+        mArtList = new ArrayList<>();
+        adapter = new CardViewAdapter(mArtList);
+        mArtList.add(new Picture("123089123","asd","asdasdasd","asdasd","asdasdasd"));
+        mArtList.add(new Picture("183902","fdwwdfw","wegwbv","svc","atehaebba"));
+        mArtList.add(new Picture("1348140","wfdscvs","vscvc","dfw","a"));
+        mArtList.add(new Picture("918376481","jryrjt","svcvvcsv","bwfbw","wn"));
+        mArtList.add(new Picture("34958043","ero6l","scvscv","htt","qbe"));
+        initRecentView();
     }
+
+    private void initRecentView(){
+        recent_view = (RecyclerView)findViewById(R.id.view_recent);
+        recent_view.setLayoutManager(new LinearLayoutManager(this));
+        recent_view.setAdapter(adapter);
+    }
+
     private void makeText(String text){
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     public void onMainButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Main Button", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Pressed Main Button", Toast.LENGTH_SHORT).show();
     }
 
     public void onMenuButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_LONG).show();
-        //showPopup(view);
+        Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_SHORT).show();
         MenuAction menuAction = new MenuAction();
         menuAction.openMenu(this);
     }
 
     public void onBackButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
     }
 
 }

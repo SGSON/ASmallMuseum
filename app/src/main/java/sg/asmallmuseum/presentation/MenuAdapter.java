@@ -1,4 +1,4 @@
-package sg.asmallmuseum.logic;
+package sg.asmallmuseum.presentation;
 
 import android.view.LayoutInflater;
 import android.view.View;

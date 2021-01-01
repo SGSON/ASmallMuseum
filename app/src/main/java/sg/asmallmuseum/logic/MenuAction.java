@@ -1,23 +1,19 @@
 package sg.asmallmuseum.logic;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import sg.asmallmuseum.R;
-import sg.asmallmuseum.presentation.MainActivity;
+import sg.asmallmuseum.presentation.MenuAdapter;
 
 public class MenuAction implements View.OnClickListener {
 
