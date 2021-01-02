@@ -7,7 +7,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class MenuAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (view == null){
             viewHolder = new ViewHolder();
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.menu_item, viewGroup, false);
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_menu, viewGroup, false);
             ImageView imageView = (ImageView) view.findViewById(R.id.menu_item_image);
             TextView textView = (TextView) view.findViewById(R.id.menu_item_text);
 

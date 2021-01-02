@@ -21,7 +21,7 @@ public class MenuAction implements View.OnClickListener {
 
     public void openMenu(Context context){
         LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View menu = layoutInflater.inflate(R.layout.main_menu, null);
+        View menu = layoutInflater.inflate(R.layout.layout_main_menu, null);
 
         PopupWindow popupWindow = new PopupWindow(menu, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         popupWindow.showAtLocation(menu, Gravity.RIGHT,0,0);

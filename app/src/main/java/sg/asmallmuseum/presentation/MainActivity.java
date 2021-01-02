@@ -34,11 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         mArtList = new ArrayList<>();
         adapter = new CardViewAdapter(mArtList);
-        mArtList.add(new Picture("123089123","asd","asdasdasd","asdasd","asdasdasd"));
-        mArtList.add(new Picture("183902","fdwwdfw","wegwbv","svc","atehaebba"));
-        mArtList.add(new Picture("1348140","wfdscvs","vscvc","dfw","a"));
-        mArtList.add(new Picture("918376481","jryrjt","svcvvcsv","bwfbw","wn"));
-        mArtList.add(new Picture("34958043","ero6l","scvscv","htt","qbe"));
+        setData();
         initRecentView();
     }
 
@@ -64,6 +60,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void onBackButtonPressed(View view) {
         Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setData(){
+        mArtList.add(new Picture("123089123","asd","asdasdasd","asdasd","asdasdasd"));
+        mArtList.add(new Picture("183902","fdwwdfw","wegwbv","svc","atehaebba"));
+        mArtList.add(new Picture("1348140","wfdscvs","vscvc","dfw","a"));
+        mArtList.add(new Picture("918376481","jryrjt","svcvvcsv","bwfbw","wn"));
+        mArtList.add(new Picture("34958043","ero6l","scvscv","htt","qbe"));
     }
 
 }

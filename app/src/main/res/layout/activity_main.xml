@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".presentation.MainActivity">
 
-    <include layout="@layout/top_bar"
+    <include layout="@layout/layout_top_bar"
         android:id="@+id/top_bar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/view_recent"
@@ -23,7 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <include
-        layout="@layout/quick_menu"
+        layout="@layout/layout_quick_menu"
         android:id="@+id/quick_menu_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
