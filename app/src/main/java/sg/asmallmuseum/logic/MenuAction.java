@@ -1,6 +1,9 @@
 package sg.asmallmuseum.logic;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,21 +11,49 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatViewInflater;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.presentation.Login;
+import sg.asmallmuseum.presentation.MainActivity;
+import sg.asmallmuseum.presentation.SignUp;
 
 public class MenuAction implements View.OnClickListener {
-
+    private Context context;
     public MenuAction(){}
 
     public void openMenu(Context context){
+        this.context = context;
         LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View menu = layoutInflater.inflate(R.layout.main_menu, null);
+
+        ImageButton loginBtn = (ImageButton) menu.findViewById(R.id.logInBtn);
+        ImageButton signUpBtn = (ImageButton) menu.findViewById(R.id.signUpBtn);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,Login.class);
+                context.startActivity(intent);
+            }
+        });
+
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,SignUp.class);
+                context.startActivity(intent);
+            }
+        });
 
         PopupWindow popupWindow = new PopupWindow(menu, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         popupWindow.showAtLocation(menu, Gravity.RIGHT,0,0);
@@ -30,6 +61,8 @@ public class MenuAction implements View.OnClickListener {
         changeBackGroundColor(context, popupWindow);
         setMenuAdapter(context, menu);
         closePopupWindow(menu, popupWindow);
+
+
     }
 
     private void setMenuAdapter(Context context, View view){
@@ -40,7 +73,8 @@ public class MenuAction implements View.OnClickListener {
         list_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(context, "Item Number: "+i, Toast.LENGTH_SHORT).show();
+                String name = menuAdapter.menu_list.get(i);
+                Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -61,6 +95,15 @@ public class MenuAction implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+
+        /*int id = view.getId();
+        if(id == R.id.logInBtn){
+            Intent intent = new Intent(view.getContext(),Login.class);
+            context.startActivity(intent);
+        }else if(id == R.id.signUpBtn){
+            Intent intent = new Intent(view.getContext(),SignUp.class);
+            context.startActivity(intent);
+        }*/
 
     }
 }

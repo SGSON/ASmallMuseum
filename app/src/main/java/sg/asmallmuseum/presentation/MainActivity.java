@@ -24,32 +24,48 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        UserManager userManager = new UserManager();
-        ArtworkManager artworkManager = new ArtworkManager();
+        Button confirm = (Button)findViewById(R.id.confirm);
+        Button logOut = (Button)findViewById(R.id.logOut);
 
-        Button button = (Button) findViewById(R.id.textas);
-        button.setOnClickListener(new View.OnClickListener() {
+        confirm.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                userManager.addNewUser("asd", "asd", "s", "s", "asd@ads","1313");
-                artworkManager.addArtwork("Pictures", "asdqweqes", "qwe", "1-1--", "Wow", "WOWOWO");
-                makeText("Success!!");
+            public void onClick(View v) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+
+                    String userID = user.getUid();
+                    String userEmail = user.getEmail();
+                    Toast.makeText(getApplicationContext(),"userID : "+userID+" userEmail : "+userEmail,Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(getApplicationContext(),"Please sign in ",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
+
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+            }
+        });
+
     }
-    private void makeText(String text){
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-    }
+
 
     public void onMainButtonPressed(View view) {
         Toast.makeText(this, "Pressed Main Button", Toast.LENGTH_LONG).show();
@@ -65,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
     public void onBackButtonPressed(View view) {
         Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_LONG).show();
     }
-
 
 
     public void showPopup(View v){

@@ -15,9 +15,9 @@ import sg.asmallmuseum.R;
 
 public class MenuAdapter extends BaseAdapter {
     List<String> menu_list;
-
+    String temp[];
     public MenuAdapter() {
-        String[] temp = {"Profile","Pictures","Music","Paints","Books","Upload","Support"};
+        String temp[] = {"Profile","Pictures","Music","Paints","Books","Upload","Support"};
         menu_list = Arrays.asList(temp);
     }
 

@@ -29,6 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -40,6 +41,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <!-- 메뉴 시작 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="250dp"
             android:layout_height="100dp"
@@ -48,36 +50,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/list_menu">
+
             <ImageView
-                android:layout_width="67dp"
-                android:layout_height="67dp"
-                android:id="@+id/profile_picture"
-                android:background="@drawable/circle_button"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/nick_name"/>
-            <TextView
-                android:id="@+id/nick_name"
-                android:layout_width="150dp"
-                android:layout_height="30dp"
-                android:text="@string/test1"
+            android:layout_width="67dp"
+            android:layout_height="67dp"
+            android:id="@+id/profile_picture"
+            android:background="@drawable/circle_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/logInBtn"/>
+
+            <ImageButton
+                android:id="@+id/logInBtn"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:text="login"
                 android:gravity="center|start"
                 android:layout_marginStart="5dp"
-                app:layout_constraintBottom_toTopOf="@id/profile_history"
+                app:layout_constraintBottom_toTopOf="@id/signUpBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/profile_picture"
                 app:layout_constraintTop_toTopOf="parent" />
-            <TextView
-                android:layout_width="150dp"
-                android:layout_height="20dp"
-                android:id="@+id/profile_history"
-                android:text="@string/test2"
+
+            <ImageButton
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:id="@+id/signUpBtn"
+                android:text="sign_up"
                 android:gravity="center|start"
                 android:layout_marginStart="5dp"
                 app:layout_constraintStart_toEndOf="@id/profile_picture"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/nick_name"
+                app:layout_constraintTop_toBottomOf="@id/logInBtn"
                 app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
