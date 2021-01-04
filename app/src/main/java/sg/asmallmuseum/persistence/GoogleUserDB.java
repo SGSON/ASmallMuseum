@@ -1,11 +1,14 @@
 package sg.asmallmuseum.persistence;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.Nullable;
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.R;
+
 
 public class GoogleUserDB implements UserDBInterface{
     private FirebaseDatabase db;
@@ -39,6 +42,8 @@ public class GoogleUserDB implements UserDBInterface{
 
     @Override
     public User signIn(String eMail, String password) {
+
+
         return null;
     }
 }

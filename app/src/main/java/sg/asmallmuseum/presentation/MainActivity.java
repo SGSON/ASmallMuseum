@@ -1,22 +1,36 @@
 package sg.asmallmuseum.presentation;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
-import sg.asmallmuseum.Domain.CustomException;
 import sg.asmallmuseum.Domain.Picture;
+import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.MenuAction;
 import sg.asmallmuseum.logic.UserManager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,16 +40,48 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recent_view;
     private List<Artwork> mArtList;
     private CardViewAdapter adapter;
+    private final int REQUEST_CODE = 20180201;
+
+    private ImageButton mQuick;
+    private GoogleSignInClient mGoogleSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /***Google Sign-in Test***/
+        UserManager manager = new UserManager("Google");
+
+        mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
+        mQuick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = manager.signUPWithGoogle(view.getContext(), mAuth);
+                startActivity(intent);
+            }
+        });
+        /***End***/
+
         mArtList = new ArrayList<>();
         adapter = new CardViewAdapter(mArtList);
         setData();
         initRecentView();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try{
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                //account.
+            }
+            catch (ApiException e){
+
+            }
+        }
     }
 
     private void initRecentView(){

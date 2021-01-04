@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">ASmallMuseum</string>
+    <string name="facebook_app_id">1731723653672740</string>
+    <string name="fb_login_protocol_scheme">fb1731723653672740</string>
+
 
     <string name="test1">TEST 1</string>
     <string name="test2">LONG TEXT TEST</string>
