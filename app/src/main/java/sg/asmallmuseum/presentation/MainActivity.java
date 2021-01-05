@@ -13,6 +13,7 @@ import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.MenuAction;
 import sg.asmallmuseum.logic.UserManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /***Google Sign-in Test***/
-        UserManager manager = new UserManager("Google");
+        /*UserManager manager = new UserManager("Google");
 
         mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
         mQuick.setOnClickListener(new View.OnClickListener() {
@@ -60,8 +61,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = manager.signUPWithGoogle(view.getContext(), mAuth);
                 startActivity(intent);
             }
-        });
+        });*/
         /***End***/
+
+        mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
+        Intent intent = new Intent(this, ArtViewActivity.class);
+        mQuick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intent);
+            }
+        });
 
         mArtList = new ArrayList<>();
         adapter = new CardViewAdapter(mArtList);
@@ -115,5 +125,33 @@ public class MainActivity extends AppCompatActivity {
         mArtList.add(new Picture("918376481","jryrjt","svcvvcsv","bwfbw","wn"));
         mArtList.add(new Picture("34958043","ero6l","scvscv","htt","qbe"));
     }
+
+    /***Google Sign-Up methods***/
+    /*
+     * signUPWithGoogle: get a google sign-up page
+     * firebaseSignWithGoogle: Authentication with Google*/
+    public Intent signUPWithGoogle(Context context, FirebaseAuth mAuth){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(context.getString(R.string.default_web_client_id)).requestEmail().build();
+        GoogleSignInClient mClient = GoogleSignIn.getClient(context, gso);
+        Intent intent = mClient.getSignInIntent();
+        return intent;
+    }
+
+    private void firebaseSignInWithGoogle(String idToken, FirebaseAuth mAuth, Context context){
+        AuthCredential mAuthCredential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(mAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    Log.d("LOGIN: ","LOGIN SUCCESS!");
+                }
+                else {
+                    Log.w("LOGIN: ", "FAIL TO LOGIN");
+                }
+            }
+        });
+    }
+    /***End***/
 
 }

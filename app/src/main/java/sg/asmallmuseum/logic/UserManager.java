@@ -83,31 +83,5 @@ public class UserManager {
         return db.signIn(eMail, password);
     }
 
-    /***Google Sign-Up methods***/
-    /*
-    * signUPWithGoogle: get a google sign-up page
-    * firebaseSignWithGoogle: Authentication with Google*/
-    public Intent signUPWithGoogle(Context context, FirebaseAuth mAuth){
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.default_web_client_id)).requestEmail().build();
-        GoogleSignInClient mClient = GoogleSignIn.getClient(context, gso);
-        Intent intent = mClient.getSignInIntent();
-        return intent;
-    }
 
-    private void firebaseSignInWithGoogle(String idToken, FirebaseAuth mAuth, Context context){
-        AuthCredential mAuthCredential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(mAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    Log.d("LOGIN: ","LOGIN SUCCESS!");
-                }
-                else {
-                    Log.w("LOGIN: ", "FAIL TO LOGIN");
-                }
-            }
-        });
-    }
-    /***End***/
 }
