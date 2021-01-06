@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.R;
 
-public class ReviewAdapter extends RecyclerView.Adapter {
+public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHolder> {
     private List<String[]> review;
     public ReviewAdapter(List<String[]> review){
         this.review = review;
@@ -20,14 +20,14 @@ public class ReviewAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ReviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review, parent, false);
         return new ReviewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((ReviewHolder)holder).setDetail(review.get(position));
+    public void onBindViewHolder(@NonNull ReviewHolder holder, int position) {
+        holder.setDetail(review.get(position));
     }
 
     @Override

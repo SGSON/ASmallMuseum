@@ -33,11 +33,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerViewOnClickListener{
     private FirebaseAuth mAuth;
     private RecyclerView recent_view;
     private List<Artwork> mArtList;
-    private CardViewAdapter adapter;
+    private ArtLinearViewAdapter adapter;
     private final int REQUEST_CODE = 20180201;
 
     private ImageButton mQuick;
@@ -49,21 +49,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-        /***Google Sign-in Test***/
-        /*UserManager manager = new UserManager("Google");
 
         mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
-        mQuick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = manager.signUPWithGoogle(view.getContext(), mAuth);
-                startActivity(intent);
-            }
-        });*/
-        /***End***/
-
-        mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
-        Intent intent = new Intent(this, ArtViewActivity.class);
+        Intent intent = new Intent(this, ArtListActivity.class);
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mArtList = new ArrayList<>();
-        adapter = new CardViewAdapter(mArtList);
+        adapter = new ArtLinearViewAdapter(mArtList);
+        adapter.setOnClickListener(this);
         setData();
         initRecentView();
     }
@@ -82,27 +71,17 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null){
-            signedIn = true;
-        }
-        else {
             signedIn = false;
         }
-
+        else {
+            signedIn = true;
+        }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                //account.
-            }
-            catch (ApiException e){
-
-            }
-        }
+    public void onItemClick(int position) {
+        Intent intent = new Intent(this, ArtViewActivity.class);
+        startActivity(intent);
     }
 
     private void initRecentView(){
@@ -138,6 +117,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /***Google Sign-Up methods***/
+    /***Google Sign-in Test***/
+        /*UserManager manager = new UserManager("Google");
+
+        mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
+        mQuick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = manager.signUPWithGoogle(view.getContext(), mAuth);
+                startActivity(intent);
+            }
+        });*/
+    /***End***/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try{
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                //account.
+            }
+            catch (ApiException e){
+
+            }
+        }
+    }
     /*
      * signUPWithGoogle: get a google sign-up page
      * firebaseSignWithGoogle: Authentication with Google*/
