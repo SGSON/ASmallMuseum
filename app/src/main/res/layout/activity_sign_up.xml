@@ -5,49 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.SignUp">
+    tools:context=".presentation.SignUpActivity">
+
+    <include
+        layout="@layout/layout_top_bar"/>
 
     <EditText
-        android:id="@+id/emailID"
+        android:id="@+id/email_id"
         android:hint="emailID"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"/>
 
     <EditText
         android:id="@+id/password"
         android:hint="password"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"/>
 
     <EditText
-        android:id="@+id/checkPass"
+        android:id="@+id/check_pass"
         android:hint="checkPassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"/>
 
     <EditText
-        android:id="@+id/firstName"
+        android:id="@+id/first_name"
         android:hint="firstName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"/>
 
     <EditText
-        android:id="@+id/lastName"
+        android:id="@+id/last_name"
         android:hint="lastName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"/>
 
     <EditText
-        android:id="@+id/ID"
+        android:id="@+id/id"
         android:hint="userID"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"/>
 
     <EditText
         android:id="@+id/birth"
         android:hint="birth"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,16 +72,20 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/backBtn"
+            android:id="@+id/back_btn"
             android:text="back"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
         <Button
-            android:id="@+id/submitBtn"
+            android:id="@+id/submit_btn"
             android:text="submit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
     </LinearLayout>
 

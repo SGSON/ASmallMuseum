@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -19,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import sg.asmallmuseum.R;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     private FirebaseAuth mAuth;
 
     EditText emailID;
@@ -32,31 +30,48 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        emailID = (EditText)findViewById(R.id.emailID);
+        emailID = (EditText)findViewById(R.id.email_id);
         password= (EditText)findViewById(R.id.password);
-        loginBtn = (Button)findViewById(R.id.logInBtn);
-        homeBtn = (Button)findViewById(R.id.homeBtn);
+        loginBtn = (Button)findViewById(R.id.log_in_btn);
+        homeBtn = (Button)findViewById(R.id.home_btn);
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth = FirebaseAuth.getInstance();
+        homeBtn.setOnClickListener(this);
+        loginBtn.setOnClickListener(this);
+    }
 
-                String uEmailID = emailID.getText().toString();
-                String uPassword = password.getText().toString();
-                signIn(uEmailID,uPassword);
+    @Override
+    public void onClick(View view) {
+        int viewId = view.getId();
 
+        if (viewId == R.id.log_in_btn){
+            mAuth = FirebaseAuth.getInstance();
 
-            }
-        });
+            String uEmailID = emailID.getText().toString();
+            String uPassword = password.getText().toString();
+            signIn(uEmailID,uPassword);
+        }
+        else if (viewId == R.id.home_btn){
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);//<< MainActivity
+            startActivity(intent);
+        }
+    }
 
-        homeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);//<< MainActivity
-                startActivity(intent);
-            }
-        });
+    private void makeText(String text){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onMainButtonPressed(View view) {
+        Toast.makeText(this, "Pressed Main Button", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onMenuButtonPressed(View view) {
+        Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_SHORT).show();
+        MenuAction menuAction = new MenuAction();
+        menuAction.openMenu(this, false);
+    }
+
+    public void onBackButtonPressed(View view) {
+        Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
     }
 
     private void signIn(String email, String password) {

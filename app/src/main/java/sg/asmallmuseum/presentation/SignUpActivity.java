@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
 
-public class SignUp extends AppCompatActivity implements View.OnClickListener{
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
     private FirebaseAuth mAuth;
 
     EditText emailID;
@@ -31,57 +31,46 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     Button backBtn;
     Button submitBtn;
 
-   /* @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-    }*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        UserManager userManager = new UserManager();
+        UserManager userManager = new UserManager("eMail");
 
-        emailID = (EditText)findViewById(R.id.emailID);
-        ID = (EditText)findViewById(R.id.ID);
+        emailID = (EditText)findViewById(R.id.email_id);
+        ID = (EditText)findViewById(R.id.id);
         password = (EditText)findViewById(R.id.password);
         birth = (EditText)findViewById(R.id.birth);
-        firstName = (EditText)findViewById(R.id.firstName);
-        lastName = (EditText)findViewById(R.id.lastName);
-        backBtn = (Button)findViewById(R.id.backBtn);
-        submitBtn = (Button)findViewById(R.id.submitBtn);
+        firstName = (EditText)findViewById(R.id.first_name);
+        lastName = (EditText)findViewById(R.id.last_name);
+        backBtn = (Button)findViewById(R.id.back_btn);
+        submitBtn = (Button)findViewById(R.id.submit_btn);
 
 
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth = FirebaseAuth.getInstance();
-
-                String uEmailID = emailID.getText().toString();
-                String uID = ID.getText().toString();
-                String uPassword = password.getText().toString();
-                String uBirth = birth.getText().toString();
-                String uFirstName = firstName.getText().toString();
-                String uLastName = lastName.getText().toString();
-                createAccount(uEmailID,uPassword);
-
-
-            }
-        });
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"MainActivity",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
-            }
-        });
+        submitBtn.setOnClickListener(this);
+        backBtn.setOnClickListener(this);
     }
+
+    private void makeText(String text){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onMainButtonPressed(View view) {
+        Toast.makeText(this, "Pressed Main Button", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onMenuButtonPressed(View view) {
+        Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_SHORT).show();
+        MenuAction menuAction = new MenuAction();
+        menuAction.openMenu(this, false);
+    }
+
+    public void onBackButtonPressed(View view) {
+        Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
+    }
+
+
 
     private void createAccount(String email, String password) {
 
@@ -113,6 +102,23 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        int viewId = v.getId();
 
+        if (viewId == R.id.submit_btn){
+            mAuth = FirebaseAuth.getInstance();
+
+            String uEmailID = emailID.getText().toString();
+            String uID = ID.getText().toString();
+            String uPassword = password.getText().toString();
+            String uBirth = birth.getText().toString();
+            String uFirstName = firstName.getText().toString();
+            String uLastName = lastName.getText().toString();
+            createAccount(uEmailID,uPassword);
+        }
+        else if (viewId == R.id.back_btn){
+            Toast.makeText(getApplicationContext(),"MainActivity",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(intent);
+        }
     }
 }

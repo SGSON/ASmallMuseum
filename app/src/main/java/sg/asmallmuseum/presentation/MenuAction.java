@@ -1,4 +1,4 @@
-package sg.asmallmuseum.logic;
+package sg.asmallmuseum.presentation;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,45 +12,66 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import sg.asmallmuseum.R;
-import sg.asmallmuseum.presentation.MenuAdapter;
-import sg.asmallmuseum.presentation.Login;
-import sg.asmallmuseum.presentation.SignUp;
 
 public class MenuAction implements View.OnClickListener {
     private Context context;
+    private PopupWindow popupWindow;
     public MenuAction(){}
 
-    public void openMenu(Context context){
+    public void openMenu(Context context, boolean signedIn){
         this.context = context;
         LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View menu = layoutInflater.inflate(R.layout.layout_main_menu, null);
 
-        ImageButton loginBtn = (ImageButton) menu.findViewById(R.id.logInBtn);
-        ImageButton signUpBtn = (ImageButton) menu.findViewById(R.id.signUpBtn);
-
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context,Login.class);
-                context.startActivity(intent);
-            }
-        });
-
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context,SignUp.class);
-                context.startActivity(intent);
-            }
-        });
-
-        PopupWindow popupWindow = new PopupWindow(menu, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        popupWindow = new PopupWindow(menu, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         popupWindow.showAtLocation(menu, Gravity.RIGHT,0,0);
 
+        menu.findViewById(R.id.menu_close).setOnClickListener(this);
+
+        setMenuForm(menu, signedIn);
         changeBackGroundColor(context, popupWindow);
         setMenuAdapter(context, menu);
-        closePopupWindow(menu, popupWindow);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int btn_id = view.getId();
+
+        if (btn_id == R.id.log_in_btn){
+            Intent intent = new Intent(context, LoginActivity.class);
+            context.startActivity(intent);
+        }
+        else if (btn_id == R.id.sign_up_btn){
+            Intent intent = new Intent(context, SignUpActivity.class);
+            context.startActivity(intent);
+        }
+        else if (btn_id == R.id.menu_close){
+            popupWindow.dismiss();
+        }
+    }
+
+    private void setMenuForm(View view, boolean signedIn){
+        ConstraintLayout userInfoForm = (ConstraintLayout)view.findViewById(R.id.user_info);
+        ConstraintLayout signInForm = (ConstraintLayout)view.findViewById(R.id.sign_in);
+        ImageButton sign_out_btn = (ImageButton)view.findViewById(R.id.sign_out_btn);
+
+        if (signedIn){
+            view.findViewById(R.id.sign_out_btn).setOnClickListener(this);
+
+            userInfoForm.setVisibility(View.VISIBLE);
+            sign_out_btn.setVisibility(View.VISIBLE);
+            signInForm.setVisibility(View.GONE);
+        }
+        else{
+            view.findViewById(R.id.sign_up_btn).setOnClickListener(this);
+            view.findViewById(R.id.log_in_btn).setOnClickListener(this);
+
+            signInForm.setVisibility(View.VISIBLE);
+            userInfoForm.setVisibility(View.GONE);
+            sign_out_btn.setVisibility(View.GONE);
+        }
     }
 
     private void setMenuAdapter(Context context, View view){
@@ -73,15 +94,5 @@ public class MenuAction implements View.OnClickListener {
         p.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         p.dimAmount = 0.3f;
         wm.updateViewLayout(container, p);
-    }
-
-    private void closePopupWindow(View view, PopupWindow popupWindow){
-        ImageButton close = (ImageButton) view.findViewById(R.id.menu_close);
-        close.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 }
