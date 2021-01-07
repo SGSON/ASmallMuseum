@@ -43,5 +43,6 @@ public class ArtworkDB implements ArtworkDBInterface {
                     Log.w(TAG, "FAILED");
                 }
             });
+
     }
 }
