@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Picture;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.logic.ArtworkManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -50,12 +51,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
 
         mAuth = FirebaseAuth.getInstance();
 
+        ArtworkManager manager = new ArtworkManager();
+
         mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
-        Intent intent = new Intent(this, ArtListActivity.class);
+        //Intent intent = new Intent(this, ArtListActivity.class);
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(intent);
+                //startActivity(intent);
+                manager.addArtwork("Books","Non-Fiction", "Amazing Stories", "SG", "2030-1-10", "AMAZING!", "/images/");
             }
         });
 
@@ -109,11 +113,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
     }
 
     private void setData(){
-        mArtList.add(new Picture("123089123","asd","asdasdasd","asdasd","asdasdasd"));
-        mArtList.add(new Picture("183902","fdwwdfw","wegwbv","svc","atehaebba"));
-        mArtList.add(new Picture("1348140","wfdscvs","vscvc","dfw","a"));
-        mArtList.add(new Picture("918376481","jryrjt","svcvvcsv","bwfbw","wn"));
-        mArtList.add(new Picture("34958043","ero6l","scvscv","htt","qbe"));
+        //mArtList.add(new Picture("Books","Non-fiction","123089123","asd","asdasdasd","asdasd","asdasdasd"));
+        //mArtList.add(new Picture("183902","fdwwdfw","wegwbv","svc","atehaebba"));
+        //mArtList.add(new Picture("1348140","wfdscvs","vscvc","dfw","a"));
+        //mArtList.add(new Picture("918376481","jryrjt","svcvvcsv","bwfbw","wn"));
+        //mArtList.add(new Picture("34958043","ero6l","scvscv","htt","qbe"));
     }
 
     /***Google Sign-Up methods***/

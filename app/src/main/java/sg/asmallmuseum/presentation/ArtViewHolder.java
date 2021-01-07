@@ -19,7 +19,7 @@ public class ArtViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setCard(Artwork artwork){
-        mTitle.setText(artwork.getaID());
+        mTitle.setText(artwork.getaTitle());
         mAuthor.setText(artwork.getaAuthor());
     }
 }
