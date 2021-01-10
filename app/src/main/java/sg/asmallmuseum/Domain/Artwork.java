@@ -1,7 +1,10 @@
 package sg.asmallmuseum.Domain;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.storage.StorageReference;
+
 public abstract class Artwork {
-    private String aID;
+    private DocumentReference aID;
     private String aType;
     private String aGenre;
     private String aTitle;
@@ -14,21 +17,21 @@ public abstract class Artwork {
 
     }
 
-    public Artwork(String aType, String aGenre, String aTitle, String aAuthor, String aDate, String aDesc, String aFileLoc){
+    public Artwork(String aType, String aGenre, String aTitle, String aAuthor, String aDate, String aDesc){
         this.aType = aType;
         this.aGenre = aGenre;
         this.aTitle = aTitle;
         this.aAuthor = aAuthor;
         this.aDate = aDate;
         this.aDesc = aDesc;
-        this.aFileLoc = aFileLoc;
+        //this.aFileLoc = aFileLoc;
     }
 
-    public String getaID() {
+    public DocumentReference getaID() {
         return aID;
     }
 
-    public void setaID(String aID) {
+    public void setaID(DocumentReference aID) {
         this.aID = aID;
     }
 
