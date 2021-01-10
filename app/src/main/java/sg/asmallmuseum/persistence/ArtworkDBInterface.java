@@ -15,4 +15,5 @@ public interface ArtworkDBInterface {
     StorageReference uploadFile(String path,String id) throws FileNotFoundException;
     void setOnSuccessListener(DBListener DBListener);
     void getArtInfo(String type, String genre);
+    StorageReference getArtImage(String type, String loc);
 }

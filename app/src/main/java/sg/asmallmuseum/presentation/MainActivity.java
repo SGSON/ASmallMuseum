@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     private List<Artwork> mArtList;
     private ArtLinearViewAdapter adapter;
     private final int REQUEST_CODE = 20180201;
+    private ArtworkManager manager;
 
     private ImageButton mQuick;
     private boolean signedIn;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
 
         mAuth = FirebaseAuth.getInstance();
 
-        ArtworkManager manager = new ArtworkManager();
+        manager = new ArtworkManager();
         manager.setListener(this);
         requestPermission();
 
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     @Override
     public void onLoadCompleteListener(List<Artwork> artworks){
         mArtList = artworks;
-        adapter = new ArtLinearViewAdapter(mArtList);
+        adapter = new ArtLinearViewAdapter(mArtList,manager);
         adapter.setOnClickListener(this);
         initRecentView();
     }
@@ -149,59 +150,5 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     }
     /***End***/
 
-    /***Google Sign-Up methods***/
-    /***Google Sign-in Test***/
-        /*UserManager manager = new UserManager("Google");
-
-        mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
-        mQuick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = manager.signUPWithGoogle(view.getContext(), mAuth);
-                startActivity(intent);
-            }
-        });*/
-    /***End***/
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                //account.
-            }
-            catch (ApiException e){
-
-            }
-        }
-    }
-    /*
-     * signUPWithGoogle: get a google sign-up page
-     * firebaseSignWithGoogle: Authentication with Google*/
-    public Intent signUPWithGoogle(Context context, FirebaseAuth mAuth){
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.default_web_client_id)).requestEmail().build();
-        GoogleSignInClient mClient = GoogleSignIn.getClient(context, gso);
-        Intent intent = mClient.getSignInIntent();
-        return intent;
-    }
-
-    private void firebaseSignInWithGoogle(String idToken, FirebaseAuth mAuth, Context context){
-        AuthCredential mAuthCredential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(mAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    Log.d("LOGIN: ","LOGIN SUCCESS!");
-                }
-                else {
-                    Log.w("LOGIN: ", "FAIL TO LOGIN");
-                }
-            }
-        });
-    }
-    /***End***/
 
 }

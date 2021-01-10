@@ -115,8 +115,9 @@ public class ArtworkDB implements ArtworkDBInterface {
         });
     }
 
-    public void getArtImage(String type){
-
+    @Override
+    public StorageReference getArtImage(String type, String loc){
+        return storage.getReference().child(loc);
     }
     /***End***/
 }

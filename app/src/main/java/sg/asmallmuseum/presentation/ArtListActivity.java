@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Picture;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.logic.ArtworkManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
 
         mAuth = FirebaseAuth.getInstance();
         mArtList = new ArrayList<>();
-        adapter = new ArtGridViewAdapter(mArtList);
+        adapter = new ArtGridViewAdapter(mArtList, new ArtworkManager());
 
         setData();
         adapter.setOnClickListener(this);

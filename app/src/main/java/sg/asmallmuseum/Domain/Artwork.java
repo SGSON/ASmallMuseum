@@ -87,7 +87,7 @@ public abstract class Artwork {
         return aFileLoc;
     }
 
-    public void setaFileLoc(String aFileName) {
+    public void setaFileLoc(String aFileLoc) {
         this.aFileLoc = aFileLoc;
     }
 }
