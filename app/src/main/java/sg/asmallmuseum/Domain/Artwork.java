@@ -12,6 +12,7 @@ public abstract class Artwork {
     private String aDate;
     private String aDesc;
     private String aFileLoc;
+    private int aRating;
 
     public Artwork(){
 
@@ -24,7 +25,7 @@ public abstract class Artwork {
         this.aAuthor = aAuthor;
         this.aDate = aDate;
         this.aDesc = aDesc;
-        //this.aFileLoc = aFileLoc;
+        this.aRating = 0;
     }
 
     public DocumentReference getaID() {
@@ -90,4 +91,13 @@ public abstract class Artwork {
     public void setaFileLoc(String aFileLoc) {
         this.aFileLoc = aFileLoc;
     }
+
+    public int getaRating() {
+        return aRating;
+    }
+
+    public void setaRating(int aRating) {
+        this.aRating = aRating;
+    }
+
 }

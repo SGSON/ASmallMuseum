@@ -47,6 +47,7 @@
         android:id="@+id/review_rating"
         android:max="5"
         android:layout_marginStart="10dp"
+        android:isIndicator="true"
         style="@style/Widget.AppCompat.RatingBar.Small"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintTop_toBottomOf="@id/review_id"

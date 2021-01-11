@@ -58,14 +58,13 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         manager.setListener(this);
         requestPermission();
 
+        //Load recent upload images
         manager.getArtInfo("Books", "Literal");
 
         mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
-        //Intent intent = new Intent(this, ArtListActivity.class);
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //startActivity(intent);
                 //manager.uploadFile("/storage/emulated/0/Download/test.png");
                 //manager.addArtwork("Picture","Land", "Amazing Stories", "SG", "2030-1-10", "AMAZING!");
                 //manager.upLoadArt("/storage/emulated/0/Download/test.png",
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     }
     /***End***/
 
-    /***Top bar button events***/
+    /***Top-bar button events***/
     private void makeText(String text){
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }

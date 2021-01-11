@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -82,7 +83,7 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         ((TextView) findViewById(R.id.art_title)).setText(artwork.getaTitle());
         ((TextView) findViewById(R.id.art_author)).setText(artwork.getaAuthor());
         ((TextView) findViewById(R.id.art_desc)).setText(artwork.getaDesc());
-        //((TextView) findViewById(R.id.art_title)).setText(artwork.getaTitle());
+        ((RatingBar) findViewById(R.id.art_rating)).setRating(artwork.getaRating());
 
     }
 }
