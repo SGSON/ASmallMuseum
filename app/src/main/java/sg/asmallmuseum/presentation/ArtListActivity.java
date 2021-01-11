@@ -17,12 +17,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ArtListActivity extends AppCompatActivity implements RecyclerViewOnClickListener {
+public class ArtListActivity extends AppCompatActivity implements RecyclerViewOnClickListener, ManagerListener {
     private FirebaseAuth mAuth;
-    private RecyclerView recyclerView;
-    private ArtGridViewAdapter adapter;
-    private ArrayList<Artwork> mArtList;
+    private ArtworkManager manager;
     private boolean signedIn;
 
     @Override
@@ -30,12 +29,13 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_art_list);
 
-        mAuth = FirebaseAuth.getInstance();
-        mArtList = new ArrayList<>();
-        adapter = new ArtGridViewAdapter(mArtList, new ArtworkManager());
+        Intent intent = getIntent();
 
-        adapter.setOnClickListener(this);
-        initRecyclerView();
+        mAuth = FirebaseAuth.getInstance();
+        manager = new ArtworkManager();
+        manager.setListener(this);
+
+        manager.getArtInfo(intent.getStringExtra("Type"), intent.getStringExtra("Genre"));
     }
 
     @Override
@@ -43,20 +43,16 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null){
-            Toast.makeText(this, "Unidentified user!", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Unidentified user!", Toast.LENGTH_SHORT).show();
             signedIn = false;
         }
         else{
+            Toast.makeText(this, "Signed-in user!", Toast.LENGTH_SHORT).show();
             signedIn = true;
         }
     }
 
-    @Override
-    public void onItemClick(int position, Intent intent) {
-        //Intent intent = new Intent(this, ArtViewActivity.class);
-        startActivity(intent);
-    }
-
+    /***Top-bar events***/
     private void makeText(String text){
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
@@ -74,11 +70,26 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     public void onBackButtonPressed(View view) {
         Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
     }
+    /***End***/
 
-    private void initRecyclerView(){
-        recyclerView = (RecyclerView) findViewById(R.id.art_list);
+    /***Load File from DB***/
+    private void initRecyclerView(List<Artwork> artworks){
+        ArtGridViewAdapter adapter = new ArtGridViewAdapter(artworks, manager);
+        adapter.setOnClickListener(this);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.art_list);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onLoadCompleteListener(List<Artwork> artworks) {
+        initRecyclerView(artworks);
+    }
+
+    @Override
+    public void onItemClick(int position, Intent intent) {
+        startActivity(intent);
+    }
+    /***End***/
 }

@@ -19,9 +19,9 @@ import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 
 public class ArtGridViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
-    private List<Artwork> mArtList;
+    private final List<Artwork> mArtList;
     private RecyclerViewOnClickListener mListener;
-    private ArtworkManager manager;
+    private final ArtworkManager manager;
     private Context context;
 
     public ArtGridViewAdapter(List<Artwork> mArtwork, ArtworkManager manager){
@@ -46,7 +46,9 @@ public class ArtGridViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onItemClick(position, new Intent());
+                    Intent intent = new Intent(view.getContext(), ArtViewActivity.class);
+                    intent.putExtra("DocPath", mArtList.get(position).getaID().getPath());
+                    mListener.onItemClick(position, intent);
                 }
             });
         }

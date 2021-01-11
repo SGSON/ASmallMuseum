@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -38,13 +39,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ManagerListener, RecyclerViewOnClickListener{
     private FirebaseAuth mAuth;
-    private RecyclerView recent_view;
-    private List<Artwork> mArtList;
-    private ArtLinearViewAdapter adapter;
     private final int REQUEST_CODE = 20180201;
     private ArtworkManager manager;
 
-    private ImageButton mQuick;
     private boolean signedIn;
 
     @Override
@@ -61,17 +58,21 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         //Load recent upload images
         manager.getArtInfo("Books", "Literal");
 
-        mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
+        Intent intent = new Intent(this, ArtListActivity.class);
+        ImageButton mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                intent.putExtra("Type", "Books");
+                intent.putExtra("Genre", "Literal");
+                startActivity(intent);
                 //manager.uploadFile("/storage/emulated/0/Download/test.png");
                 //manager.addArtwork("Picture","Land", "Amazing Stories", "SG", "2030-1-10", "AMAZING!");
                 //manager.upLoadArt("/storage/emulated/0/Download/test.png",
                  //       "Books","Literal", "Amazing Stories!!", "SG", "2030-1-10", "AMAZING!");
             }
         });
-
     }
 
     @Override
@@ -86,29 +87,25 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         }
     }
 
-    /***Get image info from Manager class***/
-    @Override
-    public void onLoadCompleteListener(List<Artwork> artworks){
-        mArtList = artworks;
-        adapter = new ArtLinearViewAdapter(mArtList, manager);
+    /***Initiate Recycler view***/
+    private void initRecentView(List<Artwork> artworks){
+        ArtLinearViewAdapter adapter = new ArtLinearViewAdapter(artworks, manager);
         adapter.setOnClickListener(this);
-        initRecentView();
-    }
-    public void onLoadCompleteListener(Artwork artwork){
-        //Empty method
-    }
-    /***End***/
 
-    /***Recycler view events***/
+        RecyclerView recent_view = (RecyclerView)findViewById(R.id.view_recent);
+        recent_view.setLayoutManager(new LinearLayoutManager(this));
+        recent_view.setAdapter(adapter);
+    }
+
     @Override
     public void onItemClick(int position, Intent intent) {
         startActivity(intent);
     }
 
-    private void initRecentView(){
-        recent_view = (RecyclerView)findViewById(R.id.view_recent);
-        recent_view.setLayoutManager(new LinearLayoutManager(this));
-        recent_view.setAdapter(adapter);
+    //Get an image information from ArtManager
+    @Override
+    public void onLoadCompleteListener(List<Artwork> artworks){
+        initRecentView(artworks);
     }
     /***End***/
 
@@ -118,21 +115,23 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     }
 
     public void onMainButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Main Button", Toast.LENGTH_SHORT).show();
+        makeText("Pressed Main Button");
     }
 
     public void onMenuButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_SHORT).show();
+        makeText("Pressed Menu Button");
+
+        //Configure the main menu
         MenuAction menuAction = new MenuAction();
         menuAction.openMenu(this, signedIn);
     }
 
     public void onBackButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
+        makeText("Pressed Back Button");
     }
     /***End***/
 
-    /***get storage permission***/
+    /***Get a storage access permission***/
     private void requestPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             // You can use the API that requires the permission.
