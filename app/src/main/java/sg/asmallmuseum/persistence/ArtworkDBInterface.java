@@ -16,4 +16,5 @@ public interface ArtworkDBInterface {
     void setOnSuccessListener(DBListener DBListener);
     void getArtInfo(String type, String genre);
     StorageReference getArtImage(String type, String loc);
+    void getArtInfoById(String id);
 }

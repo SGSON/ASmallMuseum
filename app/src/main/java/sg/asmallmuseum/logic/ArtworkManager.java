@@ -83,6 +83,10 @@ public class ArtworkManager implements DBListener {
     public StorageReference getArtImages(String type, String loc){
         return db.getArtImage(type, loc);
     }
+
+    public void getArtInfoById(String id){
+        db.getArtInfoById(id);
+    }
     /***End***/
 
     @Override

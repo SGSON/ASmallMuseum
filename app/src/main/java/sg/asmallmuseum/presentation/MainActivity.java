@@ -58,12 +58,13 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         manager.setListener(this);
         requestPermission();
 
+        manager.getArtInfo("Books", "Literal");
+
         mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
         //Intent intent = new Intent(this, ArtListActivity.class);
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                manager.getArtInfo("Books", "Literal");
                 //startActivity(intent);
                 //manager.uploadFile("/storage/emulated/0/Download/test.png");
                 //manager.addArtwork("Picture","Land", "Amazing Stories", "SG", "2030-1-10", "AMAZING!");
@@ -86,20 +87,22 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         }
     }
 
-    /***Get images info from Manager class***/
+    /***Get image info from Manager class***/
     @Override
     public void onLoadCompleteListener(List<Artwork> artworks){
         mArtList = artworks;
-        adapter = new ArtLinearViewAdapter(mArtList,manager);
+        adapter = new ArtLinearViewAdapter(mArtList, manager);
         adapter.setOnClickListener(this);
         initRecentView();
+    }
+    public void onLoadCompleteListener(Artwork artwork){
+        //Empty method
     }
     /***End***/
 
     /***Recycler view events***/
     @Override
-    public void onItemClick(int position) {
-        Intent intent = new Intent(this, ArtViewActivity.class);
+    public void onItemClick(int position, Intent intent) {
         startActivity(intent);
     }
 
@@ -132,9 +135,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
 
     /***get storage permission***/
     private void requestPermission(){
-        if (ContextCompat.checkSelfPermission(
-                this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             // You can use the API that requires the permission.
 
         } /*else if (shouldShowRequestPermissionRationale(...)) {

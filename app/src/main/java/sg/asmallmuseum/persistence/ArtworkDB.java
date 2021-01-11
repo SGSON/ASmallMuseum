@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -118,6 +119,22 @@ public class ArtworkDB implements ArtworkDBInterface {
     @Override
     public StorageReference getArtImage(String type, String loc){
         return storage.getReference().child(loc);
+    }
+
+    @Override
+    public void getArtInfoById(String id){
+        String[] info = id.split("/");
+        //Log.d("Element", id.toString()+" "+(info.length));
+        DocumentReference ref = db.collection(info[0]).document(info[1]).collection(info[2]).document(info[3]);
+        ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                List<Artwork> artworks = new ArrayList<>();
+                Artwork art = documentSnapshot.toObject(Book.class);
+                artworks.add(art);
+                mListener.onFileLoadCompleteListener(artworks);
+            }
+        });
     }
     /***End***/
 }

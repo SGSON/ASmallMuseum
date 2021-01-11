@@ -9,5 +9,4 @@ import sg.asmallmuseum.Domain.Artwork;
 
 public interface DBListener {
     void onFileLoadCompleteListener(List<Artwork> list);
-
 }

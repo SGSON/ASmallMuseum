@@ -34,7 +34,6 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         mArtList = new ArrayList<>();
         adapter = new ArtGridViewAdapter(mArtList, new ArtworkManager());
 
-        setData();
         adapter.setOnClickListener(this);
         initRecyclerView();
     }
@@ -53,8 +52,8 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     }
 
     @Override
-    public void onItemClick(int position) {
-        Intent intent = new Intent(this, ArtViewActivity.class);
+    public void onItemClick(int position, Intent intent) {
+        //Intent intent = new Intent(this, ArtViewActivity.class);
         startActivity(intent);
     }
 
@@ -82,11 +81,4 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         recyclerView.setAdapter(adapter);
     }
 
-    private void setData(){
-        //mArtList.add(new Picture("123089123","asd","asdasdasd","asdasd","asdasdasd"));
-        //mArtList.add(new Picture("183902","fdwwdfw","wegwbv","svc","atehaebba"));
-        //mArtList.add(new Picture("1348140","wfdscvs","vscvc","dfw","a"));
-        //mArtList.add(new Picture("918376481","jryrjt","svcvvcsv","bwfbw","wn"));
-        //mArtList.add(new Picture("34958043","ero6l","scvscv","htt","qbe"));
-    }
 }

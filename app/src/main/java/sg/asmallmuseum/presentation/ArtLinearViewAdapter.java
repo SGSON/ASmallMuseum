@@ -1,5 +1,6 @@
 package sg.asmallmuseum.presentation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
@@ -40,12 +42,15 @@ public class ArtLinearViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
 
         StorageReference ref = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
         holder.setCard(mArtList.get(position), ref);
+        //Glide.with(holder.itemView).load(ref).into(holder.mImage);
 
         if (mListener != null){
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onItemClick(position);
+                    Intent intent = new Intent(view.getContext(), ArtViewActivity.class);
+                    intent.putExtra("DocPath", mArtList.get(position).getaID().getPath());
+                    mListener.onItemClick(position, intent);
                 }
             });
         }
