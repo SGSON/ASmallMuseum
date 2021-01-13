@@ -1,10 +1,14 @@
 package sg.asmallmuseum.presentation;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -12,13 +16,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.logic.ArtworkManager;
 
 public class ArtGridViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
-    private List<Artwork> mArtList;
+    private final List<Artwork> mArtList;
     private RecyclerViewOnClickListener mListener;
+    private final ArtworkManager manager;
+    private Context context;
 
-    public ArtGridViewAdapter(List<Artwork> mArtwork){
+    public ArtGridViewAdapter(List<Artwork> mArtwork, ArtworkManager manager){
         this.mArtList = mArtwork;
+        this.manager = manager;
     }
 
     @NonNull
@@ -30,14 +38,17 @@ public class ArtGridViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ArtViewHolder holder, int position) {
-        holder.setCard(mArtList.get(position));
+        StorageReference ref = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
+        holder.setCard(mArtList.get(position), ref);
 
         Artwork artwork = mArtList.get(position);
         if (mListener != null){
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onItemClick(position);
+                    Intent intent = new Intent(view.getContext(), ArtViewActivity.class);
+                    intent.putExtra("DocPath", mArtList.get(position).getaID().getPath());
+                    mListener.onItemClick(position, intent);
                 }
             });
         }

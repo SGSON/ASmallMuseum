@@ -3,18 +3,22 @@ package sg.asmallmuseum.presentation;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
-import sg.asmallmuseum.Domain.Picture;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.logic.ArtworkManager;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,14 +37,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RecyclerViewOnClickListener{
+public class MainActivity extends AppCompatActivity implements ManagerListener, RecyclerViewOnClickListener{
     private FirebaseAuth mAuth;
-    private RecyclerView recent_view;
-    private List<Artwork> mArtList;
-    private ArtLinearViewAdapter adapter;
     private final int REQUEST_CODE = 20180201;
+    private ArtworkManager manager;
 
-    private ImageButton mQuick;
     private boolean signedIn;
 
     @Override
@@ -50,20 +51,28 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
 
         mAuth = FirebaseAuth.getInstance();
 
-        mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
+        manager = new ArtworkManager();
+        manager.setListener(this);
+        requestPermission();
+
+        //Load recent upload images
+        manager.getArtInfo("Books", "Literal");
+
         Intent intent = new Intent(this, ArtListActivity.class);
+        ImageButton mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                intent.putExtra("Type", "Books");
+                intent.putExtra("Genre", "Literal");
                 startActivity(intent);
+                //manager.uploadFile("/storage/emulated/0/Download/test.png");
+                //manager.addArtwork("Picture","Land", "Amazing Stories", "SG", "2030-1-10", "AMAZING!");
+                //manager.upLoadArt("/storage/emulated/0/Download/test.png",
+                 //       "Books","Literal", "Amazing Stories!!", "SG", "2030-1-10", "AMAZING!");
             }
         });
-
-        mArtList = new ArrayList<>();
-        adapter = new ArtLinearViewAdapter(mArtList);
-        adapter.setOnClickListener(this);
-        setData();
-        initRecentView();
     }
 
     @Override
@@ -78,97 +87,67 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
         }
     }
 
-    @Override
-    public void onItemClick(int position) {
-        Intent intent = new Intent(this, ArtViewActivity.class);
-        startActivity(intent);
-    }
+    /***Initiate Recycler view***/
+    private void initRecentView(List<Artwork> artworks){
+        ArtLinearViewAdapter adapter = new ArtLinearViewAdapter(artworks, manager);
+        adapter.setOnClickListener(this);
 
-    private void initRecentView(){
-        recent_view = (RecyclerView)findViewById(R.id.view_recent);
+        RecyclerView recent_view = (RecyclerView)findViewById(R.id.view_recent);
         recent_view.setLayoutManager(new LinearLayoutManager(this));
         recent_view.setAdapter(adapter);
     }
 
+    @Override
+    public void onItemClick(int position, Intent intent) {
+        startActivity(intent);
+    }
+
+    //Get an image information from ArtManager
+    @Override
+    public void onLoadCompleteListener(List<Artwork> artworks){
+        initRecentView(artworks);
+    }
+    /***End***/
+
+    /***Top-bar button events***/
     private void makeText(String text){
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     public void onMainButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Main Button", Toast.LENGTH_SHORT).show();
+        makeText("Pressed Main Button");
     }
 
     public void onMenuButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_SHORT).show();
+        makeText("Pressed Menu Button");
+
+        //Configure the main menu
         MenuAction menuAction = new MenuAction();
         menuAction.openMenu(this, signedIn);
     }
 
     public void onBackButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
+        makeText("Pressed Back Button");
     }
-
-    private void setData(){
-        mArtList.add(new Picture("123089123","asd","asdasdasd","asdasd","asdasdasd"));
-        mArtList.add(new Picture("183902","fdwwdfw","wegwbv","svc","atehaebba"));
-        mArtList.add(new Picture("1348140","wfdscvs","vscvc","dfw","a"));
-        mArtList.add(new Picture("918376481","jryrjt","svcvvcsv","bwfbw","wn"));
-        mArtList.add(new Picture("34958043","ero6l","scvscv","htt","qbe"));
-    }
-
-    /***Google Sign-Up methods***/
-    /***Google Sign-in Test***/
-        /*UserManager manager = new UserManager("Google");
-
-        mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
-        mQuick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = manager.signUPWithGoogle(view.getContext(), mAuth);
-                startActivity(intent);
-            }
-        });*/
     /***End***/
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                //account.
-            }
-            catch (ApiException e){
+    /***Get a storage access permission***/
+    private void requestPermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            // You can use the API that requires the permission.
 
-            }
+        } /*else if (shouldShowRequestPermissionRationale(...)) {
+            // In an educational UI, explain to the user why your app requires this
+            // permission for a specific feature to behave as expected. In this UI,
+            // include a "cancel" or "no thanks" button that allows the user to
+            // continue using your app without granting the permission.
+            showInContextUI(...);*/
+        else {
+            // You can directly ask for the permission.
+            requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE }, REQUEST_CODE);
         }
     }
-    /*
-     * signUPWithGoogle: get a google sign-up page
-     * firebaseSignWithGoogle: Authentication with Google*/
-    public Intent signUPWithGoogle(Context context, FirebaseAuth mAuth){
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.default_web_client_id)).requestEmail().build();
-        GoogleSignInClient mClient = GoogleSignIn.getClient(context, gso);
-        Intent intent = mClient.getSignInIntent();
-        return intent;
-    }
-
-    private void firebaseSignInWithGoogle(String idToken, FirebaseAuth mAuth, Context context){
-        AuthCredential mAuthCredential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(mAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    Log.d("LOGIN: ","LOGIN SUCCESS!");
-                }
-                else {
-                    Log.w("LOGIN: ", "FAIL TO LOGIN");
-                }
-            }
-        });
-    }
     /***End***/
+
 
 }
