@@ -83,7 +83,7 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     }
 
     @Override
-    public void onLoadCompleteListener(List<Artwork> artworks) {
+    public void onDownloadCompleteListener(List<Artwork> artworks) {
         initRecyclerView(artworks);
     }
 
@@ -92,4 +92,9 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         startActivity(intent);
     }
     /***End***/
+
+    @Override
+    public void onUploadCompleteListener(boolean status) {
+        //empty
+    }
 }

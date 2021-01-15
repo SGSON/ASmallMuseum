@@ -58,14 +58,15 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         //Load recent upload images
         manager.getArtInfo("Books", "Literal");
 
-        Intent intent = new Intent(this, ArtListActivity.class);
+        //Intent intent = new Intent(this, ArtListActivity.class);
+        Intent intent = new Intent(this, UploadPageActivity.class);
         ImageButton mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                intent.putExtra("Type", "Books");
-                intent.putExtra("Genre", "Literal");
+                //intent.putExtra("Type", "Books");
+                //intent.putExtra("Genre", "Literal");
                 startActivity(intent);
                 //manager.uploadFile("/storage/emulated/0/Download/test.png");
                 //manager.addArtwork("Picture","Land", "Amazing Stories", "SG", "2030-1-10", "AMAZING!");
@@ -104,9 +105,10 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
 
     //Get an image information from ArtManager
     @Override
-    public void onLoadCompleteListener(List<Artwork> artworks){
+    public void onDownloadCompleteListener(List<Artwork> artworks){
         initRecentView(artworks);
     }
+
     /***End***/
 
     /***Top-bar button events***/
@@ -148,6 +150,11 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         }
     }
     /***End***/
+
+    @Override
+    public void onUploadCompleteListener(boolean status) {
+        //empty
+    }
 
 
 }

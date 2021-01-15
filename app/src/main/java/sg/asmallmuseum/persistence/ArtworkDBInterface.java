@@ -9,10 +9,8 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.logic.DBListener;
 
 public interface ArtworkDBInterface {
-    void setArtInfo(DocumentReference ref, String field);
-    void setFileLoc(DocumentReference docRef, StorageReference storageRef);
-    DocumentReference addArt(Artwork art);
-    StorageReference uploadFile(String path,String id) throws FileNotFoundException;
+    void addArt(Artwork art, String path);
+    void uploadFile(String path,String id, Artwork art) throws FileNotFoundException;
     void setOnSuccessListener(DBListener DBListener);
     void getArtInfo(String type, String genre);
     StorageReference getArtImage(String type, String loc);

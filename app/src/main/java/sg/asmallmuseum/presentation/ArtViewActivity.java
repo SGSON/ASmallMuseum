@@ -68,7 +68,7 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
     }
 
     @Override
-    public void onLoadCompleteListener(List<Artwork> artworks) {
+    public void onDownloadCompleteListener(List<Artwork> artworks) {
         List<Artwork> artList = artworks;
         artwork = artworks.get(0);
 
@@ -85,5 +85,10 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         ((TextView) findViewById(R.id.art_desc)).setText(artwork.getaDesc());
         ((RatingBar) findViewById(R.id.art_rating)).setRating(artwork.getaRating());
 
+    }
+
+    @Override
+    public void onUploadCompleteListener(boolean status) {
+        //has to be empty
     }
 }

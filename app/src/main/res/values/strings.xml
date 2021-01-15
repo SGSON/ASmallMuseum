@@ -18,6 +18,51 @@
     <string name="cat_support">Support</string>
     <string name="cat_profile">Profile</string>
     <string name="cat_menu">Menu</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="up_post">Post</string>
+    <string name="up_test_title">Test Title</string>
+    <string name="up_title">Title…</string>
+    <string name="up_desc">Description…</string>
+    <string name="up_type">Type: </string>
+    <string name="up_genre">Genre: </string>
+
+    <string-array name="types">
+        <item>Select</item>
+        <item>Books</item>
+        <item>Pictures</item>
+        <item>Paints</item>
+        <item>Music</item>
+        <item>Etc..</item>
+    </string-array>
+
+    <string-array name="genre_book">
+        <item>Select</item>
+        <item>Novel</item>
+        <item>Non-Fiction</item>
+        <item>Fiction</item>
+        <item>Poem</item>
+        <item>Science-Fiction</item>
+        <item>Etc..</item>
+    </string-array>
+
+    <string-array name="genre_music">
+        <item>Select</item>
+        <item>Classic</item>
+        <item>New Age</item>
+        <item>Rock</item>
+        <item>Pop</item>
+        <item>Jazz</item>
+        <item>Etc..</item>
+    </string-array>
+
+    <string-array name="genre_picture">
+        <item>Select</item>
+        <item>Land</item>
+        <item>Town</item>
+        <item>Etc..</item>
+    </string-array>
+
+    <string-array name="spinner_select">
+        <item>Select</item>
+    </string-array>
 </resources>

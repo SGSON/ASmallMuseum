@@ -32,17 +32,14 @@ public class ArtworkManager implements DBListener {
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
     public void upLoadArt(String path, String type, String genre, String title, String author, String date, String desc){
-        DocumentReference docRef
-                = upLoadArtworkInfo(type, genre, title, author, date, desc);
-        StorageReference storageRef
-                = uploadAttachedFile(path, docRef.getId());
+        upLoadArtworkInfo(path, type, genre, title, author, date, desc);
+        //uploadAttachedFile(path, docRef.getId());
 
-        db.setArtInfo(docRef, "aID");
-        db.setFileLoc(docRef, storageRef);
+        //db.setFileLoc(docRef, storageRef);
     }
 
     //Private Methods
-    private DocumentReference upLoadArtworkInfo(String type, String genre, String title, String author, String date, String desc){
+    private void upLoadArtworkInfo(String path, String type, String genre, String title, String author, String date, String desc){
         Artwork art = null;
         switch (type){
             case "Books":
@@ -58,19 +55,18 @@ public class ArtworkManager implements DBListener {
                 art = new Picture(type, genre, title, author, date, desc);
                 break;
         }
-        return db.addArt(art);
+        db.addArt(art, path);
     }
 
-    private StorageReference uploadAttachedFile(String path, String id) {
+    private void uploadAttachedFile(String path, String id, Artwork art) {
         StorageReference storageRef = null;
         try{
-            storageRef = db.uploadFile(path, id);
-            Log.d("ASD: ", "sd"+storageRef.toString());
+            db.uploadFile(path, id, art);
+            //Log.d("ASD: ", "sd"+storageRef.toString());
         }
         catch (FileNotFoundException e){
             e.printStackTrace();
         }
-        return storageRef;
     }
     //End
     /***End***/
@@ -90,7 +86,22 @@ public class ArtworkManager implements DBListener {
     /***End***/
 
     @Override
-    public void onFileLoadCompleteListener(List<Artwork> list) {
-        mListener.onLoadCompleteListener(list);
+    public void onFileDownloadCompleteListener(List<Artwork> list) {
+        mListener.onDownloadCompleteListener(list);
+    }
+
+    @Override
+    public void onFileUploadCompleteListener(boolean complete) {
+        mListener.onUploadCompleteListener(complete);
+    }
+
+    @Override
+    public void onInfoUploadCompleteListener(boolean complete, String path, String id, Artwork art) {
+        if (complete){
+            uploadAttachedFile(path, id, art);
+        }
+        else{
+            mListener.onUploadCompleteListener(false);
+        }
     }
 }
