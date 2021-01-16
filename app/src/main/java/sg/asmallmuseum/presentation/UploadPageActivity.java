@@ -1,11 +1,20 @@
 package sg.asmallmuseum.presentation;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 
+import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +27,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +39,16 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
     private EditText mDesc;
     private Button mPost;
     private Button mBack;
+    private Button mAdd;
+    private RecyclerView mAttached;
     private FirebaseAuth mAuth;
     private Map<String, String> map;
     private ArtworkManager manager;
+    private List<Uri> mPathList;
+    private List<String> mFileName;
+    private ArtUploadAdapter adapter;
+
+    private final int REQUEST_CODE = 3020;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +61,28 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
         manager = new ArtworkManager();
         manager.setListener(this);
 
+        mPathList = new ArrayList<>();
+        mFileName = new ArrayList<>();
+        adapter = new ArtUploadAdapter(mPathList, mFileName);
+
         mType = (Spinner) findViewById(R.id.upload_type_spinner);
         mGenre = (Spinner) findViewById(R.id.upload_genre_spinner);
         mTitle = (EditText) findViewById(R.id.upload_title);
         mDesc = (EditText) findViewById(R.id.upload_description);
         mPost = (Button) findViewById(R.id.upload_post);
         mBack = (Button) findViewById(R.id.upload_close_button);
+        mAdd = (Button) findViewById(R.id.upload_image_add);
+        mAttached = (RecyclerView) findViewById(R.id.upload_images);
 
         mPost.setOnClickListener(this);
         mBack.setOnClickListener(this);
+        mAdd.setOnClickListener(this);
         mType.setOnItemSelectedListener(this);
         mGenre.setOnItemSelectedListener(this);
+
+        mAttached.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mAttached.setHorizontalScrollBarEnabled(true);
+        mAttached.setAdapter(adapter);
 
         setTypeSpinner();
         setGenreSpinner("");
@@ -69,16 +97,24 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    @SuppressLint("IntentReset")
     @Override
     public void onClick(View view) {
         int id = view.getId();
 
         if(id == R.id.upload_close_button){
-            //close the window
+            finish();
         }
         else if (id == R.id.upload_post){
             getTexts();
             uploadArt();
+        }
+        else if (id == R.id.upload_image_add){
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            startActivityForResult(intent, REQUEST_CODE);
+
         }
     }
 
@@ -100,7 +136,7 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
+        //setGenreSpinner("");
     }
 
     private void setTypeSpinner(){
@@ -152,6 +188,37 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onUploadCompleteListener(boolean status) {
         Toast.makeText(this, "Upload finished", Toast.LENGTH_SHORT).show();
+        finish();
     }
     /***End***/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        String encode;
+        String[] paths = {MediaStore.Images.Media.DATA};
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null){
+            if (data.getData() != null){
+                Uri uri = data.getData();
+                Cursor cursor = getContentResolver().query(uri, paths, null, null, null);
+                cursor.moveToFirst();
+                String image = cursor.getString(cursor.getColumnIndex(paths[0]));
+                cursor.close();
+
+                String[] file = image.split("/");
+                mFileName.add(file[file.length-1]);
+                mPathList.add(uri);
+                adapter.updateList();
+            }
+            else{
+
+            }
+
+
+        }
+        else {
+            Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

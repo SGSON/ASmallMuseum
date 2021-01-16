@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Book;
@@ -76,7 +77,7 @@ public class ArtworkDB implements ArtworkDBInterface {
         CollectionReference colRef = db.collection("Art").document(type).collection(genre);
         colRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
-                for (QueryDocumentSnapshot collection : task.getResult()){
+                for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
                     Artwork artwork = collection.toObject(Book.class);
                     list.add(artwork);
                 }

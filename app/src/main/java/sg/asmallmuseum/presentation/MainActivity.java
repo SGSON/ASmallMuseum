@@ -39,7 +39,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ManagerListener, RecyclerViewOnClickListener{
     private FirebaseAuth mAuth;
-    private final int REQUEST_CODE = 20180201;
+    private final int REQUEST_CODE = 1;
     private ArtworkManager manager;
 
     private boolean signedIn;
