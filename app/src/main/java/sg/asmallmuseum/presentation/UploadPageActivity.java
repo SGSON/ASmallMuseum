@@ -47,6 +47,7 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
     private List<Uri> mPathList;
     private List<String> mFileName;
     private ArtUploadAdapter adapter;
+    private List<String> mExtensions;
 
     private final int REQUEST_CODE = 3020;
 
@@ -63,6 +64,7 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
 
         mPathList = new ArrayList<>();
         mFileName = new ArrayList<>();
+        mExtensions = new ArrayList<>();
         adapter = new ArtUploadAdapter(mPathList, mFileName);
 
         mType = (Spinner) findViewById(R.id.upload_type_spinner);
@@ -177,7 +179,7 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
     /***Upload a art***/
     private void uploadArt(){
         //before the uploading, please check the type and genre has been selected
-        manager.upLoadArt("/storage/emulated/0/Download/GetArtListStructure.jpg", map.get("type"), map.get("genre"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
+        manager.upLoadArt(mPathList, mExtensions, map.get("type"), map.get("genre"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
     }
 
     @Override
@@ -205,6 +207,7 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
                 for (int i = 0 ; i < clip.getItemCount() ; i++){
                     Uri uri = clip.getItemAt(i).getUri();
                     updateList(uri, paths);
+
                 }
             }
             /*else{
@@ -221,15 +224,16 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void updateList(Uri uri, String[] paths){
+        String type = getContentResolver().getType(uri);
         Cursor cursor = getContentResolver().query(uri, paths, null, null, null);
         cursor.moveToFirst();
         String image = cursor.getString(cursor.getColumnIndex(paths[0]));
         cursor.close();
 
+        String[] extension = type.split("/");
         String[] file = image.split("/");
-        Log.d("FILE:", file[file.length-1]);
+        mExtensions.add(extension[1]);
         mFileName.add(file[file.length-1]);
         mPathList.add(uri);
-
     }
 }

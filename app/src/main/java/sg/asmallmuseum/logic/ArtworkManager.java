@@ -1,5 +1,6 @@
 package sg.asmallmuseum.logic;
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -31,15 +32,15 @@ public class ArtworkManager implements DBListener {
     }
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
-    public void upLoadArt(String path, String type, String genre, String title, String author, String date, String desc){
-        upLoadArtworkInfo(path, type, genre, title, author, date, desc);
+    public void upLoadArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc){
+        upLoadArtworkInfo(paths, ext, type, genre, title, author, date, desc);
         //uploadAttachedFile(path, docRef.getId());
 
         //db.setFileLoc(docRef, storageRef);
     }
 
     //Private Methods
-    private void upLoadArtworkInfo(String path, String type, String genre, String title, String author, String date, String desc){
+    private void upLoadArtworkInfo(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc){
         Artwork art = null;
         switch (type){
             case "Books":
@@ -55,13 +56,13 @@ public class ArtworkManager implements DBListener {
                 art = new Picture(type, genre, title, author, date, desc);
                 break;
         }
-        db.addArt(art, path);
+        db.addArt(art, paths, ext);
     }
 
-    private void uploadAttachedFile(String path, String id, Artwork art) {
+    private void uploadAttachedFile(List<Uri> paths, List<String> refs, String id, Artwork art) {
         StorageReference storageRef = null;
         try{
-            db.uploadFile(path, id, art);
+            db.uploadFile(paths, refs, id, art);
             //Log.d("ASD: ", "sd"+storageRef.toString());
         }
         catch (FileNotFoundException e){
@@ -96,9 +97,9 @@ public class ArtworkManager implements DBListener {
     }
 
     @Override
-    public void onInfoUploadCompleteListener(boolean complete, String path, String id, Artwork art) {
+    public void onInfoUploadCompleteListener(boolean complete, List<Uri> paths, List<String> ext, String id, Artwork art) {
         if (complete){
-            uploadAttachedFile(path, id, art);
+            uploadAttachedFile(paths, ext, id, art);
         }
         else{
             mListener.onUploadCompleteListener(false);

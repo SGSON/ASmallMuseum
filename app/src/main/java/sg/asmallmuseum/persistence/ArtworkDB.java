@@ -1,5 +1,6 @@
 package sg.asmallmuseum.persistence;
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -40,25 +41,37 @@ public class ArtworkDB implements ArtworkDBInterface {
 
     /***Upload a image and info to the firestore and the storage***/
     @Override
-    public void addArt(Artwork art, String path) {
+    public void addArt(Artwork art, List<Uri> paths, List<String> ext) {
 
         DocumentReference ref = db.collection("Art").document(art.getaType()).collection(art.getaGenre()).document();
         ref.set(art)
             .addOnSuccessListener(aVoid -> {
                 Log.d(TAG, "SUCCESS!");
+                List<String> refs = setReferences(ext, ref.getId(), art);
                 ref.update("aID", ref);
-                ref.update("aFileLoc", art.getaType()+"/"+ref.getId()+".png");
-                mListener.onInfoUploadCompleteListener(true, path, ref.getId(), art);
+                ref.update("aFileLoc", refs);
+                mListener.onInfoUploadCompleteListener(true, paths, refs, ref.getId(), art);
             }).addOnFailureListener(e -> {
                 Log.w(TAG, "FAILED");
-                mListener.onInfoUploadCompleteListener(false, null, null, null);
+                mListener.onInfoUploadCompleteListener(false, null, null, null, null);
             });
     }
 
     @Override
-    public void uploadFile(String path, String id, Artwork art) throws FileNotFoundException {
+    public void uploadFile(List<Uri> paths, List<String> refs, String id, Artwork art) throws FileNotFoundException {
+        for (int i = 0 ; i < paths.size() ; i++){
+            StorageReference ref = storage.getReference().child(refs.get(i));
+            UploadTask uploadTask = ref.putFile(paths.get(i));
 
-        InputStream inputStream = new FileInputStream(new File(path));
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                Log.d(TAG2, "SUCCESS!");
+                mListener.onFileUploadCompleteListener(true);
+            }).addOnFailureListener(e -> {
+                Log.w(TAG2, "FAILED!");
+                mListener.onFileUploadCompleteListener(false);
+            });
+        }
+        /*InputStream inputStream = new FileInputStream(new File(path));
         StorageReference storageRef = storage.getReference().child(art.getaType()+"/"+id+".png");
         UploadTask uploadTask = storageRef.putStream(inputStream);
 
@@ -68,7 +81,7 @@ public class ArtworkDB implements ArtworkDBInterface {
         }).addOnFailureListener(e -> {
             Log.w(TAG2, "FAILED!");
             mListener.onFileUploadCompleteListener(false);
-        });
+        });*/
     }
 
     /***Get a image and a info***/
@@ -102,5 +115,13 @@ public class ArtworkDB implements ArtworkDBInterface {
             artworks.add(art);
             mListener.onFileDownloadCompleteListener(artworks);
         });
+    }
+
+    private List<String> setReferences(List<String> ext, String id, Artwork art){
+        List<String> files = new ArrayList<>();
+        for (int i = 0 ; i < ext.size() ; i++){
+            files.add(art.getaType()+"/"+art.getaGenre()+"/"+id+"("+(i+1)+")"+"."+ext.get(i));
+        }
+        return files;
     }
 }
