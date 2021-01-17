@@ -199,26 +199,37 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
         String encode;
         String[] paths = {MediaStore.Images.Media.DATA};
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null){
-            if (data.getData() != null){
-                Uri uri = data.getData();
-                Cursor cursor = getContentResolver().query(uri, paths, null, null, null);
-                cursor.moveToFirst();
-                String image = cursor.getString(cursor.getColumnIndex(paths[0]));
-                cursor.close();
+            if (data.getClipData() != null){
+                ClipData clip = data.getClipData();
 
-                String[] file = image.split("/");
-                mFileName.add(file[file.length-1]);
-                mPathList.add(uri);
-                adapter.updateList();
+                for (int i = 0 ; i < clip.getItemCount() ; i++){
+                    Uri uri = clip.getItemAt(i).getUri();
+                    updateList(uri, paths);
+                }
             }
-            else{
-
-            }
-
-
+            /*else{
+                if (data.getData() != null){
+                    Uri uri = data.getData();
+                    updateList(uri, paths);
+                }
+            }*/
+            adapter.updateList();
         }
         else {
             Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void updateList(Uri uri, String[] paths){
+        Cursor cursor = getContentResolver().query(uri, paths, null, null, null);
+        cursor.moveToFirst();
+        String image = cursor.getString(cursor.getColumnIndex(paths[0]));
+        cursor.close();
+
+        String[] file = image.split("/");
+        Log.d("FILE:", file[file.length-1]);
+        mFileName.add(file[file.length-1]);
+        mPathList.add(uri);
+
     }
 }
