@@ -38,8 +38,8 @@ public class ArtGridViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ArtViewHolder holder, int position) {
-        StorageReference ref = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
-        holder.setCard(mArtList.get(position), ref);
+        List<StorageReference> refs = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
+        holder.setCard(mArtList.get(position), refs.get(0));
 
         Artwork artwork = mArtList.get(position);
         if (mListener != null){

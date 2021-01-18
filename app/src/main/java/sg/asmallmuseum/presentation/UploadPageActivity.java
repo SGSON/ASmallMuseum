@@ -198,7 +198,6 @@ public class UploadPageActivity extends AppCompatActivity implements View.OnClic
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        String encode;
         String[] paths = {MediaStore.Images.Media.DATA};
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null){
             if (data.getClipData() != null){

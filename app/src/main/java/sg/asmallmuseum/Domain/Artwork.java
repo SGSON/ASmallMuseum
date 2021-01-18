@@ -3,6 +3,8 @@ package sg.asmallmuseum.Domain;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.List;
+
 public abstract class Artwork {
     private DocumentReference aID;
     private String aType;
@@ -11,7 +13,7 @@ public abstract class Artwork {
     private String aAuthor;
     private String aDate;
     private String aDesc;
-    private String aFileLoc;
+    private List<String> aFileLoc;
     private int aRating;
 
     public Artwork(){
@@ -84,11 +86,11 @@ public abstract class Artwork {
         this.aDesc = aDesc;
     }
 
-    public String getaFileLoc() {
+    public List<String> getaFileLoc() {
         return aFileLoc;
     }
 
-    public void setaFileLoc(String aFileLoc) {
+    public void setaFileLoc(List<String> aFileLoc) {
         this.aFileLoc = aFileLoc;
     }
 

@@ -1,8 +1,10 @@
 package sg.asmallmuseum.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
@@ -11,6 +13,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -29,6 +33,8 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
     private ReviewAdapter adapter;
     private Artwork artwork;
     private ArtworkManager manager;
+    private ViewPager mPager;
+    private ArtViewFragmentAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,10 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         manager = new ArtworkManager();
         manager.setListener(this);
         Intent intent = getIntent();
+
+        mPager = (ViewPager) findViewById(R.id.art_image_pager);
+        pagerAdapter = new ArtViewFragmentAdapter(getSupportFragmentManager());
+        mPager.setAdapter(pagerAdapter);
 
         manager.getArtInfoById(intent.getStringExtra("DocPath"));
 
@@ -72,13 +82,19 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         List<Artwork> artList = artworks;
         artwork = artworks.get(0);
 
-        StorageReference ref = manager.getArtImages(artwork.getaType(), artwork.getaFileLoc());
-        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(ArtViewActivity.this).load(uri).into((ImageView) findViewById(R.id.art_image));
-            }
-        });
+        List<StorageReference> refs = manager.getArtImages(artwork.getaType(), artwork.getaFileLoc());
+        for (int i = 0 ; i < refs.size() ; i++){
+            refs.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    ArtImageFragment fragment = new ArtImageFragment();
+                    fragment.setImage(uri);
+                    pagerAdapter.addFragment(fragment);
+                    pagerAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+
 
         ((TextView) findViewById(R.id.art_title)).setText(artwork.getaTitle());
         ((TextView) findViewById(R.id.art_author)).setText(artwork.getaAuthor());

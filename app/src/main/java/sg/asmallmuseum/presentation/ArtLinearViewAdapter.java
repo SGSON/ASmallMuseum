@@ -40,8 +40,8 @@ public class ArtLinearViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ArtViewHolder holder, int position) {
 
-        StorageReference ref = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
-        holder.setCard(mArtList.get(position), ref);
+        List<StorageReference> ref = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
+        holder.setCard(mArtList.get(position), ref.get(0));
         //Glide.with(holder.itemView).load(ref).into(holder.mImage);
 
         if (mListener != null){

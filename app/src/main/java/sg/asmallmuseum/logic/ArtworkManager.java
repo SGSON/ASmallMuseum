@@ -77,8 +77,8 @@ public class ArtworkManager implements DBListener {
         db.getArtInfo(type, genre);
     }
 
-    public StorageReference getArtImages(String type, String loc){
-        return db.getArtImage(type, loc);
+    public List<StorageReference> getArtImages(String type, List<String> loc){
+        return db.getArtImages(type, loc);
     }
 
     public void getArtInfoById(String id){

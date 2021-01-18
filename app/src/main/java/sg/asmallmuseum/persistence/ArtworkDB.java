@@ -71,17 +71,6 @@ public class ArtworkDB implements ArtworkDBInterface {
                 mListener.onFileUploadCompleteListener(false);
             });
         }
-        /*InputStream inputStream = new FileInputStream(new File(path));
-        StorageReference storageRef = storage.getReference().child(art.getaType()+"/"+id+".png");
-        UploadTask uploadTask = storageRef.putStream(inputStream);
-
-        uploadTask.addOnSuccessListener(taskSnapshot -> {
-            Log.d(TAG2, "SUCCESS!");
-            mListener.onFileUploadCompleteListener(true);
-        }).addOnFailureListener(e -> {
-            Log.w(TAG2, "FAILED!");
-            mListener.onFileUploadCompleteListener(false);
-        });*/
     }
 
     /***Get a image and a info***/
@@ -100,8 +89,12 @@ public class ArtworkDB implements ArtworkDBInterface {
     }
 
     @Override
-    public StorageReference getArtImage(String type, String loc){
-        return storage.getReference().child(loc);
+    public List<StorageReference> getArtImages(String type, List<String> loc){
+        List<StorageReference> refs = new ArrayList<>();
+        for (int i = 0 ; i < loc.size() ; i++){
+            refs.add(storage.getReference().child(loc.get(i)));
+        }
+        return refs;
     }
 
     @Override

@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         requestPermission();
 
         //Load recent upload images
-        manager.getArtInfo("Books", "Literal");
+        manager.getArtInfo("Paints", "Select");
 
         //Intent intent = new Intent(this, ArtListActivity.class);
         Intent intent = new Intent(this, UploadPageActivity.class);
