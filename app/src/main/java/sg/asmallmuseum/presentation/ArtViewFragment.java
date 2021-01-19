@@ -42,7 +42,11 @@ public class ArtViewFragment extends Fragment {
         this.uri = uri;
     }
 
-    public String getUri(){
+    public String getUriAsString(){
         return uri.toString();
+    }
+
+    public Uri getUri(){
+        return uri;
     }
 }

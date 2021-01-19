@@ -29,11 +29,20 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
-            android:src="@mipmap/ic_launcher"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/art_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+        <Button
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:id="@+id/art_button_pager"
+            app:layout_constraintVertical_bias="0.9"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintTop_toTopOf="@id/art_image_pager"
+            app:layout_constraintBottom_toBottomOf="@id/art_image_pager"
+            app:layout_constraintStart_toStartOf="@id/art_image_pager"
+            app:layout_constraintEnd_toEndOf="@id/art_image_pager"/>
         <TextView
             android:id="@+id/art_title"
             android:layout_width="0dp"
@@ -110,5 +119,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/art_enlarge"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <include layout="@layout/layout_large_view"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/art_large_view"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

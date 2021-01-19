@@ -31,11 +31,12 @@ public class ArtViewFragmentAdapter extends FragmentPagerAdapter {
         return mData.size();
     }
 
-    public void addFragment(ArtViewFragment fragment){
-        mData.add(fragment);
+    public List<ArtViewFragment> getData(){
+        return mData;
     }
 
     public void updateData(List<ArtViewFragment> list){
         mData = list;
     }
+
 }
