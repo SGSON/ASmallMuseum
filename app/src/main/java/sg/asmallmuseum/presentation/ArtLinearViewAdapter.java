@@ -64,4 +64,8 @@ public class ArtLinearViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
     public void setOnClickListener(RecyclerViewOnClickListener mListener){
         this.mListener = mListener;
     }
+
+    public void upadateList(List<Artwork> artworks){
+        this.mArtList = artworks;
+    }
 }

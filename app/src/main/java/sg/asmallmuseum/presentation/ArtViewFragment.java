@@ -1,6 +1,5 @@
 package sg.asmallmuseum.presentation;
 
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,11 +15,11 @@ import com.bumptech.glide.Glide;
 import sg.asmallmuseum.R;
 
 
-public class ArtImageFragment extends Fragment {
+public class ArtViewFragment extends Fragment {
     private ImageView mImage;
     private Uri uri;
 
-    public ArtImageFragment() {
+    public ArtViewFragment() {
         // Required empty public constructor
     }
 
@@ -35,11 +34,15 @@ public class ArtImageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_art_image, container, false);
         mImage = (ImageView) view.findViewById(R.id.fragment_image);
-        Glide.with(ArtImageFragment.this).load(uri).into(mImage);
+        Glide.with(ArtViewFragment.this).load(uri).into(mImage);
         return view;
     }
 
     public void setImage(Uri uri){
         this.uri = uri;
+    }
+
+    public String getUri(){
+        return uri.toString();
     }
 }

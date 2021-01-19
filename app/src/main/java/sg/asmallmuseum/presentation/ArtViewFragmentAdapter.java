@@ -1,8 +1,10 @@
 package sg.asmallmuseum.presentation;
 
-import android.net.Uri;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -11,7 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 public class ArtViewFragmentAdapter extends FragmentPagerAdapter {
-    private List<Fragment> mData;
+    private List<ArtViewFragment> mData;
 
     public ArtViewFragmentAdapter(@NonNull FragmentManager fm) {
         super(fm);
@@ -29,20 +31,11 @@ public class ArtViewFragmentAdapter extends FragmentPagerAdapter {
         return mData.size();
     }
 
-    public void setPages(Uri list){
-        ArtImageFragment fragment = new ArtImageFragment();
-        fragment.setImage(list);
+    public void addFragment(ArtViewFragment fragment){
         mData.add(fragment);
-
-        /*for (int i = 0 ; i < list.size() ; i++){
-            ArtImageFragment fragment = new ArtImageFragment();
-            fragment.setImage(list.get(i));
-            mData.add(fragment);
-        }*/
-        //notify();
     }
 
-    public void addFragment(ArtImageFragment fragment){
-        mData.add(fragment);
+    public void updateData(List<ArtViewFragment> list){
+        mData = list;
     }
 }

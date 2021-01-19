@@ -1,7 +1,6 @@
 package sg.asmallmuseum.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -9,22 +8,17 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ArtViewActivity extends AppCompatActivity implements ManagerListener {
@@ -81,16 +75,20 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
     public void onDownloadCompleteListener(List<Artwork> artworks) {
         List<Artwork> artList = artworks;
         artwork = artworks.get(0);
+        List<ArtViewFragment> m = new ArrayList<>();
 
         List<StorageReference> refs = manager.getArtImages(artwork.getaType(), artwork.getaFileLoc());
         for (int i = 0 ; i < refs.size() ; i++){
             refs.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    ArtImageFragment fragment = new ArtImageFragment();
+                    ArtViewFragment fragment = new ArtViewFragment();
                     fragment.setImage(uri);
-                    pagerAdapter.addFragment(fragment);
-                    pagerAdapter.notifyDataSetChanged();
+                    m.add(fragment);
+
+                    if(m.size() == refs.size()){
+                        imageLoadFinished(m);
+                    }
                 }
             });
         }
@@ -106,5 +104,16 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
     @Override
     public void onUploadCompleteListener(boolean status) {
         //has to be empty
+    }
+
+    private void imageLoadFinished(List<ArtViewFragment> list){
+        list.sort(new Comparator<ArtViewFragment>() {
+            @Override
+            public int compare(ArtViewFragment artViewFragment, ArtViewFragment t1) {
+                return artViewFragment.getUri().compareTo(t1.getUri());
+            }
+        });
+        pagerAdapter.updateData(list);
+        pagerAdapter.notifyDataSetChanged();
     }
 }

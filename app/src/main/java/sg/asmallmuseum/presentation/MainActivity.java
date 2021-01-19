@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     private FirebaseAuth mAuth;
     private final int REQUEST_CODE = 1;
     private ArtworkManager manager;
+    private ArtLinearViewAdapter adapter;
 
     private boolean signedIn;
 
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         requestPermission();
 
         //Load recent upload images
+        //initiate with empty data set and then the view will be updated when loads complete.
+        initRecentView(new ArrayList<Artwork>());
         manager.getArtInfo("Paints", "Select");
 
         //Intent intent = new Intent(this, ArtListActivity.class);
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
 
     /***Initiate Recycler view***/
     private void initRecentView(List<Artwork> artworks){
-        ArtLinearViewAdapter adapter = new ArtLinearViewAdapter(artworks, manager);
+        adapter = new ArtLinearViewAdapter(artworks, manager);
         adapter.setOnClickListener(this);
 
         RecyclerView recent_view = (RecyclerView)findViewById(R.id.view_recent);
@@ -106,9 +109,14 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     //Get an image information from ArtManager
     @Override
     public void onDownloadCompleteListener(List<Artwork> artworks){
-        initRecentView(artworks);
+        //initRecentView(artworks);
+        updateList(artworks);
     }
 
+    private void updateList(List<Artwork> artworks){
+        adapter.upadateList(artworks);
+        adapter.notifyDataSetChanged();
+    }
     /***End***/
 
     /***Top-bar button events***/
