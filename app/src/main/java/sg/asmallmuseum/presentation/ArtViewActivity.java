@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -34,6 +35,9 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
     private ArtViewFragmentAdapter pagerAdapter;
     private Button mEnlarge;
     private Button mClose;
+//    private RecyclerView mPreview;
+    private TextView mNumPages;
+    private int numImages;
 
     private List<String[]> review;
     private RecyclerView recyclerView;
@@ -89,7 +93,7 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
     public void onDownloadCompleteListener(List<Artwork> artworks) {
         List<Artwork> artList = artworks;
         artwork = artworks.get(0);
-        List<ArtViewFragment> m = new ArrayList<>();
+        List<ArtViewFragment> fragmentList = new ArrayList<>();
 
         List<StorageReference> refs = manager.getArtImages(artwork.getaType(), artwork.getaFileLoc());
         for (int i = 0 ; i < refs.size() ; i++){
@@ -98,10 +102,10 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
                 public void onSuccess(Uri uri) {
                     ArtViewFragment fragment = new ArtViewFragment();
                     fragment.setImage(uri);
-                    m.add(fragment);
+                    fragmentList.add(fragment);
 
-                    if(m.size() == refs.size()){
-                        imageLoadFinished(m);
+                    if(fragmentList.size() == refs.size()){
+                        imageLoadFinished(fragmentList);
                     }
                 }
             });
@@ -112,6 +116,7 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         ((TextView) findViewById(R.id.art_desc)).setText(artwork.getaDesc());
         ((RatingBar) findViewById(R.id.art_rating)).setRating(artwork.getaRating());
 
+        numImages = refs.size();
     }
 
     @Override
@@ -149,13 +154,13 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
             largeView.setVisibility(View.INVISIBLE);
         }
 
-
-
     }
 
+    /***Enlarge View Methods***/
+    //Init large view
     private void setLargeView(){
+        //Set ViewPager
         ConstraintLayout largeView = (ConstraintLayout) findViewById(R.id.art_large_view);
-        largeView.setBackgroundColor(Color.BLACK);
         mLargePager = (ViewPager) findViewById(R.id.large_view_pager);
         ArtViewFragmentAdapter largePagerAdapter = new ArtViewFragmentAdapter(getSupportFragmentManager());
         mLargePager.setAdapter(largePagerAdapter);
@@ -164,17 +169,55 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
 
         largePagerAdapter.updateData(data);
         largePagerAdapter.notifyDataSetChanged();
+
+        //Set Preview in Iteration 2
+//        mPreview = (RecyclerView) findViewById(R.id.large_preview);
+//        ArtViewPreviewAdapter mPreviewAdapter = new ArtViewPreviewAdapter(getUriList());
+//
+//        mPreview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+//        mPreview.setHorizontalScrollBarEnabled(true);
+//        mPreview.setAdapter(mPreviewAdapter);
+
+        //Set number of pages and current page number
+        mNumPages = (TextView) findViewById(R.id.large_num_pages);
+        mLargePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                String text = (position+1) + " / " + data.size();
+                mNumPages.setText(text);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
     }
 
+    //Shows large view
     private void viewLargeImage(){
         ConstraintLayout largeView = (ConstraintLayout) findViewById(R.id.art_large_view);
 
         int currPos = mPager.getCurrentItem();
         mLargePager.setCurrentItem(currPos);
 
+        String setNum = (currPos+1) + " / " + numImages;
+        mNumPages.setText(setNum);
+
+//        mPreview.requestFocus(currPos);
+//        mPreview.scrollToPosition(currPos);
+
         largeView.setVisibility(View.VISIBLE);
     }
 
+    //Copy the data list for large view pager
     private List<ArtViewFragment> copyFragments(){
         List<ArtViewFragment> list = new ArrayList<>();
         List<ArtViewFragment> currData = pagerAdapter.getData();
@@ -183,6 +226,17 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
             ArtViewFragment newFragment = new ArtViewFragment();
             newFragment.setImage(currData.get(i).getUri());
             list.add(newFragment);
+        }
+
+        return list;
+    }
+
+    private List<Uri> getUriList(){
+        List<Uri> list = new ArrayList<>();
+        List<ArtViewFragment> currData = pagerAdapter.getData();
+
+        for (int i = 0 ; i < currData.size() ; i++){
+            list.add(currData.get(i).getUri());
         }
 
         return list;
