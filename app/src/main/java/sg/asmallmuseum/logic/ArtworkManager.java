@@ -1,9 +1,7 @@
 package sg.asmallmuseum.logic;
 
 import android.net.Uri;
-import android.util.Log;
 
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.FileNotFoundException;
@@ -21,10 +19,12 @@ import sg.asmallmuseum.presentation.ManagerListener;
 public class ArtworkManager implements DBListener {
     private final ArtworkDBInterface db;
     private ManagerListener mListener;
+    private final int REQUEST_SINGLE = 2;
+    private final int REQUEST_MULTIPLE = 8;
 
     public ArtworkManager() {
         this.db = new ArtworkDB();
-        db.setOnSuccessListener(this);
+        db.setListener(this);
     }
 
     public void setListener(ManagerListener mListener){
@@ -73,22 +73,37 @@ public class ArtworkManager implements DBListener {
     /***End***/
 
     /***Get a image and image info from the Firestore and the storage***/
-    public void getArtInfo(String type, String genre){
-        db.getArtInfo(type, genre);
+    public void getArtInfoList(String type, String genre){
+        db.getArtInfoList(type, genre);
     }
 
     public List<StorageReference> getArtImages(String type, List<String> loc){
         return db.getArtImages(type, loc);
     }
 
-    public void getArtInfoById(String id){
-        db.getArtInfoById(id);
+    public void getSingleArtInfoByPath(String id){
+        db.getArtInfoByPath(id, REQUEST_SINGLE);
     }
+
+    public void getMultipleArtInfoByPath(List<String> paths){
+        db.getMultipleArtInfoByPath(paths, REQUEST_MULTIPLE);
+    }
+
+    public void getRecent(){
+        db.getRecent();
+    }
+
     /***End***/
 
     @Override
-    public void onFileDownloadCompleteListener(List<Artwork> list) {
-        mListener.onDownloadCompleteListener(list);
+    public void onFileDownloadCompleteListener(List<Artwork> list, int request_code) {
+        if (request_code == REQUEST_MULTIPLE){
+            mListener.onDownloadCompleteListener(list);
+        }
+        else{
+            mListener.onDownloadCompleteListener(list);
+        }
+
     }
 
     @Override
@@ -104,5 +119,10 @@ public class ArtworkManager implements DBListener {
         else{
             mListener.onUploadCompleteListener(false);
         }
+    }
+
+    @Override
+    public void onRecentFileDownloadCompleteListener(List<String> list) {
+        getMultipleArtInfoByPath(list);
     }
 }

@@ -10,13 +10,11 @@ import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -61,7 +59,7 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         mClose = (Button) findViewById(R.id.large_close);
         mClose.setOnClickListener(this);
 
-        manager.getArtInfoById(intent.getStringExtra("DocPath"));
+        manager.getSingleArtInfoByPath(intent.getStringExtra("DocPath"));
 
         review = new ArrayList<>();
         reviewAdapter = new ReviewAdapter(review);

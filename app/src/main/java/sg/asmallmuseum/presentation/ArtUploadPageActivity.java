@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class  UploadPageActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, ManagerListener {
+public class ArtUploadPageActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, ManagerListener {
     private Spinner mType;
     private Spinner mGenre;
     private EditText mTitle;
@@ -202,7 +202,6 @@ public class  UploadPageActivity extends AppCompatActivity implements View.OnCli
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null){
             if (data.getClipData() != null){
                 ClipData clip = data.getClipData();
-
                 for (int i = 0 ; i < clip.getItemCount() ; i++){
                     Uri uri = clip.getItemAt(i).getUri();
                     updateList(uri, paths);
@@ -224,7 +223,8 @@ public class  UploadPageActivity extends AppCompatActivity implements View.OnCli
 
     private void updateList(Uri uri, String[] paths){
         String type = getContentResolver().getType(uri);
-        Cursor cursor = getContentResolver().query(uri, paths, null, null, null);
+        Cursor cursor = getContentResolver().query(uri, paths, null, null, MediaStore.Images.Media.DEFAULT_SORT_ORDER+"DESC");
+
         cursor.moveToFirst();
         String image = cursor.getString(cursor.getColumnIndex(paths[0]));
         cursor.close();

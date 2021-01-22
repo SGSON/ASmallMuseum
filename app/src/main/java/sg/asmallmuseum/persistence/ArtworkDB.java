@@ -3,8 +3,13 @@ package sg.asmallmuseum.persistence;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -16,9 +21,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Book;
 import sg.asmallmuseum.logic.DBListener;
@@ -29,13 +37,14 @@ public class ArtworkDB implements ArtworkDBInterface {
     private DBListener mListener;
     private final String TAG = "ART DB Connection: ";
     private final String TAG2 = "UPLOAD: ";
+    private final int MAX_LIST_SIZE = 16;
 
     public ArtworkDB(){
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
     }
 
-    public void setOnSuccessListener(DBListener mListener){
+    public void setListener(DBListener mListener){
         this.mListener = mListener;
     }
 
@@ -44,12 +53,17 @@ public class ArtworkDB implements ArtworkDBInterface {
     public void addArt(Artwork art, List<Uri> paths, List<String> ext) {
 
         DocumentReference ref = db.collection("Art").document(art.getaType()).collection(art.getaGenre()).document();
+        DocumentReference recentRef = db.collection("Art").document("Recent");
+        Map<String, String> map = new HashMap<>();
         ref.set(art)
             .addOnSuccessListener(aVoid -> {
                 Log.d(TAG, "SUCCESS!");
                 List<String> refs = setReferences(ext, ref.getId(), art);
                 ref.update("aID", ref);
                 ref.update("aFileLoc", refs);
+
+                updateRecentFile(ref.getPath());
+
                 mListener.onInfoUploadCompleteListener(true, paths, refs, ref.getId(), art);
             }).addOnFailureListener(e -> {
                 Log.w(TAG, "FAILED");
@@ -73,8 +87,30 @@ public class ArtworkDB implements ArtworkDBInterface {
         }
     }
 
+    private void updateRecentFile(String path){
+        DocumentReference ref = db.collection("Art").document("Recent");
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot snapshot = task.getResult();
+                    if(snapshot != null){
+                        Map<String, Object> map = snapshot.getData();
+                        List<String> result = (List<String>)map.get("Locs");
+                        result.add(0, path);
+                        if (result.size() >= MAX_LIST_SIZE)
+                            result.remove(result.size());
+
+                        map.put("Locs", result);
+                        ref.set(map);
+                    }
+                }
+            }
+        });
+    }
+
     /***Get a image and a info***/
-    public void getArtInfo(String type, String genre){
+    public void getArtInfoList(String type, String genre){
         List<Artwork> list = new ArrayList<>();
         CollectionReference colRef = db.collection("Art").document(type).collection(genre);
         colRef.get().addOnCompleteListener(task -> {
@@ -83,7 +119,7 @@ public class ArtworkDB implements ArtworkDBInterface {
                     Artwork artwork = collection.toObject(Book.class);
                     list.add(artwork);
                 }
-                mListener.onFileDownloadCompleteListener(list);
+                mListener.onFileDownloadCompleteListener(list, 0);
             }
         });
     }
@@ -98,15 +134,49 @@ public class ArtworkDB implements ArtworkDBInterface {
     }
 
     @Override
-    public void getArtInfoById(String id){
-        String[] info = id.split("/");
-        //Log.d("Element", id.toString()+" "+(info.length));
+    public void getArtInfoByPath(String path, int requestCode){
+        String[] info = path.split("/");
         DocumentReference ref = db.collection(info[0]).document(info[1]).collection(info[2]).document(info[3]);
         ref.get().addOnSuccessListener(documentSnapshot -> {
             List<Artwork> artworks = new ArrayList<>();
             Artwork art = documentSnapshot.toObject(Book.class);
             artworks.add(art);
-            mListener.onFileDownloadCompleteListener(artworks);
+            mListener.onFileDownloadCompleteListener(artworks, requestCode);
+        });
+    }
+
+    @Override
+    public void getMultipleArtInfoByPath(List<String> paths, int requestCode){
+        List<Artwork> artworks = new ArrayList<>();
+        for (int i = 0 ; i < paths.size() ; i++){
+            String path = paths.get(i);
+            String[] info = path.split("/");
+
+            DocumentReference ref = db.collection(info[0]).document(info[1]).collection(info[2]).document(info[3]);
+            ref.get().addOnSuccessListener(documentSnapshot -> {
+                Artwork art = documentSnapshot.toObject(Book.class);
+                artworks.add(art);
+                if (artworks.size() == paths.size())
+                    mListener.onFileDownloadCompleteListener(artworks, requestCode);
+            });
+
+        }
+    }
+
+    public void getRecent(){
+        DocumentReference ref = db.collection("Art").document("Recent");
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot snapshot = task.getResult();
+                    if(snapshot != null){
+                        Map<String, Object> map = snapshot.getData();
+                        List<String> result = (List<String>) map.get("Locs");
+                        mListener.onRecentFileDownloadCompleteListener(result);
+                    }
+                }
+            }
         });
     }
 
@@ -117,4 +187,5 @@ public class ArtworkDB implements ArtworkDBInterface {
         }
         return files;
     }
+
 }

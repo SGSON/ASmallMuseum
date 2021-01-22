@@ -1,7 +1,5 @@
 package sg.asmallmuseum.presentation;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,28 +9,16 @@ import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     private FirebaseAuth mAuth;
     private final int REQUEST_CODE = 1;
     private ArtworkManager manager;
-    private ArtLinearViewAdapter adapter;
+    private ArtListImageViewAdapter adapter;
 
     private boolean signedIn;
 
@@ -59,10 +45,13 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         //Load recent upload images
         //initiate with empty data set and then the view will be updated when loads complete.
         initRecentView(new ArrayList<Artwork>());
-        manager.getArtInfo("Paints", "Select");
+        manager.getRecent();
+
+        ImageButton mBackButton = (ImageButton)findViewById(R.id.back_button);
+        mBackButton.setVisibility(View.INVISIBLE);
 
         //Intent intent = new Intent(this, ArtListActivity.class);
-        Intent intent = new Intent(this, UploadPageActivity.class);
+        Intent intent = new Intent(this, ArtUploadPageActivity.class);
         ImageButton mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
 
     /***Initiate Recycler view***/
     private void initRecentView(List<Artwork> artworks){
-        adapter = new ArtLinearViewAdapter(artworks, manager);
+        adapter = new ArtListImageViewAdapter(artworks, manager);
         adapter.setOnClickListener(this);
 
         RecyclerView recent_view = (RecyclerView)findViewById(R.id.view_recent);
@@ -137,7 +126,8 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     }
 
     public void onBackButtonPressed(View view) {
-        makeText("Pressed Back Button");
+        //do not insert codes
+        //makeText("Pressed Back Button");
     }
     /***End***/
 

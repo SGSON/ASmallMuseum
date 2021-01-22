@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.UploadPageActivity">
+    tools:context=".presentation.ArtUploadPageActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:inputType="text" />
     <TextView
-        android:layout_width="80dp"
+        android:layout_width="50dp"
         android:layout_height="30dp"
         android:id="@+id/upload_type_text"
         android:layout_marginStart="5dp"
@@ -86,7 +86,7 @@
         app:layout_constraintStart_toEndOf="@id/upload_type_text"
         app:layout_constraintEnd_toStartOf="@id/upload_genre_text"/>
     <TextView
-        android:layout_width="80dp"
+        android:layout_width="50dp"
         android:layout_height="30dp"
         android:id="@+id/upload_genre_text"
         android:layout_marginStart="5dp"

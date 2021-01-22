@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
-import sg.asmallmuseum.Domain.Picture;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 
@@ -16,7 +15,6 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ArtListActivity extends AppCompatActivity implements RecyclerViewOnClickListener, ManagerListener {
@@ -35,7 +33,7 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         manager = new ArtworkManager();
         manager.setListener(this);
 
-        manager.getArtInfo(intent.getStringExtra("Type"), intent.getStringExtra("Genre"));
+        manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"));
     }
 
     @Override
@@ -74,7 +72,7 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
 
     /***Load File from DB***/
     private void initRecyclerView(List<Artwork> artworks){
-        ArtGridViewAdapter adapter = new ArtGridViewAdapter(artworks, manager);
+        ArtListViewTextAdapter adapter = new ArtListViewTextAdapter(artworks, manager);
         adapter.setOnClickListener(this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.art_list);

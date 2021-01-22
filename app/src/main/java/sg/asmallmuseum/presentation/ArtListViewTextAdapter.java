@@ -18,13 +18,13 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 
-public class ArtGridViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
+public class ArtListViewTextAdapter extends RecyclerView.Adapter<ArtViewHolder> {
     private final List<Artwork> mArtList;
     private RecyclerViewOnClickListener mListener;
     private final ArtworkManager manager;
     private Context context;
 
-    public ArtGridViewAdapter(List<Artwork> mArtwork, ArtworkManager manager){
+    public ArtListViewTextAdapter(List<Artwork> mArtwork, ArtworkManager manager){
         this.mArtList = mArtwork;
         this.manager = manager;
     }

@@ -20,12 +20,12 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 
-public class ArtLinearViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
+public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
     private List<Artwork> mArtList;
     private RecyclerViewOnClickListener mListener;
     private ArtworkManager manager;
 
-    public ArtLinearViewAdapter(List<Artwork> mArtList, ArtworkManager manager){
+    public ArtListImageViewAdapter(List<Artwork> mArtList, ArtworkManager manager){
         this.mArtList = mArtList;
         this.manager = manager;
     }
