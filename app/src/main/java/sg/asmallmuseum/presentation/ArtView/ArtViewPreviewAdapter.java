@@ -1,7 +1,6 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.ArtView;
 
 import android.net.Uri;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

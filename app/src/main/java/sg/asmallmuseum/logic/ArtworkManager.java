@@ -14,7 +14,7 @@ import sg.asmallmuseum.Domain.Paint;
 import sg.asmallmuseum.Domain.Picture;
 import sg.asmallmuseum.persistence.ArtworkDB;
 import sg.asmallmuseum.persistence.ArtworkDBInterface;
-import sg.asmallmuseum.presentation.ManagerListener;
+import sg.asmallmuseum.presentation.General.ManagerListener;
 
 public class ArtworkManager implements DBListener {
     private final ArtworkDBInterface db;

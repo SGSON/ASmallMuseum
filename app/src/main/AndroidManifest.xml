@@ -13,10 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ASmallMuseum">
-        <activity android:name=".presentation.CategoryViewActivity"></activity>
-        <activity android:name=".presentation.ArtUploadPageActivity" />
-        <activity android:name=".presentation.ArtListActivity" />
-        <activity android:name=".presentation.ArtViewActivity" />
+        <activity android:name=".presentation.CategoryView.CategoryViewActivity"></activity>
+        <activity android:name=".presentation.ArtUpload.ArtUploadPageActivity" />
+        <activity android:name=".presentation.ArtList.ArtListActivity" />
+        <activity android:name=".presentation.ArtView.ArtViewActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
@@ -44,7 +44,7 @@
         <activity android:name=".presentation.SignUpActivity" />
         <activity android:name=".presentation.LoginActivity" />
         <activity android:name=".presentation.LoginFormActivity" />
-        <activity android:name=".presentation.MainActivity">
+        <activity android:name=".presentation.General.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,12 +1,9 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.ArtList;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.firebase.storage.StorageReference;
 
@@ -17,15 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
+import sg.asmallmuseum.presentation.ArtView.ArtViewActivity;
+import sg.asmallmuseum.presentation.ArtView.ArtViewHolder;
+import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
 
-public class ArtListViewTextAdapter extends RecyclerView.Adapter<ArtViewHolder> {
-    private final List<Artwork> mArtList;
+public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtViewHolder> {
+    private List<Artwork> mArtList;
     private RecyclerViewOnClickListener mListener;
-    private final ArtworkManager manager;
-    private Context context;
+    private ArtworkManager manager;
 
-    public ArtListViewTextAdapter(List<Artwork> mArtwork, ArtworkManager manager){
-        this.mArtList = mArtwork;
+    public ArtListImageViewAdapter(List<Artwork> mArtList, ArtworkManager manager){
+        this.mArtList = mArtList;
         this.manager = manager;
     }
 
@@ -38,10 +37,11 @@ public class ArtListViewTextAdapter extends RecyclerView.Adapter<ArtViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ArtViewHolder holder, int position) {
-        List<StorageReference> refs = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
-        holder.setCard(mArtList.get(position), refs.get(0));
 
-        Artwork artwork = mArtList.get(position);
+        List<StorageReference> ref = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
+        holder.setCard(mArtList.get(position), ref.get(0));
+        //Glide.with(holder.itemView).load(ref).into(holder.mImage);
+
         if (mListener != null){
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -59,8 +59,11 @@ public class ArtListViewTextAdapter extends RecyclerView.Adapter<ArtViewHolder> 
         return mArtList.size();
     }
 
-    public void setOnClickListener(RecyclerViewOnClickListener listener){
-        mListener = listener;
+    public void setOnClickListener(RecyclerViewOnClickListener mListener){
+        this.mListener = mListener;
     }
 
+    public void upadateList(List<Artwork> artworks){
+        this.mArtList = artworks;
+    }
 }

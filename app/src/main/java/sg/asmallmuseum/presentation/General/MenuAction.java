@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.General;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.widget.PopupWindow;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.presentation.LoginActivity;
+import sg.asmallmuseum.presentation.SignUpActivity;
 
 public class MenuAction implements View.OnClickListener {
     private Context context;

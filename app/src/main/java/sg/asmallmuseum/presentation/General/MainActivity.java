@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.General;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
+import sg.asmallmuseum.presentation.ArtList.ArtListImageViewAdapter;
+import sg.asmallmuseum.presentation.CategoryView.CategoryViewActivity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,7 +16,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,20 +51,12 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         ImageButton mBackButton = (ImageButton)findViewById(R.id.back_button);
         mBackButton.setVisibility(View.INVISIBLE);
 
-        //Intent intent = new Intent(this, ArtListActivity.class);
-        Intent intent = new Intent(this, ArtUploadPageActivity.class);
+        Intent intent = new Intent(this, CategoryViewActivity.class);
         ImageButton mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //intent.putExtra("Type", "Books");
-                //intent.putExtra("Genre", "Literal");
                 startActivity(intent);
-                //manager.uploadFile("/storage/emulated/0/Download/test.png");
-                //manager.addArtwork("Picture","Land", "Amazing Stories", "SG", "2030-1-10", "AMAZING!");
-                //manager.upLoadArt("/storage/emulated/0/Download/test.png",
-                 //       "Books","Literal", "Amazing Stories!!", "SG", "2030-1-10", "AMAZING!");
             }
         });
     }
@@ -93,6 +86,11 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     @Override
     public void onItemClick(int position, Intent intent) {
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(int position, List<String> mList) {
+        //Has to be empty
     }
 
     //Get an image information from ArtManager

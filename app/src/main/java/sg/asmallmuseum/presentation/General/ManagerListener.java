@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.General;
 
 import java.util.List;
 

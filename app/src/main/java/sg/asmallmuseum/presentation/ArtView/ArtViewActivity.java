@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.ArtView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
+import sg.asmallmuseum.presentation.General.ManagerListener;
 
 import android.content.Intent;
 import android.net.Uri;

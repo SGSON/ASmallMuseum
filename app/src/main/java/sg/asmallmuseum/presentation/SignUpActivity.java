@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.General.MainActivity;
+import sg.asmallmuseum.presentation.General.MenuAction;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
     private FirebaseAuth mAuth;
@@ -79,7 +81,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                             Toast.makeText(getApplicationContext(),"success",Toast.LENGTH_SHORT).show();
                         } else {

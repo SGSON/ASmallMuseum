@@ -16,6 +16,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.presentation.General.MainActivity;
+import sg.asmallmuseum.presentation.General.MenuAction;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     private FirebaseAuth mAuth;
@@ -51,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             signIn(uEmailID,uPassword);
         }
         else if (viewId == R.id.home_btn){
-            Intent intent = new Intent(getApplicationContext(),MainActivity.class);//<< MainActivity
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);//<< MainActivity
             startActivity(intent);
         }
     }

@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.ArtList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
+import sg.asmallmuseum.presentation.General.ManagerListener;
+import sg.asmallmuseum.presentation.General.MenuAction;
+import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -89,6 +92,12 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     public void onItemClick(int position, Intent intent) {
         startActivity(intent);
     }
+
+    @Override
+    public void onItemClick(int position, List<String> mList) {
+        //Has to be empty
+    }
+
     /***End***/
 
     @Override

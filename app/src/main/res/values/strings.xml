@@ -62,6 +62,17 @@
         <item>Etc..</item>
     </string-array>
 
+    <string-array name="genre_paints">
+        <item>Select</item>
+        <item>Land</item>
+        <item>Town</item>
+        <item>Etc..</item>
+    </string-array>
+
+    <string-array name="etc">
+        <item>Etc..</item>
+    </string-array>
+
     <string-array name="spinner_select">
         <item>Select</item>
     </string-array>

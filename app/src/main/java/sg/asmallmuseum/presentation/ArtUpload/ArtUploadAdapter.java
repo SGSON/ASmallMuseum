@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.ArtUpload;
 
 import android.net.Uri;
 import android.view.LayoutInflater;
