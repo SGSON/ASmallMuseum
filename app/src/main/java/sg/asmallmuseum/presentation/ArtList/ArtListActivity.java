@@ -7,7 +7,7 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.General.ManagerListener;
-import sg.asmallmuseum.presentation.General.MenuAction;
+import sg.asmallmuseum.presentation.General.MenuEvents;
 import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
 
 import android.content.Intent;
@@ -64,12 +64,13 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
 
     public void onMenuButtonPressed(View view) {
         Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_SHORT).show();
-        MenuAction menuAction = new MenuAction();
-        menuAction.openMenu(this, signedIn);
+        MenuEvents menuEvents = new MenuEvents(mAuth, this);
+        menuEvents.openMenu(signedIn);
     }
 
     public void onBackButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
+        finish();
+        //Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
     }
     /***End***/
 

@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.presentation.General.MainActivity;
-import sg.asmallmuseum.presentation.General.MenuAction;
+import sg.asmallmuseum.presentation.General.MenuEvents;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
     private FirebaseAuth mAuth;
@@ -64,8 +64,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     public void onMenuButtonPressed(View view) {
         Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_SHORT).show();
-        MenuAction menuAction = new MenuAction();
-        menuAction.openMenu(this, false);
+        MenuEvents menuEvents = new MenuEvents(mAuth, this);
+        menuEvents.openMenu(false);
     }
 
     public void onBackButtonPressed(View view) {

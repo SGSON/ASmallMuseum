@@ -9,6 +9,7 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.General.ManagerListener;
+import sg.asmallmuseum.presentation.General.MenuEvents;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,8 +19,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -42,10 +46,15 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
     private RecyclerView recyclerView;
     private ReviewAdapter reviewAdapter;
 
+    private boolean signedIn;
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_art_view);
+
+        mAuth = FirebaseAuth.getInstance();
 
         manager = new ArtworkManager();
         manager.setListener(this);
@@ -66,6 +75,18 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         reviewAdapter = new ReviewAdapter(review);
         setReview();
         initReview();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null){
+            signedIn = false;
+        }
+        else {
+            signedIn = true;
+        }
     }
 
     private void initReview(){
@@ -239,5 +260,31 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         }
 
         return list;
+    }
+
+    /***
+     * Top-bar events
+     * ***/
+    private void makeText(String text){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    /***Move to the main activity***/
+    public void onMainButtonPressed(View view) {
+        makeText("Pressed Main Button");
+    }
+
+    /***Open the menu window***/
+    public void onMenuButtonPressed(View view) {
+        makeText("Pressed Menu Button");
+
+        //Configure the main menu
+        MenuEvents menuEvents = new MenuEvents(mAuth, this);
+        menuEvents.openMenu(signedIn);
+    }
+
+    /***Nothing***/
+    public void onBackButtonPressed(View view) {
+        finish();
     }
 }

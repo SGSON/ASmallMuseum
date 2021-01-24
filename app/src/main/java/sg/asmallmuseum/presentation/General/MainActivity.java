@@ -8,7 +8,6 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.ArtList.ArtListImageViewAdapter;
-import sg.asmallmuseum.presentation.CategoryView.CategoryViewActivity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -39,28 +38,32 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
 
         mAuth = FirebaseAuth.getInstance();
 
+        //Set a listener to Artwork Manager
         manager = new ArtworkManager();
         manager.setListener(this);
+
+        //will be move to the upload activity
         requestPermission();
 
         //Load recent upload images
         //initiate with empty data set and then the view will be updated when loads complete.
         initRecentView(new ArrayList<Artwork>());
-        manager.getRecent();
 
+        //Remove the back button.
         ImageButton mBackButton = (ImageButton)findViewById(R.id.back_button);
         mBackButton.setVisibility(View.INVISIBLE);
 
-        Intent intent = new Intent(this, CategoryViewActivity.class);
+        //Set onClickMethods for the quick button
         ImageButton mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(intent);
+
             }
         });
     }
 
+    /***Verify a signed-in user***/
     @Override
     protected void onStart() {
         super.onStart();
@@ -71,9 +74,11 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         else {
             signedIn = true;
         }
+
     }
 
-    /***Initiate Recycler view***/
+    /***Initiate Recycler view
+     * Start with a empty list. then it will show latest uploading images when image load finish***/
     private void initRecentView(List<Artwork> artworks){
         adapter = new ArtListImageViewAdapter(artworks, manager);
         adapter.setOnClickListener(this);
@@ -81,8 +86,11 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         RecyclerView recent_view = (RecyclerView)findViewById(R.id.view_recent);
         recent_view.setLayoutManager(new LinearLayoutManager(this));
         recent_view.setAdapter(adapter);
+
+        manager.getRecent();
     }
 
+    /***Start an activity what user clicked***/
     @Override
     public void onItemClick(int position, Intent intent) {
         startActivity(intent);
@@ -93,10 +101,10 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         //Has to be empty
     }
 
-    //Get an image information from ArtManager
+    /***Get image information from ArtManager
+     * Then, update the recycler view***/
     @Override
     public void onDownloadCompleteListener(List<Artwork> artworks){
-        //initRecentView(artworks);
         updateList(artworks);
     }
 
@@ -104,30 +112,32 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         adapter.upadateList(artworks);
         adapter.notifyDataSetChanged();
     }
-    /***End***/
 
-    /***Top-bar button events***/
+    /***
+     * Top-bar events
+     * ***/
     private void makeText(String text){
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
+    /***Move to the main activity***/
     public void onMainButtonPressed(View view) {
         makeText("Pressed Main Button");
     }
 
+    /***Open the menu window***/
     public void onMenuButtonPressed(View view) {
         makeText("Pressed Menu Button");
 
         //Configure the main menu
-        MenuAction menuAction = new MenuAction();
-        menuAction.openMenu(this, signedIn);
+        MenuEvents menuEvents = new MenuEvents(mAuth ,this);
+        menuEvents.openMenu(signedIn);
     }
 
+    /***Nothing***/
     public void onBackButtonPressed(View view) {
         //do not insert codes
-        //makeText("Pressed Back Button");
     }
-    /***End***/
 
     /***Get a storage access permission***/
     private void requestPermission(){
@@ -151,6 +161,4 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     public void onUploadCompleteListener(boolean status) {
         //empty
     }
-
-
 }

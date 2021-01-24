@@ -6,11 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".presentation.CategoryView.CategoryViewActivity">
 
+    <include layout="@layout/layout_top_bar"
+        android:id="@+id/category_top"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/category_information_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/category_information_layout"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/category_top"
         app:layout_constraintBottom_toTopOf="@id/category_type_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">

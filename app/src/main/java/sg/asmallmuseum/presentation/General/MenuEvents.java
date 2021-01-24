@@ -1,7 +1,9 @@
 package sg.asmallmuseum.presentation.General;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,19 +14,25 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.presentation.LoginActivity;
 import sg.asmallmuseum.presentation.SignUpActivity;
 
-public class MenuAction implements View.OnClickListener {
-    private Context context;
+public class MenuEvents implements View.OnClickListener {
     private PopupWindow popupWindow;
-    public MenuAction(){}
+    private final FirebaseAuth mAuth;
+    private final Activity mActivity;
 
-    public void openMenu(Context context, boolean signedIn){
-        this.context = context;
-        LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public MenuEvents(FirebaseAuth mAuth, Activity act){
+        this.mAuth = mAuth;
+        this.mActivity = act;
+    }
+
+    public void openMenu(boolean signedIn){
+        LayoutInflater layoutInflater = (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View menu = layoutInflater.inflate(R.layout.layout_main_menu, null);
 
         popupWindow = new PopupWindow(menu, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -33,8 +41,8 @@ public class MenuAction implements View.OnClickListener {
         menu.findViewById(R.id.menu_close).setOnClickListener(this);
 
         setMenuForm(menu, signedIn);
-        changeBackGroundColor(context, popupWindow);
-        setMenuAdapter(context, menu);
+        changeBackGroundColor(mActivity, popupWindow);
+        setMenuAdapter(mActivity, menu);
     }
 
     @Override
@@ -42,15 +50,20 @@ public class MenuAction implements View.OnClickListener {
         int btn_id = view.getId();
 
         if (btn_id == R.id.log_in_btn){
-            Intent intent = new Intent(context, LoginActivity.class);
-            context.startActivity(intent);
+            Intent intent = new Intent(mActivity, LoginActivity.class);
+            mActivity.startActivity(intent);
         }
         else if (btn_id == R.id.sign_up_btn){
-            Intent intent = new Intent(context, SignUpActivity.class);
-            context.startActivity(intent);
+            Intent intent = new Intent(mActivity, SignUpActivity.class);
+            mActivity.startActivity(intent);
         }
         else if (btn_id == R.id.menu_close){
             popupWindow.dismiss();
+        }
+        else if (btn_id == R.id.sign_out_btn){
+            mAuth.signOut();
+            mActivity.finish();
+            mActivity.startActivity(mActivity.getIntent());
         }
     }
 
@@ -84,6 +97,26 @@ public class MenuAction implements View.OnClickListener {
         list_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent;
+                switch (i){
+                    case 0:
+                        //move to user profile
+                        //intent = new Intent(mActivity, );
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                }
+                //Log.d("POS:", ""+i);
                 //Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
             }
         });
