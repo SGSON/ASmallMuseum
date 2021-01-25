@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -91,8 +92,8 @@ public class MenuEvents implements View.OnClickListener {
 
     private void setMenuAdapter(Context context, View view){
         MenuAdapter menuAdapter = new MenuAdapter();
-        ListView list_menu = view.findViewById(R.id.list_menu);
-
+        ExpandableListView list_menu = view.findViewById(R.id.list_menu);
+        
         list_menu.setAdapter(menuAdapter);
         list_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
