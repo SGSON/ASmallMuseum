@@ -17,6 +17,10 @@ import android.widget.PopupWindow;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.presentation.LoginActivity;
@@ -36,7 +40,7 @@ public class MenuEvents implements View.OnClickListener {
         LayoutInflater layoutInflater = (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View menu = layoutInflater.inflate(R.layout.layout_main_menu, null);
 
-        popupWindow = new PopupWindow(menu, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        popupWindow = new PopupWindow(menu, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         popupWindow.showAtLocation(menu, Gravity.RIGHT,0,0);
 
         menu.findViewById(R.id.menu_close).setOnClickListener(this);
@@ -91,31 +95,40 @@ public class MenuEvents implements View.OnClickListener {
     }
 
     private void setMenuAdapter(Context context, View view){
-        MenuAdapter menuAdapter = new MenuAdapter();
-        ExpandableListView list_menu = view.findViewById(R.id.list_menu);
+        List<String> types = new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.types)));
+        List<String> genres = new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_book)));
+
+        MenuAdapter menuAdapter = new MenuAdapter(types);
+        MenuAdapter menuItemAdapter = new MenuAdapter(genres);
+
+        ListView list_menu = view.findViewById(R.id.list_menu);
+        ListView list_menu_item = view.findViewById(R.id.menu_item_list);
         
         list_menu.setAdapter(menuAdapter);
+        list_menu_item.setAdapter(menuItemAdapter);
+
         list_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent;
-                switch (i){
-                    case 0:
+                switch (types.get(i)){
+                    case "Books":
                         //move to user profile
+                        menuItemAdapter.setData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_book))));
                         //intent = new Intent(mActivity, );
                         break;
-                    case 1:
+                    case "Pictures":
+                        menuItemAdapter.setData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_picture))));
                         break;
-                    case 2:
+                    case "Paints":
+                        menuItemAdapter.setData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_paints))));
                         break;
-                    case 3:
+                    case "Music":
+                        menuItemAdapter.setData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_music))));
                         break;
-                    case 4:
+                    case "Etc..":
+                        menuItemAdapter.setData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.etc))));
                         break;
-                    case 5:
-                        break;
-                    case 6:
-                        break;
+
                 }
                 //Log.d("POS:", ""+i);
                 //Toast.makeText(context, name, Toast.LENGTH_SHORT).show();

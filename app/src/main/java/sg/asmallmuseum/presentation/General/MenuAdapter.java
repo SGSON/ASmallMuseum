@@ -14,10 +14,10 @@ import sg.asmallmuseum.R;
 
 public class MenuAdapter extends BaseAdapter {
     List<String> menu_list;
-    String temp[];
-    public MenuAdapter() {
-        String temp[] = {"Profile","Pictures","Music","Paints","Books","Upload","Support"};
-        menu_list = Arrays.asList(temp);
+
+    public MenuAdapter(List<String> categories) {
+        categories.remove(0);
+        menu_list = categories;
     }
 
     @Override
@@ -57,6 +57,12 @@ public class MenuAdapter extends BaseAdapter {
         viewHolder.item_img.setImageResource(R.drawable.arrow_back);
 
         return view;
+    }
+
+    public void setData(List<String> newData){
+        newData.remove(0);
+        menu_list = newData;
+        notifyDataSetChanged();
     }
 
     static class ViewHolder{
