@@ -9,6 +9,7 @@ import java.util.List;
 
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Book;
+import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.Music;
 import sg.asmallmuseum.Domain.Paint;
 import sg.asmallmuseum.Domain.Picture;
@@ -32,15 +33,14 @@ public class ArtworkManager implements DBListener {
     }
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
-    public void upLoadArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc){
-        upLoadArtworkInfo(paths, ext, type, genre, title, author, date, desc);
-        //uploadAttachedFile(path, docRef.getId());
+    public void upLoadArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) throws CustomException{
+        ValidateArt.validateAll(paths, ext, type, genre, title, author, date, desc);
 
-        //db.setFileLoc(docRef, storageRef);
+        upLoadArtworkInfo(paths, ext, type, genre, title, author, date, desc);
     }
 
     //Private Methods
-    private void upLoadArtworkInfo(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc){
+    private void upLoadArtworkInfo(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) {
         Artwork art = null;
         switch (type){
             case "Books":

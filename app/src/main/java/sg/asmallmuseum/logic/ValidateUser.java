@@ -3,10 +3,10 @@ package sg.asmallmuseum.logic;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import sg.asmallmuseum.Domain.CustomException;
+import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.User;
-import sg.asmallmuseum.Domain.UserEmailError;
-import sg.asmallmuseum.Domain.UserPasswordError;
+import sg.asmallmuseum.Domain.Messages.UserEmailError;
+import sg.asmallmuseum.Domain.Messages.UserPasswordError;
 
 public class ValidateUser {
     private final int MAX_LENGTH = 20;

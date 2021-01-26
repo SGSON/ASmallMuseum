@@ -79,6 +79,11 @@
     <string-array name="spinner_select">
         <item>Select</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- TODO: Error Messages for Artwork -->
+    <string name="title_error">Please enter the title.</string>
+    <string name="genre_error">Please select the genre.</string>
+    <string name="type_error">Please select the type</string>
+    <string name="desc_error">Please enter the description of the art.</string>
 </resources>

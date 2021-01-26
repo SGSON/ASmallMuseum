@@ -5,6 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.Messages.ArtAttachedError;
+import sg.asmallmuseum.Domain.Messages.ArtDescError;
+import sg.asmallmuseum.Domain.Messages.ArtGenreError;
+import sg.asmallmuseum.Domain.Messages.ArtTitleError;
+import sg.asmallmuseum.Domain.Messages.ArtTypeError;
+import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.General.ManagerListener;
@@ -178,9 +184,29 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     }
 
     /***Upload a art***/
-    private void uploadArt(){
-        //before the uploading, please check the type and genre has been selected
-        manager.upLoadArt(mPathList, mExtensions, map.get("type"), map.get("genre"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
+    private void uploadArt()  {
+        try{
+            //before the uploading, please check the type and genre has been selected
+            manager.upLoadArt(mPathList, mExtensions, map.get("type"), map.get("genre"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
+        }
+        catch (CustomException e){
+            if (e instanceof ArtTitleError){
+                mTitle.setError(e.getErrorMsg());
+            }
+            else if (e instanceof ArtDescError){
+                mDesc.setError(e.getErrorMsg());
+            }
+            else if (e instanceof ArtGenreError){
+
+            }
+            else if (e instanceof ArtTypeError){
+
+            }
+            else if (e instanceof ArtAttachedError){
+
+            }
+        }
+
     }
 
     @Override

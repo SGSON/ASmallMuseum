@@ -1,24 +1,10 @@
 package sg.asmallmuseum.logic;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GoogleAuthProvider;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import sg.asmallmuseum.Domain.CustomException;
+import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.User;
-import sg.asmallmuseum.R;
 import sg.asmallmuseum.persistence.FacebookUserDB;
 import sg.asmallmuseum.persistence.GoogleUserDB;
 import sg.asmallmuseum.persistence.EmailUserDB;
