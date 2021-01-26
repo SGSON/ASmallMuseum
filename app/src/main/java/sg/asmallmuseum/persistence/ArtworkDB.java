@@ -112,6 +112,8 @@ public class ArtworkDB implements ArtworkDBInterface {
     /***Get a image and a info***/
     public void getArtInfoList(String type, String genre){
         List<Artwork> list = new ArrayList<>();
+
+        //need to checknull pointer
         CollectionReference colRef = db.collection("Art").document(type).collection(genre);
         colRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){

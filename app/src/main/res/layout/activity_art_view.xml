@@ -34,9 +34,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
         <Button
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:id="@+id/art_button_pager"
+            android:background="@drawable/button_expand"
+            android:foreground="@drawable/ic_baseline_zoom_in_24"
+            android:backgroundTint="@null"
             app:layout_constraintVertical_bias="0.9"
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintTop_toTopOf="@id/art_image_pager"

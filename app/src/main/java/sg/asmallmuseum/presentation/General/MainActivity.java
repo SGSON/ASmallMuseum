@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.crashlytics.internal.common.CrashlyticsCore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //throw new RuntimeException("Teest");
             }
         });
     }
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     }
 
     private void updateList(List<Artwork> artworks){
-        adapter.upadateList(artworks);
+        adapter.updateList(artworks);
         adapter.notifyDataSetChanged();
     }
 

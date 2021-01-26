@@ -9,7 +9,7 @@
         android:layout_width="67dp"
         android:layout_height="67dp"
         android:id="@+id/profile_picture"
-        android:background="@drawable/circle_button"
+        android:background="@drawable/button_circle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

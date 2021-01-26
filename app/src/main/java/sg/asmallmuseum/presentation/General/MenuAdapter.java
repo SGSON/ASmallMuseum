@@ -59,10 +59,14 @@ public class MenuAdapter extends BaseAdapter {
         return view;
     }
 
-    public void setData(List<String> newData){
+    public void updateData(List<String> newData){
         newData.remove(0);
         menu_list = newData;
         notifyDataSetChanged();
+    }
+
+    public String getClickedData(int i){
+        return menu_list.get(i);
     }
 
     static class ViewHolder{

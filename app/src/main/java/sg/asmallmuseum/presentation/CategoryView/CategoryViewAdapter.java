@@ -35,7 +35,7 @@ public class CategoryViewAdapter extends RecyclerView.Adapter<CategoryViewAdapte
     @Override
     public void onBindViewHolder(@NonNull CategoryViewAdapter.CategoryViewHolder holder, int position) {
         holder.textView.setText(mList.get(position));
-        holder.imageView.setImageResource(R.drawable.circle_button);
+        holder.imageView.setImageResource(R.drawable.button_circle);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

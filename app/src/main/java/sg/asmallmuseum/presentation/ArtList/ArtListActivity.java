@@ -12,6 +12,7 @@ import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     private FirebaseAuth mAuth;
     private ArtworkManager manager;
     private boolean signedIn;
+    private boolean mTypeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,12 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         manager = new ArtworkManager();
         manager.setListener(this);
 
+        //Log.d("CLICKED:", intent.getStringExtra("Type"));
+        //Log.d("CLICKED:", intent.getStringExtra("Genre"));
+
         manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"));
+
+        mTypeText = (intent.getStringExtra("Type").equals("Music") || intent.getStringExtra("Type").equals("Books"));
     }
 
     @Override
@@ -70,18 +77,23 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
 
     public void onBackButtonPressed(View view) {
         finish();
-        //Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
     }
     /***End***/
 
     /***Load File from DB***/
     private void initRecyclerView(List<Artwork> artworks){
-        ArtListViewTextAdapter adapter = new ArtListViewTextAdapter(artworks, manager);
+        ArtListViewAdapterInterface adapter;
+        if (mTypeText){
+            adapter = new ArtListTextViewAdapter(artworks, manager);
+        }
+        else {
+            adapter = new ArtListImageViewAdapter(artworks, manager);
+        }
         adapter.setOnClickListener(this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.art_list);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter((RecyclerView.Adapter) adapter);
     }
 
     @Override

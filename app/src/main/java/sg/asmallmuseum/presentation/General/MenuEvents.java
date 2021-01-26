@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -19,10 +18,13 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.presentation.ArtList.ArtListActivity;
 import sg.asmallmuseum.presentation.LoginActivity;
 import sg.asmallmuseum.presentation.SignUpActivity;
 
@@ -30,10 +32,12 @@ public class MenuEvents implements View.OnClickListener {
     private PopupWindow popupWindow;
     private final FirebaseAuth mAuth;
     private final Activity mActivity;
+    private Map<String, String> map;
 
     public MenuEvents(FirebaseAuth mAuth, Activity act){
         this.mAuth = mAuth;
         this.mActivity = act;
+        map = new HashMap<>();
     }
 
     public void openMenu(boolean signedIn){
@@ -98,6 +102,9 @@ public class MenuEvents implements View.OnClickListener {
         List<String> types = new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.types)));
         List<String> genres = new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_book)));
 
+        //shows genres of book first
+        map.put("Type", "Books");
+
         MenuAdapter menuAdapter = new MenuAdapter(types);
         MenuAdapter menuItemAdapter = new MenuAdapter(genres);
 
@@ -110,28 +117,38 @@ public class MenuEvents implements View.OnClickListener {
         list_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                map.put("Type", menuAdapter.getClickedData(i));
                 switch (types.get(i)){
                     case "Books":
                         //move to user profile
-                        menuItemAdapter.setData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_book))));
-                        //intent = new Intent(mActivity, );
+                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_book))));
                         break;
                     case "Pictures":
-                        menuItemAdapter.setData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_picture))));
+                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_picture))));
                         break;
                     case "Paints":
-                        menuItemAdapter.setData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_paints))));
+                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_paints))));
                         break;
                     case "Music":
-                        menuItemAdapter.setData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_music))));
+                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_music))));
                         break;
                     case "Etc..":
-                        menuItemAdapter.setData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.etc))));
+                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.etc))));
                         break;
-
                 }
-                //Log.d("POS:", ""+i);
-                //Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        list_menu_item.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                map.put("Genre", menuItemAdapter.getClickedData(i));
+                Intent intent = new Intent(mActivity, ArtListActivity.class);
+                intent.putExtra("Type", map.get("Type"));
+                intent.putExtra("Genre", map.get("Genre"));
+                mActivity.startActivity(intent);
+                //Log.d("CLICKED:", map.get("Type"));
+                //Log.d("CLICKED:", map.get("Genre"));
             }
         });
     }

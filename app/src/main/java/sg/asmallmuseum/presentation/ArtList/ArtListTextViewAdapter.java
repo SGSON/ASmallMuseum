@@ -1,5 +1,6 @@
 package sg.asmallmuseum.presentation.ArtList;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -22,30 +23,30 @@ import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.ArtView.ArtViewActivity;
 import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
 
-public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageViewAdapter.ArtListImageViewHolder> implements ArtListViewAdapterInterface {
+public class ArtListTextViewAdapter extends RecyclerView.Adapter<ArtListTextViewAdapter.ArtListTextViewHolder> implements ArtListViewAdapterInterface {
     private List<Artwork> mArtList;
     private RecyclerViewOnClickListener mListener;
-    private ArtworkManager manager;
+    private final ArtworkManager manager;
+    private Context context;
 
-    public ArtListImageViewAdapter(List<Artwork> mArtList, ArtworkManager manager){
-        this.mArtList = mArtList;
+    public ArtListTextViewAdapter(List<Artwork> mArtwork, ArtworkManager manager){
+        this.mArtList = mArtwork;
         this.manager = manager;
     }
 
     @NonNull
     @Override
-    public ArtListImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_type_image_card, parent, false);
-        return new ArtListImageViewHolder(view);
+    public ArtListTextViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_type_text_card, parent, false);
+        return new ArtListTextViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ArtListImageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ArtListTextViewHolder holder, int position) {
+        List<StorageReference> refs = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
+        holder.setCard(mArtList.get(position), refs.get(0));
 
-        List<StorageReference> ref = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
-        holder.setCard(mArtList.get(position), ref.get(0));
-        //Glide.with(holder.itemView).load(ref).into(holder.mImage);
-
+        Artwork artwork = mArtList.get(position);
         if (mListener != null){
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -64,27 +65,27 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
     }
 
     @Override
-    public void setOnClickListener(RecyclerViewOnClickListener mListener){
-        this.mListener = mListener;
+    public void setOnClickListener(RecyclerViewOnClickListener listener){
+        mListener = listener;
     }
 
-    public void updateList(List<Artwork> artworks){
-        this.mArtList = artworks;
+    @Override
+    public void updateList(List<Artwork> artworks) {
+        mArtList = artworks;
     }
 
-
-    static class ArtListImageViewHolder extends RecyclerView.ViewHolder{
+    static class ArtListTextViewHolder extends RecyclerView.ViewHolder{
         private ImageView mImage;
         private TextView mTitle;
         private TextView mAuthor;
         private TextView mDate;
 
-        public ArtListImageViewHolder(@NonNull View itemView) {
+        public ArtListTextViewHolder(@NonNull View itemView) {
             super(itemView);
-            mImage = (ImageView) itemView.findViewById(R.id.card_image_image);
-            mAuthor = (TextView) itemView.findViewById(R.id.card_image_author);
-            mTitle = (TextView) itemView.findViewById(R.id.card_image_title);
-            mDate = (TextView) itemView.findViewById(R.id.card_image_date);
+            mImage = (ImageView) itemView.findViewById(R.id.card_text_image);
+            mAuthor = (TextView) itemView.findViewById(R.id.card_text_author);
+            mTitle = (TextView) itemView.findViewById(R.id.card_text_title);
+            mDate = (TextView) itemView.findViewById(R.id.card_text_date);
         }
 
         public void setCard(Artwork artwork, StorageReference ref){
@@ -100,4 +101,5 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
             mDate.setText(artwork.getaDate());
         }
     }
+
 }
