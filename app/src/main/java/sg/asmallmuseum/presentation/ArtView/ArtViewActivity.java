@@ -3,6 +3,7 @@ package sg.asmallmuseum.presentation.ArtView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -45,6 +46,7 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
 //    private RecyclerView mPreview;
     private TextView mNumPages;
     private int numImages;
+    private boolean isExpand;
 
     private List<String[]> review;
     private RecyclerView recyclerView;
@@ -76,6 +78,10 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         mMore = (Button) findViewById(R.id.art_more_button);
         mMore.setOnClickListener(this);
 
+        Button mExpand = (Button) findViewById(R.id.art_expand_button);
+        mExpand.setOnClickListener(this);
+        isExpand = true;
+
         manager.getSingleArtInfoByPath(intent.getStringExtra("DocPath"));
 
         review = new ArrayList<>();
@@ -101,40 +107,36 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(reviewAdapter);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                //Log.d("X:", ""+dy);
-                resizeLayout(dy);
-            }
-        });
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                //Log.d("X:", ""+dy);
+//                resizeLayout(dy);
+//            }
+//        });
     }
 
-    private void resizeLayout(int dy){
+    private void resizeLayout(){
         ConstraintLayout descLayout = (ConstraintLayout) findViewById(R.id.art_desc_view);
 
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) descLayout.getLayoutParams();
-        Log.d("X:", ""+dy);
-        if (params.height > 1 && dy > 5){
-            if (params.height - dy > 0){
-                params.height = params.height - dy;
-            }
-            else {
-                params.height = 1;
-            }
-            descLayout.setLayoutParams(params);
+
+        Button button = (Button) findViewById(R.id.art_expand_button);
+
+        Log.d("X:", "Clicked");
+
+        if (isExpand){
+            params.height = descLayout.getMinHeight();
+            button.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.collapse, getTheme()));
         }
-        else if (params.height < descLayout.getMaxHeight() && dy < -5){
-            Log.d("X:", params.height - dy+"IN:"+dy);
-            if (params.height - dy < descLayout.getMaxHeight()){
-                    params.height = params.height - dy;
-            }
-            else {
-                params.height = descLayout.getMaxHeight();
-            }
-            descLayout.setLayoutParams(params);
+        else {
+            params.height = descLayout.getMaxHeight();
+            button.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.expand, getTheme()));
         }
+
+        isExpand = !isExpand;
+        descLayout.setLayoutParams(params);
     }
 
     private void setReview(){
@@ -217,6 +219,9 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         }
         else if(id == R.id.art_more_button){
             createPopupWindow();
+        }
+        else if(id == R.id.art_expand_button){
+            resizeLayout();
         }
 
     }
