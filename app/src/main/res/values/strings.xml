@@ -80,6 +80,10 @@
         <item>Select</item>
     </string-array>
 
+    <!-- TODO: Menu elements -->
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_report">Report</string>
 
     <!-- TODO: Error Messages for Artwork -->
     <string name="title_error">Please enter the title.</string>
