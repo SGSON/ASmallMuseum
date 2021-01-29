@@ -8,6 +8,7 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.ArtList.ArtListImageViewAdapter;
+import sg.asmallmuseum.presentation.ArtUpload.ArtUploadPageActivity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -54,11 +55,14 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         ImageButton mBackButton = (ImageButton)findViewById(R.id.back_button);
         mBackButton.setVisibility(View.INVISIBLE);
 
+        Intent intent = new Intent(this, ArtUploadPageActivity.class);
+
         //Set onClickMethods for the quick button
         ImageButton mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
         mQuick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(intent);
                 //throw new RuntimeException("Teest");
             }
         });

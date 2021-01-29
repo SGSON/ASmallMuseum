@@ -33,10 +33,14 @@ public class ArtworkManager implements DBListener {
     }
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
-    public void upLoadArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) throws CustomException{
-        ValidateArt.validateAll(paths, ext, type, genre, title, author, date, desc);
+    public void upLoadArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) {
+
 
         upLoadArtworkInfo(paths, ext, type, genre, title, author, date, desc);
+    }
+
+    public void validateArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) throws CustomException{
+        ValidateArt.validateAll(paths, ext, type, genre, title, author, date, desc);
     }
 
     //Private Methods

@@ -90,4 +90,9 @@
     <string name="genre_error">Please select the genre.</string>
     <string name="type_error">Please select the type</string>
     <string name="desc_error">Please enter the description of the art.</string>
+
+    <!-- TODO: Messages for Art Upload Activity -->
+    <string name="upload_accept">Accept</string>
+    <string name="upload_cancel">Cancel</string>
+    <string name="upload_message">Are you sure?</string>
 </resources>

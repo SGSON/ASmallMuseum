@@ -16,9 +16,13 @@ import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.General.ManagerListener;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,6 +33,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -186,8 +191,8 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     /***Upload a art***/
     private void uploadArt()  {
         try{
-            //before the uploading, please check the type and genre has been selected
-            manager.upLoadArt(mPathList, mExtensions, map.get("type"), map.get("genre"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
+            manager.validateArt(mPathList, mExtensions, map.get("type"), map.get("genre"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
+            showAlertDialog().show();
         }
         catch (CustomException e){
             if (e instanceof ArtTitleError){
@@ -197,13 +202,17 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                 mDesc.setError(e.getErrorMsg());
             }
             else if (e instanceof ArtGenreError){
-
+                TextView textView = (TextView) mGenre.getSelectedView();
+                textView.setError(e.getErrorMsg());
+                textView.setTextColor(Color.RED);
             }
             else if (e instanceof ArtTypeError){
-
+                TextView textView = (TextView) mGenre.getSelectedView();
+                textView.setError(e.getErrorMsg());
+                textView.setTextColor(Color.RED);
             }
             else if (e instanceof ArtAttachedError){
-
+                Toast.makeText(this, e.getErrorMsg(), Toast.LENGTH_SHORT);
             }
         }
 
@@ -261,5 +270,24 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         mExtensions.add(extension[1]);
         mFileName.add(file[file.length-1]);
         mPathList.add(uri);
+    }
+
+    private Dialog showAlertDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.upload_message)
+                .setPositiveButton(R.string.upload_accept, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //before the uploading, please check the type and genre has been selected
+                        manager.upLoadArt(mPathList, mExtensions, map.get("type"), map.get("genre"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
+                    }
+                })
+                .setNegativeButton(R.string.upload_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                 });
+        return builder.create();
     }
 }

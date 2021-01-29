@@ -27,31 +27,31 @@ public class ValidateArt {
     }
 
     public static void validateType(String type) throws ArtTypeError {
-        if (type.equals("Select")){
+        if (type == null || type.equals("Select")){
             throw new ArtTypeError(TYPE_ERROR);
         }
     }
 
     public static void validateGenre(String genre) throws ArtGenreError{
-        if (genre.equals("Select")){
+        if (genre == null || genre.equals("Select")){
             throw new ArtGenreError(GENRE_ERROR);
         }
     }
 
     public static void validateTitle(String title) throws ArtTitleError{
-        if (title.equals("")){
+        if (title == null || title.equals("")){
             throw new ArtTitleError(TITLE_ERROR);
         }
     }
 
     public static void validateDesc(String desc) throws ArtDescError {
-        if (desc.equals("")){
+        if (desc == null || desc.equals("")){
             throw new ArtDescError(DESC_ERROR);
         }
     }
 
     public static void validateAttached(List<Uri> paths) throws ArtAttachedError {
-        if (paths.size() == 0){
+        if (paths == null || paths.size() == 0){
             throw new ArtAttachedError(ATTACHED_ERROR);
         }
     }
