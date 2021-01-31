@@ -1,5 +1,6 @@
 package sg.asmallmuseum.presentation.General;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import sg.asmallmuseum.R;
 
 public class MenuAdapter extends BaseAdapter {
     private List<String> menu_list;
+    private View mCurrentView;
 
     public MenuAdapter(List<String> categories) {
         categories.remove(0);
@@ -48,6 +50,12 @@ public class MenuAdapter extends BaseAdapter {
             viewHolder.item_txt = textView;
 
             view.setTag(viewHolder);
+
+            if (i == 0){
+                view.setBackgroundColor(view.getResources().getColor(R.color.boarder, view.getContext().getTheme()));
+                mCurrentView = view;
+            }
+
         }
         else{
             viewHolder = (ViewHolder)view.getTag();
@@ -79,6 +87,12 @@ public class MenuAdapter extends BaseAdapter {
         newData.remove(0);
         menu_list = newData;
         notifyDataSetChanged();
+    }
+
+    public void setViewColor(View view){
+        mCurrentView.setBackgroundColor(view.getResources().getColor(R.color.white, view.getContext().getTheme()));
+        mCurrentView = view;
+        view.setBackgroundColor(view.getResources().getColor(R.color.boarder, view.getContext().getTheme()));
     }
 
     public String getClickedData(int i){

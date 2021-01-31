@@ -118,6 +118,7 @@ public class MenuEvents implements View.OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 map.put("Type", menuAdapter.getClickedData(i));
+                menuAdapter.setViewColor(view);
                 switch (types.get(i)){
                     case "Books":
                         //move to user profile

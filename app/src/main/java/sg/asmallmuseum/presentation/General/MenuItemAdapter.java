@@ -15,6 +15,7 @@ public class MenuItemAdapter extends BaseAdapter {
     private List<String> mList;
 
     public MenuItemAdapter(List<String> mList) {
+        mList.remove(0);
         this.mList = mList;
     }
 
