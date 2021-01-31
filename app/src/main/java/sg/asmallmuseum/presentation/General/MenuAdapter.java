@@ -13,7 +13,7 @@ import java.util.List;
 import sg.asmallmuseum.R;
 
 public class MenuAdapter extends BaseAdapter {
-    List<String> menu_list;
+    private List<String> menu_list;
 
     public MenuAdapter(List<String> categories) {
         categories.remove(0);
@@ -54,8 +54,24 @@ public class MenuAdapter extends BaseAdapter {
         }
         String item = menu_list.get(i);
         viewHolder.item_txt.setText(item);
-        viewHolder.item_img.setImageResource(R.drawable.arrow_back);
 
+        switch (item){
+            case "Books":
+                viewHolder.item_img.setImageResource(R.drawable.image_book);
+                break;
+            case "Pictures":
+                viewHolder.item_img.setImageResource(R.drawable.image_picture);
+                break;
+            case "Paints":
+                viewHolder.item_img.setImageResource(R.drawable.image_paint);
+                break;
+            case "Music":
+                viewHolder.item_img.setImageResource(R.drawable.image_music);
+                break;
+            case "Etc..":
+                viewHolder.item_img.setImageResource(R.drawable.image_etc);
+                break;
+        }
         return view;
     }
 

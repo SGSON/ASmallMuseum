@@ -29,6 +29,9 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Book;
+import sg.asmallmuseum.Domain.Music;
+import sg.asmallmuseum.Domain.Paint;
+import sg.asmallmuseum.Domain.Picture;
 import sg.asmallmuseum.logic.DBListener;
 
 public class ArtworkDB implements ArtworkDBInterface {
@@ -118,12 +121,31 @@ public class ArtworkDB implements ArtworkDBInterface {
         colRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
-                    Artwork artwork = collection.toObject(Book.class);
+                    Artwork artwork = getArtObject(collection, type);
                     list.add(artwork);
                 }
                 mListener.onFileDownloadCompleteListener(list, 0);
             }
         });
+    }
+
+    private Artwork getArtObject(QueryDocumentSnapshot collection, String type){
+        Artwork artwork = null;
+        switch (type){
+            case "Books":
+                artwork = collection.toObject(Book.class);
+                break;
+            case "Music":
+                artwork = collection.toObject(Music.class);
+                break;
+            case "Paints":
+                artwork = collection.toObject(Paint.class);
+                break;
+            default:
+                artwork = collection.toObject(Picture.class);
+                break;
+        }
+        return artwork;
     }
 
     @Override

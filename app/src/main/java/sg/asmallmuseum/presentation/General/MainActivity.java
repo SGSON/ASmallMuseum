@@ -11,11 +11,14 @@ import sg.asmallmuseum.presentation.ArtList.ArtListImageViewAdapter;
 import sg.asmallmuseum.presentation.ArtUpload.ArtUploadPageActivity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,12 +34,19 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     private ArtworkManager manager;
     private ArtListImageViewAdapter adapter;
 
+    private ProgressDialog dialog;
     private boolean signedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dialog = new ProgressDialog(this, android.R.style.Theme_Material_Dialog_Alert);
+        dialog.setMessage("LOADING..");
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -52,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         initRecentView(new ArrayList<Artwork>());
 
         //Remove the back button.
-        ImageButton mBackButton = (ImageButton)findViewById(R.id.back_button);
+        Button mBackButton = (Button)findViewById(R.id.back_button);
         mBackButton.setVisibility(View.INVISIBLE);
 
         Intent intent = new Intent(this, ArtUploadPageActivity.class);
@@ -116,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     private void updateList(List<Artwork> artworks){
         adapter.updateList(artworks);
         adapter.notifyDataSetChanged();
+        dialog.dismiss();
     }
 
     /***

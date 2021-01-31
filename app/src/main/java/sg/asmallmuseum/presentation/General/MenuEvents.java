@@ -106,7 +106,7 @@ public class MenuEvents implements View.OnClickListener {
         map.put("Type", "Books");
 
         MenuAdapter menuAdapter = new MenuAdapter(types);
-        MenuAdapter menuItemAdapter = new MenuAdapter(genres);
+        MenuItemAdapter menuItemAdapter = new MenuItemAdapter(genres);
 
         ListView list_menu = view.findViewById(R.id.list_menu);
         ListView list_menu_item = view.findViewById(R.id.menu_item_list);

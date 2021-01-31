@@ -18,6 +18,7 @@ import sg.asmallmuseum.presentation.General.ManagerListener;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -61,6 +62,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     private ArtUploadAdapter adapter;
     private List<String> mExtensions;
 
+    private ProgressDialog dialog;
     private final int REQUEST_CODE = 3020;
 
     @Override
@@ -225,7 +227,8 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onUploadCompleteListener(boolean status) {
-        Toast.makeText(this, "Upload finished", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Upload finished", Toast.LENGTH_SHORT).show();
+        dialog.dismiss();
         finish();
     }
     /***End***/
@@ -280,6 +283,11 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //before the uploading, please check the type and genre has been selected
                         manager.upLoadArt(mPathList, mExtensions, map.get("type"), map.get("genre"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
+                        dialog = new ProgressDialog(ArtUploadPageActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                        dialog.setMessage("LOADING..");
+                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
                     }
                 })
                 .setNegativeButton(R.string.upload_cancel, new DialogInterface.OnClickListener() {

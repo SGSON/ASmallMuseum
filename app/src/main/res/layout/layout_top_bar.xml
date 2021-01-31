@@ -8,13 +8,13 @@
     android:background="@color/main_theme"
     android:elevation="11dp">
 
-    <ImageButton
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/back_button"
         android:layout_marginLeft="7dp"
         android:onClick="onBackButtonPressed"
-        android:src="@drawable/arrow_back"
+        android:foreground="@drawable/arrow_back"
         android:background="@drawable/button_circle"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
         app:layout_constraintEnd_toStartOf="@id/main_button"/>
     <ImageView
         android:layout_width="150dp"
-        android:layout_height="75dp"
+        android:layout_height="50dp"
         android:id="@+id/main_button"
         android:onClick="onMainButtonPressed"
         android:background="@null"
@@ -31,14 +31,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/back_button"
         app:layout_constraintEnd_toStartOf="@id/top_menu_button"/>
-    <ImageButton
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/top_menu_button"
         android:layout_marginRight="7dp"
         android:onClick="onMenuButtonPressed"
         android:background="@drawable/button_circle"
-        android:src="@drawable/menu"
+        android:foreground="@drawable/menu"
         app:layout_constraintStart_toEndOf="@id/main_button"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

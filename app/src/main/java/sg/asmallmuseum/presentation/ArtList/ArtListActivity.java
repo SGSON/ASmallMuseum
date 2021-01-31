@@ -10,6 +10,7 @@ import sg.asmallmuseum.presentation.General.ManagerListener;
 import sg.asmallmuseum.presentation.General.MenuEvents;
 import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,11 +27,18 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     private ArtworkManager manager;
     private boolean signedIn;
     private boolean mTypeText;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_art_list);
+
+        dialog = new ProgressDialog(this, android.R.style.Theme_Material_Dialog_Alert);
+        dialog.setMessage("LOADING..");
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
         Intent intent = getIntent();
 
@@ -94,6 +102,8 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.art_list);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setAdapter((RecyclerView.Adapter) adapter);
+
+        dialog.dismiss();
     }
 
     @Override

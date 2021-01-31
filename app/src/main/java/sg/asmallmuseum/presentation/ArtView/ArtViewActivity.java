@@ -13,6 +13,7 @@ import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.General.ManagerListener;
 import sg.asmallmuseum.presentation.General.MenuEvents;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
     private TextView mNumPages;
     private int numImages;
     private boolean isExpand;
+    private ProgressDialog dialog;
 
     private List<String[]> review;
     private RecyclerView recyclerView;
@@ -59,6 +61,12 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_art_view);
+
+        dialog = new ProgressDialog(this, android.R.style.Theme_Material_Dialog_Alert);
+        dialog.setMessage("LOADING..");
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -198,6 +206,7 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         pagerAdapter.updateData(list);
         pagerAdapter.notifyDataSetChanged();
 
+        dialog.dismiss();
         //Log.d("POSITION: ", pagerAdapter.getItemPosition(mPager.getCurrentItem()));
     }
 
