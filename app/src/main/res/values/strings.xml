@@ -27,7 +27,6 @@
     <string name="up_genre">Genre: </string>
 
 
-
     <string-array name="types">
         <item>Select</item>
         <item>Books</item>
@@ -95,4 +94,6 @@
     <string name="upload_accept">Accept</string>
     <string name="upload_cancel">Cancel</string>
     <string name="upload_message">Are you sure?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
