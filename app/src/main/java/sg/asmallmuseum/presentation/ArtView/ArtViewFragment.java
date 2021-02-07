@@ -42,6 +42,10 @@ public class ArtViewFragment extends Fragment {
         this.uri = uri;
     }
 
+    public void setImage(String uri){
+        this.uri = Uri.parse(uri);
+    }
+
     public String getUriAsString(){
         return uri.toString();
     }

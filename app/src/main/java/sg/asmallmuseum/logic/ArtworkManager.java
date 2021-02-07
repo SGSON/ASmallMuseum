@@ -34,8 +34,6 @@ public class ArtworkManager implements DBListener {
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
     public void upLoadArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) {
-
-
         upLoadArtworkInfo(paths, ext, type, genre, title, author, date, desc);
     }
 
@@ -96,7 +94,6 @@ public class ArtworkManager implements DBListener {
     public void getRecent(){
         db.getRecent();
     }
-
     /***End***/
 
     @Override

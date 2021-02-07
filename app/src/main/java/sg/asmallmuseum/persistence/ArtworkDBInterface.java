@@ -20,4 +20,5 @@ public interface ArtworkDBInterface {
     void getArtInfoByPath(String path, int requestCode);
     void getRecent();
     void getMultipleArtInfoByPath(List<String> paths, int requestCode);
+    void getMuseumArtList(String museumName);
 }

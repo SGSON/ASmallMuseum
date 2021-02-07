@@ -5,6 +5,8 @@ public class Museum extends Artwork {
     private String aMainImage;
     private String aMaterial;
 
+    public Museum(){}
+
     public Museum(String aType, String aGenre, String aTitle, String aAuthor, String aDate, String aDesc, String aThumbnail, String aMainImage, String aMaterial){
         super(aType, aGenre, aTitle, aAuthor, aDate, aDesc);
         this.aThumbnail = aThumbnail;

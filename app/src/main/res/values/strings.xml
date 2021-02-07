@@ -33,7 +33,13 @@
         <item>Pictures</item>
         <item>Paints</item>
         <item>Music</item>
+        <item>Museums</item>
         <item>Etc..</item>
+    </string-array>
+
+    <string-array name="museums">
+        <item>Select</item>
+        <item>Seoul Art Gallery</item>
     </string-array>
 
     <string-array name="genre_book">

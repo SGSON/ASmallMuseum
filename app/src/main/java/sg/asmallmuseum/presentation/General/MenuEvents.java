@@ -124,6 +124,10 @@ public class MenuEvents implements View.OnClickListener {
                         //move to user profile
                         menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_book))));
                         break;
+                    case "Museums":
+                        //move to user profile
+                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.museums))));
+                        break;
                     case "Pictures":
                         menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_picture))));
                         break;

@@ -67,6 +67,9 @@ public class MenuAdapter extends BaseAdapter {
             case "Books":
                 viewHolder.item_img.setImageResource(R.drawable.image_book);
                 break;
+            case "Museums":
+                viewHolder.item_img.setImageResource(R.drawable.image_museum);
+                break;
             case "Pictures":
                 viewHolder.item_img.setImageResource(R.drawable.image_picture);
                 break;

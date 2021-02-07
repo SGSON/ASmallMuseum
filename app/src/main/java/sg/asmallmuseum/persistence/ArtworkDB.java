@@ -29,6 +29,7 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Book;
+import sg.asmallmuseum.Domain.Museum;
 import sg.asmallmuseum.Domain.Music;
 import sg.asmallmuseum.Domain.Paint;
 import sg.asmallmuseum.Domain.Picture;
@@ -141,6 +142,9 @@ public class ArtworkDB implements ArtworkDBInterface {
             case "Paints":
                 artwork = collection.toObject(Paint.class);
                 break;
+            case "Museums":
+                artwork = collection.toObject(Museum.class);
+                break;
             default:
                 artwork = collection.toObject(Picture.class);
                 break;
@@ -203,6 +207,23 @@ public class ArtworkDB implements ArtworkDBInterface {
             }
         });
     }
+
+    @Override
+    public void getMuseumArtList(String museumName){
+        List<Artwork> list = new ArrayList<>();
+
+        CollectionReference colRef = db.collection("Art").document("Museums").collection(museumName);
+        colRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
+                    Artwork artwork = getArtObject(collection, museumName);
+                    list.add(artwork);
+                }
+                mListener.onFileDownloadCompleteListener(list, 0);
+            }
+        });
+    }
+
 
     private List<String> setReferences(List<String> ext, String id, Artwork art){
         List<String> files = new ArrayList<>();

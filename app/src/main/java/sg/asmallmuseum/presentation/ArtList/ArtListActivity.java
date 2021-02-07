@@ -13,7 +13,6 @@ import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,7 +25,8 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     private FirebaseAuth mAuth;
     private ArtworkManager manager;
     private boolean signedIn;
-    private boolean mTypeText;
+    private boolean isTypeText;
+    private boolean isMuseum;
     private ProgressDialog dialog;
 
     @Override
@@ -46,12 +46,10 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         manager = new ArtworkManager();
         manager.setListener(this);
 
-        //Log.d("CLICKED:", intent.getStringExtra("Type"));
-        //Log.d("CLICKED:", intent.getStringExtra("Genre"));
-
         manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"));
 
-        mTypeText = (intent.getStringExtra("Type").equals("Music") || intent.getStringExtra("Type").equals("Books"));
+        isMuseum = intent.getStringExtra("Type").equals("Museums");
+        isTypeText = (intent.getStringExtra("Type").equals("Music") || intent.getStringExtra("Type").equals("Books"));
     }
 
     @Override
@@ -91,7 +89,10 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     /***Load File from DB***/
     private void initRecyclerView(List<Artwork> artworks){
         ArtListViewAdapterInterface adapter;
-        if (mTypeText){
+        if (isMuseum){
+            adapter = new ArtListMuseumViewAdapter(artworks);
+        }
+        else if (isTypeText){
             adapter = new ArtListTextViewAdapter(artworks, manager);
         }
         else {
