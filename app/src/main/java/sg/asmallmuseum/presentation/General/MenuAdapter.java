@@ -1,5 +1,6 @@
 package sg.asmallmuseum.presentation.General;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,8 @@ import java.util.List;
 import sg.asmallmuseum.R;
 
 public class MenuAdapter extends BaseAdapter {
-    List<String> menu_list;
+    private List<String> menu_list;
+    private View mCurrentView;
 
     public MenuAdapter(List<String> categories) {
         categories.remove(0);
@@ -48,14 +50,39 @@ public class MenuAdapter extends BaseAdapter {
             viewHolder.item_txt = textView;
 
             view.setTag(viewHolder);
+
+            if (i == 0){
+                view.setBackgroundColor(view.getResources().getColor(R.color.boarder, view.getContext().getTheme()));
+                mCurrentView = view;
+            }
+
         }
         else{
             viewHolder = (ViewHolder)view.getTag();
         }
         String item = menu_list.get(i);
         viewHolder.item_txt.setText(item);
-        viewHolder.item_img.setImageResource(R.drawable.arrow_back);
 
+        switch (item){
+            case "Books":
+                viewHolder.item_img.setImageResource(R.drawable.image_book);
+                break;
+            case "Museums":
+                viewHolder.item_img.setImageResource(R.drawable.image_museum);
+                break;
+            case "Pictures":
+                viewHolder.item_img.setImageResource(R.drawable.image_picture);
+                break;
+            case "Paints":
+                viewHolder.item_img.setImageResource(R.drawable.image_paint);
+                break;
+            case "Music":
+                viewHolder.item_img.setImageResource(R.drawable.image_music);
+                break;
+            case "Etc..":
+                viewHolder.item_img.setImageResource(R.drawable.image_etc);
+                break;
+        }
         return view;
     }
 
@@ -63,6 +90,12 @@ public class MenuAdapter extends BaseAdapter {
         newData.remove(0);
         menu_list = newData;
         notifyDataSetChanged();
+    }
+
+    public void setViewColor(View view){
+        mCurrentView.setBackgroundColor(view.getResources().getColor(R.color.white, view.getContext().getTheme()));
+        mCurrentView = view;
+        view.setBackgroundColor(view.getResources().getColor(R.color.boarder, view.getContext().getTheme()));
     }
 
     public String getClickedData(int i){

@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -16,10 +14,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +24,10 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Book;
+import sg.asmallmuseum.Domain.Museum;
+import sg.asmallmuseum.Domain.Music;
+import sg.asmallmuseum.Domain.Paint;
+import sg.asmallmuseum.Domain.Picture;
 import sg.asmallmuseum.logic.DBListener;
 
 public class ArtworkDB implements ArtworkDBInterface {
@@ -50,7 +49,7 @@ public class ArtworkDB implements ArtworkDBInterface {
 
     /***Upload a image and info to the firestore and the storage***/
     @Override
-    public void addArt(Artwork art, List<Uri> paths, List<String> ext) {
+    public void uploadArtInfo(Artwork art, List<Uri> paths, List<String> ext) {
 
         DocumentReference ref = db.collection("Art").document(art.getaType()).collection(art.getaGenre()).document();
         DocumentReference recentRef = db.collection("Art").document("Recent");
@@ -62,7 +61,7 @@ public class ArtworkDB implements ArtworkDBInterface {
                 ref.update("aID", ref);
                 ref.update("aFileLoc", refs);
 
-                updateRecentFile(ref.getPath());
+                updateRecentList(ref.getPath());
 
                 mListener.onInfoUploadCompleteListener(true, paths, refs, ref.getId(), art);
             }).addOnFailureListener(e -> {
@@ -72,7 +71,7 @@ public class ArtworkDB implements ArtworkDBInterface {
     }
 
     @Override
-    public void uploadFile(List<Uri> paths, List<String> refs, String id, Artwork art) throws FileNotFoundException {
+    public void uploadAttachedImage(List<Uri> paths, List<String> refs, String id, Artwork art) throws FileNotFoundException {
         for (int i = 0 ; i < paths.size() ; i++){
             StorageReference ref = storage.getReference().child(refs.get(i));
             UploadTask uploadTask = ref.putFile(paths.get(i));
@@ -87,7 +86,7 @@ public class ArtworkDB implements ArtworkDBInterface {
         }
     }
 
-    private void updateRecentFile(String path){
+    private void updateRecentList(String path){
         DocumentReference ref = db.collection("Art").document("Recent");
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -118,7 +117,7 @@ public class ArtworkDB implements ArtworkDBInterface {
         colRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
-                    Artwork artwork = collection.toObject(Book.class);
+                    Artwork artwork = getArtObject(collection, type);
                     list.add(artwork);
                 }
                 mListener.onFileDownloadCompleteListener(list, 0);
@@ -141,7 +140,8 @@ public class ArtworkDB implements ArtworkDBInterface {
         DocumentReference ref = db.collection(info[0]).document(info[1]).collection(info[2]).document(info[3]);
         ref.get().addOnSuccessListener(documentSnapshot -> {
             List<Artwork> artworks = new ArrayList<>();
-            Artwork art = documentSnapshot.toObject(Book.class);
+            Artwork art = getArtObject(documentSnapshot, info[1]);
+                    //documentSnapshot.toObject(Book.class);
             artworks.add(art);
             mListener.onFileDownloadCompleteListener(artworks, requestCode);
         });
@@ -182,12 +182,49 @@ public class ArtworkDB implements ArtworkDBInterface {
         });
     }
 
+
     private List<String> setReferences(List<String> ext, String id, Artwork art){
         List<String> files = new ArrayList<>();
         for (int i = 0 ; i < ext.size() ; i++){
             files.add(art.getaType()+"/"+art.getaGenre()+"/"+id+"("+(i+1)+")"+"."+ext.get(i));
         }
         return files;
+    }
+
+    private void getCollection(CollectionReference ref, String type, String genre){
+        List<Artwork> list = new ArrayList<>();
+
+        ref.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
+                    Artwork artwork = getArtObject(collection, type);
+                    list.add(artwork);
+                }
+                mListener.onFileDownloadCompleteListener(list, 0);
+            }
+        });
+    }
+
+    private Artwork getArtObject(DocumentSnapshot collection, String type){
+        Artwork artwork = null;
+        switch (type){
+            case "Books":
+                artwork = collection.toObject(Book.class);
+                break;
+            case "Music":
+                artwork = collection.toObject(Music.class);
+                break;
+            case "Paints":
+                artwork = collection.toObject(Paint.class);
+                break;
+            case "Museums":
+                artwork = collection.toObject(Museum.class);
+                break;
+            default:
+                artwork = collection.toObject(Picture.class);
+                break;
+        }
+        return artwork;
     }
 
 }

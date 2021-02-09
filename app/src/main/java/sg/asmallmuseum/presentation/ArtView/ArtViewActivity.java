@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.Museum;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.General.ManagerListener;
 import sg.asmallmuseum.presentation.General.MenuEvents;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,6 +49,8 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
     private TextView mNumPages;
     private int numImages;
     private boolean isExpand;
+    private ProgressDialog dialog;
+    //private boolean isMuseum;
 
     private List<String[]> review;
     private RecyclerView recyclerView;
@@ -59,6 +63,12 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_art_view);
+
+        dialog = new ProgressDialog(this, android.R.style.Theme_Material_Dialog_Alert);
+        dialog.setMessage("LOADING..");
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -159,28 +169,40 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         artwork = artworks.get(0);
         List<ArtViewFragment> fragmentList = new ArrayList<>();
 
-        List<StorageReference> refs = manager.getArtImages(artwork.getaType(), artwork.getaFileLoc());
-        for (int i = 0 ; i < refs.size() ; i++){
-            refs.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    ArtViewFragment fragment = new ArtViewFragment();
-                    fragment.setImage(uri);
-                    fragmentList.add(fragment);
+        if (artwork.getaType().equals("Mueseum")){
+            ArtViewFragment fragment = new ArtViewFragment();
+            fragment.setImage(((Museum)artwork).getaMainImage());
+            fragmentList.add(fragment);
 
-                    if(fragmentList.size() == refs.size()){
-                        imageLoadFinished(fragmentList);
-                    }
-                }
-            });
+            imageLoadFinished(fragmentList);
         }
+        else{
+            List<StorageReference> refs = manager.getArtImages(artwork.getaType(), artwork.getaFileLoc());
+            for (int i = 0 ; i < refs.size() ; i++){
+                refs.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ArtViewFragment fragment = new ArtViewFragment();
+                        fragment.setImage(uri);
+                        fragmentList.add(fragment);
+
+                        if(fragmentList.size() == refs.size()){
+                            imageLoadFinished(fragmentList);
+                        }
+                    }
+                });
+                numImages = refs.size();
+            }
+        }
+
+
 
         ((TextView) findViewById(R.id.art_title)).setText(artwork.getaTitle());
         ((TextView) findViewById(R.id.art_author)).setText(artwork.getaAuthor());
         ((TextView) findViewById(R.id.art_desc)).setText(artwork.getaDesc());
         ((RatingBar) findViewById(R.id.art_rating)).setRating(artwork.getaRating());
 
-        numImages = refs.size();
+
     }
 
     @Override
@@ -198,6 +220,7 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         pagerAdapter.updateData(list);
         pagerAdapter.notifyDataSetChanged();
 
+        dialog.dismiss();
         //Log.d("POSITION: ", pagerAdapter.getItemPosition(mPager.getCurrentItem()));
     }
 

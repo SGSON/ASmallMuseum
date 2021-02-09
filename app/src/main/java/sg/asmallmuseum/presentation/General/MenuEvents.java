@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -106,7 +107,7 @@ public class MenuEvents implements View.OnClickListener {
         map.put("Type", "Books");
 
         MenuAdapter menuAdapter = new MenuAdapter(types);
-        MenuAdapter menuItemAdapter = new MenuAdapter(genres);
+        MenuItemAdapter menuItemAdapter = new MenuItemAdapter(genres);
 
         ListView list_menu = view.findViewById(R.id.list_menu);
         ListView list_menu_item = view.findViewById(R.id.menu_item_list);
@@ -118,10 +119,15 @@ public class MenuEvents implements View.OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 map.put("Type", menuAdapter.getClickedData(i));
+                menuAdapter.setViewColor(view);
                 switch (types.get(i)){
                     case "Books":
                         //move to user profile
                         menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_book))));
+                        break;
+                    case "Museums":
+                        //move to user profile
+                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.museums))));
                         break;
                     case "Pictures":
                         menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_picture))));

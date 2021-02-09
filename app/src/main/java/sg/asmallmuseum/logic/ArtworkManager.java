@@ -34,8 +34,6 @@ public class ArtworkManager implements DBListener {
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
     public void upLoadArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) {
-
-
         upLoadArtworkInfo(paths, ext, type, genre, title, author, date, desc);
     }
 
@@ -60,13 +58,13 @@ public class ArtworkManager implements DBListener {
                 art = new Picture(type, genre, title, author, date, desc);
                 break;
         }
-        db.addArt(art, paths, ext);
+        db.uploadArtInfo(art, paths, ext);
     }
 
     private void uploadAttachedFile(List<Uri> paths, List<String> refs, String id, Artwork art) {
         StorageReference storageRef = null;
         try{
-            db.uploadFile(paths, refs, id, art);
+            db.uploadAttachedImage(paths, refs, id, art);
             //Log.d("ASD: ", "sd"+storageRef.toString());
         }
         catch (FileNotFoundException e){
@@ -96,7 +94,6 @@ public class ArtworkManager implements DBListener {
     public void getRecent(){
         db.getRecent();
     }
-
     /***End***/
 
     @Override

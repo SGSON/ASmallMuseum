@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ASmallMuseum">
-        <activity android:name=".presentation.CategoryView.CategoryViewActivity"></activity>
+        <activity android:name=".presentation.ArtViewMuseum.ArtViewMuseumActivity"></activity>
+        <activity android:name=".presentation.CategoryView.CategoryViewActivity" />
         <activity android:name=".presentation.ArtUpload.ArtUploadPageActivity" />
         <activity android:name=".presentation.ArtList.ArtListActivity" />
         <activity android:name=".presentation.ArtView.ArtViewActivity" />
