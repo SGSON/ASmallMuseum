@@ -72,7 +72,7 @@ public class ArtViewMuseumFragment extends Fragment implements View.OnClickListe
 
         manager = new ArtworkManager();
         manager.setListener(this);
-        manager.getMuseumArtList("서울시립미술관");
+        //manager.getMuseumArtList("서울시립미술관");
 
         return view;
     }

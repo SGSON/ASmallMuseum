@@ -40,6 +40,8 @@
     <string-array name="museums">
         <item>Select</item>
         <item>Seoul Art Gallery</item>
+        <item>Soma Art Gallery</item>
+        <item>Test</item>
     </string-array>
 
     <string-array name="genre_book">

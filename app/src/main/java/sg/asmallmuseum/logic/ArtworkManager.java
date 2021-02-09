@@ -58,13 +58,13 @@ public class ArtworkManager implements DBListener {
                 art = new Picture(type, genre, title, author, date, desc);
                 break;
         }
-        db.addArt(art, paths, ext);
+        db.uploadArtInfo(art, paths, ext);
     }
 
     private void uploadAttachedFile(List<Uri> paths, List<String> refs, String id, Artwork art) {
         StorageReference storageRef = null;
         try{
-            db.uploadFile(paths, refs, id, art);
+            db.uploadAttachedImage(paths, refs, id, art);
             //Log.d("ASD: ", "sd"+storageRef.toString());
         }
         catch (FileNotFoundException e){

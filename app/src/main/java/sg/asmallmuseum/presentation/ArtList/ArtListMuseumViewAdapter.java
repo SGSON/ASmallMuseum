@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.IOException;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Museum;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
+import sg.asmallmuseum.persistence.SomaGallery;
 import sg.asmallmuseum.presentation.ArtView.ArtViewActivity;
 import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
 
@@ -85,9 +87,17 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
         }
 
         public void setCard(Artwork artwork){
-            if (artwork instanceof Museum){
-                Glide.with(itemView.getContext()).load(((Museum) artwork).getaThumbnail()).into(mImage);
+            SomaGallery soma = new SomaGallery();
+            try{
+                soma.getArtInfo(artwork.getaAuthor(), artwork.getaTitle());
             }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+
+//            if (artwork instanceof Museum){
+//                Glide.with(itemView.getContext()).load(((Museum) artwork).getaThumbnail()).into(mImage);
+//            }
 
             mTitle.setText(artwork.getaTitle());
             mAuthor.setText(artwork.getaAuthor());
