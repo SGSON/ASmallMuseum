@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
@@ -28,12 +29,13 @@ import com.google.firebase.crashlytics.internal.common.CrashlyticsCore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ManagerListener, RecyclerViewOnClickListener{
+public class MainActivity extends AppCompatActivity implements ManagerListener, RecyclerViewOnClickListener, SwipeRefreshLayout.OnRefreshListener{
     private FirebaseAuth mAuth;
     private final int REQUEST_CODE = 1;
     private ArtworkManager manager;
     private ArtListImageViewAdapter adapter;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog dialog;
     private boolean signedIn;
 
@@ -65,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         Button mBackButton = (Button)findViewById(R.id.back_button);
         mBackButton.setVisibility(View.INVISIBLE);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.main_swipe_layout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         Intent intent = new Intent(this, ArtUploadPageActivity.class);
 
         //Set onClickMethods for the quick button
@@ -90,6 +95,12 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
             signedIn = true;
         }
 
+    }
+
+    @Override
+    public void onRefresh() {
+        manager.getRecent();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     /***Initiate Recycler view
@@ -177,4 +188,6 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     public void onUploadCompleteListener(boolean status) {
         //empty
     }
+
+
 }

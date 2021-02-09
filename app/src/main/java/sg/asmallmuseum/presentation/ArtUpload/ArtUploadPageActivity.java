@@ -40,9 +40,13 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ArtUploadPageActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, ManagerListener {
@@ -282,7 +286,8 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //before the uploading, please check the type and genre has been selected
-                        manager.upLoadArt(mPathList, mExtensions, map.get("type"), map.get("genre"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
+                        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                        manager.upLoadArt(mPathList, mExtensions, map.get("type"), map.get("genre"), map.get("title"), "tempuser", currentDate, map.get("desc"));
                         dialog = new ProgressDialog(ArtUploadPageActivity.this, android.R.style.Theme_Material_Dialog_Alert);
                         dialog.setMessage("LOADING..");
                         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

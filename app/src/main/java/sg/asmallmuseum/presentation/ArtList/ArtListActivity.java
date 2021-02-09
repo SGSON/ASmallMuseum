@@ -3,6 +3,7 @@ package sg.asmallmuseum.presentation.ArtList;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
@@ -19,15 +20,18 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ArtListActivity extends AppCompatActivity implements RecyclerViewOnClickListener, ManagerListener {
+public class ArtListActivity extends AppCompatActivity implements RecyclerViewOnClickListener, ManagerListener, SwipeRefreshLayout.OnRefreshListener {
     private FirebaseAuth mAuth;
     private ArtworkManager manager;
     private boolean signedIn;
     private boolean isTypeText;
     private boolean isMuseum;
     private ProgressDialog dialog;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ArtListViewAdapterInterface adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +47,14 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         Intent intent = getIntent();
 
         mAuth = FirebaseAuth.getInstance();
+
         manager = new ArtworkManager();
         manager.setListener(this);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.art_list_swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        initRecyclerView(new ArrayList<Artwork>());
 
         manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"));
 
@@ -64,6 +74,13 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
             Toast.makeText(this, "Signed-in user!", Toast.LENGTH_SHORT).show();
             signedIn = true;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        Intent intent = getIntent();
+        manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"));
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     /***Top-bar events***/
@@ -88,7 +105,6 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
 
     /***Load File from DB***/
     private void initRecyclerView(List<Artwork> artworks){
-        ArtListViewAdapterInterface adapter;
         if (isMuseum){
             adapter = new ArtListMuseumViewAdapter(artworks);
         }
@@ -107,9 +123,15 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         dialog.dismiss();
     }
 
+    private void updateList(List<Artwork> list){
+        adapter.updateList(list);
+        ((RecyclerView.Adapter) adapter).notifyDataSetChanged();
+        dialog.dismiss();
+    }
+
     @Override
     public void onDownloadCompleteListener(List<Artwork> artworks) {
-        initRecyclerView(artworks);
+        updateList(artworks);
     }
 
     @Override
@@ -128,4 +150,5 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     public void onUploadCompleteListener(boolean status) {
         //empty
     }
+
 }
