@@ -210,6 +210,11 @@ public class ArtViewActivity extends AppCompatActivity implements ManagerListene
         //has to be empty
     }
 
+    @Override
+    public void onNumPostLoadComplete(int result) {
+
+    }
+
     private void imageLoadFinished(List<ArtViewFragment> list){
         list.sort(new Comparator<ArtViewFragment>() {
             @Override

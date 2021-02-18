@@ -10,8 +10,9 @@ import java.util.List;
 import sg.asmallmuseum.Domain.Artwork;
 
 public interface DBListener {
-    void onRecentFileDownloadCompleteListener(List<String> list);
-    void onFileDownloadCompleteListener(List<Artwork> list, int request_code);
-    void onFileUploadCompleteListener(boolean complete);
-    void onInfoUploadCompleteListener(boolean complete, List<Uri> paths, List<String> refs, String id, Artwork art);
+    void onRecentFileDownloadComplete(List<String> list);
+    void onFileDownloadComplete(List<Artwork> list, int request_code);
+    void onFileUploadComplete(boolean complete);
+    void onInfoUploadComplete(boolean complete, List<Uri> paths, List<String> refs, String id, Artwork art);
+    void onNumPostDownloadComplete(int numPost, int request_id);
 }

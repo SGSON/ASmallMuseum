@@ -5,7 +5,9 @@ import android.net.Uri;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Book;
@@ -23,9 +25,15 @@ public class ArtworkManager implements DBListener {
     private final int REQUEST_SINGLE = 2;
     private final int REQUEST_MULTIPLE = 8;
 
+    private final int REQUEST_USER = 2010;
+    private final int REQUEST_UPLOAD = 2011;
+
+    private final Map<String, String> map;
+
     public ArtworkManager() {
         this.db = new ArtworkDB();
         db.setListener(this);
+        map = new HashMap<>();
     }
 
     public void setListener(ManagerListener mListener){
@@ -34,15 +42,6 @@ public class ArtworkManager implements DBListener {
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
     public void upLoadArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) {
-        upLoadArtworkInfo(paths, ext, type, genre, title, author, date, desc);
-    }
-
-    public void validateArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) throws CustomException{
-        ValidateArt.validateAll(paths, ext, type, genre, title, author, date, desc);
-    }
-
-    //Private Methods
-    private void upLoadArtworkInfo(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) {
         Artwork art = null;
         switch (type){
             case "Books":
@@ -58,9 +57,17 @@ public class ArtworkManager implements DBListener {
                 art = new Picture(type, genre, title, author, date, desc);
                 break;
         }
+        map.put("type", type);
+        map.put("genre", genre);
+
         db.uploadArtInfo(art, paths, ext);
     }
 
+    public void validateArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) throws CustomException{
+        ValidateArt.validateAll(paths, ext, type, genre, title, author, date, desc);
+    }
+
+    //Private Methods
     private void uploadAttachedFile(List<Uri> paths, List<String> refs, String id, Artwork art) {
         StorageReference storageRef = null;
         try{
@@ -75,8 +82,8 @@ public class ArtworkManager implements DBListener {
     /***End***/
 
     /***Get a image and image info from the Firestore and the storage***/
-    public void getArtInfoList(String type, String genre){
-        db.getArtInfoList(type, genre);
+    public void getArtInfoList(String type, String genre, int currPost){
+        db.getArtInfoList(type, genre, currPost);
     }
 
     public List<StorageReference> getArtImages(String type, List<String> loc){
@@ -94,10 +101,20 @@ public class ArtworkManager implements DBListener {
     public void getRecent(){
         db.getRecent();
     }
+
+    public void getNumPost(String type, String genre, int request_id){
+        if (request_id == REQUEST_USER){
+            db.getNumPost(type, genre, REQUEST_USER);
+        }
+        else {
+            db.getNumPost(type, genre, REQUEST_UPLOAD);
+        }
+
+    }
     /***End***/
 
     @Override
-    public void onFileDownloadCompleteListener(List<Artwork> list, int request_code) {
+    public void onFileDownloadComplete(List<Artwork> list, int request_code) {
         if (request_code == REQUEST_MULTIPLE){
             mListener.onDownloadCompleteListener(list);
         }
@@ -108,14 +125,16 @@ public class ArtworkManager implements DBListener {
     }
 
     @Override
-    public void onFileUploadCompleteListener(boolean complete) {
+    public void onFileUploadComplete(boolean complete) {
         mListener.onUploadCompleteListener(complete);
     }
 
     @Override
-    public void onInfoUploadCompleteListener(boolean complete, List<Uri> paths, List<String> ext, String id, Artwork art) {
+    public void onInfoUploadComplete(boolean complete, List<Uri> paths, List<String> refs, String id, Artwork art) {
         if (complete){
-            uploadAttachedFile(paths, ext, id, art);
+            map.put("id", id);
+            db.getNumPost(map.get("type"), map.get("genre"), REQUEST_UPLOAD);
+            uploadAttachedFile(paths, refs, id, art);
         }
         else{
             mListener.onUploadCompleteListener(false);
@@ -123,7 +142,17 @@ public class ArtworkManager implements DBListener {
     }
 
     @Override
-    public void onRecentFileDownloadCompleteListener(List<String> list) {
+    public void onNumPostDownloadComplete(int numPost, int request_number) {
+        if (request_number == REQUEST_USER){
+            mListener.onNumPostLoadComplete(numPost);
+        }
+        else if (request_number == REQUEST_UPLOAD){
+            db.updatePostingNumber(map, numPost);
+        }
+    }
+
+    @Override
+    public void onRecentFileDownloadComplete(List<String> list) {
         getMultipleArtInfoByPath(list);
     }
 }

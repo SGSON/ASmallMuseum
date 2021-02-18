@@ -115,4 +115,9 @@ public class ArtViewMuseumFragment extends Fragment implements View.OnClickListe
     public void onUploadCompleteListener(boolean status) {
 
     }
+
+    @Override
+    public void onNumPostLoadComplete(int result) {
+
+    }
 }

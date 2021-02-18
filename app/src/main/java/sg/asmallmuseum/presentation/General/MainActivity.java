@@ -189,5 +189,10 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         //empty
     }
 
+    @Override
+    public void onNumPostLoadComplete(int result) {
+
+    }
+
 
 }

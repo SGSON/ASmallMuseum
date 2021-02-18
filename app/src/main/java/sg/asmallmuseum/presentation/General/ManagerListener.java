@@ -7,4 +7,5 @@ import sg.asmallmuseum.Domain.Artwork;
 public interface ManagerListener {
     void onDownloadCompleteListener(List<Artwork> artworks);
     void onUploadCompleteListener(boolean status);
+    void onNumPostLoadComplete(int result);
 }

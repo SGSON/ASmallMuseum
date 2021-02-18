@@ -235,6 +235,12 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         dialog.dismiss();
         finish();
     }
+
+    @Override
+    public void onNumPostLoadComplete(int result) {
+
+    }
+
     /***End***/
 
     @Override

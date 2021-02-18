@@ -7,6 +7,7 @@ import java.util.List;
 
 public abstract class Artwork {
     private DocumentReference aID;
+    private int aPostNum;
     private String aType;
     private String aGenre;
     private String aTitle;
@@ -100,6 +101,14 @@ public abstract class Artwork {
 
     public void setaRating(int aRating) {
         this.aRating = aRating;
+    }
+
+    public int getaPostNum() {
+        return aPostNum;
+    }
+
+    public void setaPostNum(int aPostNum) {
+        this.aPostNum = aPostNum;
     }
 
 }

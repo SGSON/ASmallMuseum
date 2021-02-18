@@ -72,6 +72,7 @@ public class ArtListTextViewAdapter extends RecyclerView.Adapter<ArtListTextView
     @Override
     public void updateList(List<Artwork> artworks) {
         mArtList = artworks;
+        notifyDataSetChanged();
     }
 
     static class ArtListTextViewHolder extends RecyclerView.ViewHolder{

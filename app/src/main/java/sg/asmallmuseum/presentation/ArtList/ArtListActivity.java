@@ -14,6 +14,7 @@ import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,6 +34,11 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ArtListViewAdapterInterface adapter;
 
+    private final int REQUEST_USER = 2010;
+
+    private int totalPost;
+    private int currentPost;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +57,15 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         manager = new ArtworkManager();
         manager.setListener(this);
 
+        manager.getNumPost(intent.getStringExtra("Type"), intent.getStringExtra("Genre"), REQUEST_USER);
+
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.art_list_swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        initRecyclerView(new ArrayList<Artwork>());
-
-        manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"));
-
         isMuseum = intent.getStringExtra("Type").equals("Museums");
         isTypeText = (intent.getStringExtra("Type").equals("Music") || intent.getStringExtra("Type").equals("Books"));
+
+        initRecyclerView(new ArrayList<Artwork>());
     }
 
     @Override
@@ -79,7 +85,7 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     @Override
     public void onRefresh() {
         Intent intent = getIntent();
-        manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"));
+        manager.getNumPost(intent.getStringExtra("Type"), intent.getStringExtra("Genre"), REQUEST_USER);
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -132,6 +138,16 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     @Override
     public void onDownloadCompleteListener(List<Artwork> artworks) {
         updateList(artworks);
+    }
+
+    @Override
+    public void onNumPostLoadComplete(int result) {
+        totalPost = result;
+        currentPost = result;
+
+        Log.d("NUM", ""+result);
+        Intent intent = getIntent();
+        manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"), totalPost);
     }
 
     @Override
