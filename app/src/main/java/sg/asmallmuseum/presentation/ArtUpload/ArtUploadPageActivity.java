@@ -26,6 +26,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -130,10 +131,20 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
             uploadArt();
         }
         else if (id == R.id.upload_image_add){
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+//            Intent intent = new Intent(Intent.ACTION_PICK);
+//            //intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+//            //intent.setAction();
+//            intent.setType("image/*");
+//            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//            startActivityForResult(intent, REQUEST_CODE);
+
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            //Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            startActivityForResult(intent, REQUEST_CODE);
+            //intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            //intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE);
 
         }
     }
@@ -257,12 +268,12 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
 
                 }
             }
-            /*else{
-                if (data.getData() != null){
-                    Uri uri = data.getData();
-                    updateList(uri, paths);
-                }
-            }*/
+//            else{
+//                if (data.getData() != null){
+//                    Uri uri = data.getData();
+//                    updateList(uri, paths);
+//                }
+//            }
             adapter.updateList();
         }
         else {
@@ -271,11 +282,16 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     }
 
     private void updateList(Uri uri, String[] paths){
-        String type = getContentResolver().getType(uri);
-        Cursor cursor = getContentResolver().query(uri, paths, null, null, MediaStore.Images.Media.DEFAULT_SORT_ORDER+"DESC");
+        String wholeID = DocumentsContract.getDocumentId(uri);
+        String id = wholeID.split(":")[1];
+        String sel = MediaStore.Images.Media._ID + "=?";
 
+        String type = getContentResolver().getType(uri);
+        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, paths, sel, new String[]{id}, null);
         cursor.moveToFirst();
-        String image = cursor.getString(cursor.getColumnIndex(paths[0]));
+
+        int cursorIndex = cursor.getColumnIndexOrThrow(paths[0]);
+        String image = cursor.getString(cursorIndex);
         cursor.close();
 
         String[] extension = type.split("/");

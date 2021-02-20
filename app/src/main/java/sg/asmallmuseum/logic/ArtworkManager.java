@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.FileNotFoundException;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,13 +116,16 @@ public class ArtworkManager implements DBListener {
 
     @Override
     public void onFileDownloadComplete(List<Artwork> list, int request_code) {
-        if (request_code == REQUEST_MULTIPLE){
+            list.sort(new Comparator<Artwork>() {
+                @Override
+                public int compare(Artwork artwork, Artwork t1) {
+                    if (artwork.getaPostNum() >= t1.getaPostNum()){
+                        return -1;
+                    }
+                    return 1;
+                }
+            });
             mListener.onDownloadCompleteListener(list);
-        }
-        else{
-            mListener.onDownloadCompleteListener(list);
-        }
-
     }
 
     @Override
