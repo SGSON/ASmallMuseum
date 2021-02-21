@@ -6,15 +6,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -59,7 +56,7 @@ public class ArtViewMuseumFragment extends Fragment implements View.OnClickListe
         mTitle = (TextView) view.findViewById(R.id.fragment_art_title);
         mAuthor = (TextView) view.findViewById(R.id.fragment_art_author);
         mDesc = (TextView) view.findViewById(R.id.fragment_art_desc);
-        mExpand = (Button) view.findViewById(R.id.fragment_art_button_pager);
+        mExpand = (Button) view.findViewById(R.id.fragment_art_pager_expand_button);
         mExpandInfo = (Button) view.findViewById(R.id.fragment_art_expand_button);
         mExtra = (Button) view.findViewById(R.id.fragment_art_more_button);
         mRating = (RatingBar) view.findViewById(R.id.fragment_art_rating);
