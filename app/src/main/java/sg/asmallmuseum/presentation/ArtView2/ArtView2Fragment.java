@@ -22,9 +22,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
@@ -35,6 +38,7 @@ import sg.asmallmuseum.presentation.General.ManagerListener;
 public class ArtView2Fragment extends Fragment implements View.OnClickListener, ManagerListener {
     private View view;
     private ArtView2ViewModel viewModel;
+    private ViewPager2 viewPager;
 
     private boolean isExpanded;
     private ArtworkManager manager;
@@ -60,6 +64,7 @@ public class ArtView2Fragment extends Fragment implements View.OnClickListener, 
 
         setButtons();
         getArtInfo();
+        setReviewRecyclerView();
         isExpanded = true;
 
         return view;
@@ -83,11 +88,27 @@ public class ArtView2Fragment extends Fragment implements View.OnClickListener, 
 
     private void setViewPager(List<Uri> mList){
         //run when image loads finished.
+        mList.sort(new Comparator<Uri>() {
+            @Override
+            public int compare(Uri uri, Uri t1) {
+                return uri.toString().compareTo(t1.toString());
+            }
+        });
 
-        ViewPager2 viewPager = (ViewPager2) view.findViewById(R.id.fragment_art_image_pager);
+        viewModel.setUriList(mList);
+
+        viewPager = (ViewPager2) view.findViewById(R.id.fragment_art_image_pager);
         ArtViewPagerAdapter adapter = new ArtViewPagerAdapter(this);
         adapter.setData(mList);
         viewPager.setAdapter(adapter);
+    }
+
+    private void setReviewRecyclerView(){
+        RecyclerView reviewLayout = (RecyclerView) view.findViewById(R.id.fragment_art_scroll_view);
+        ArtView2RecyclerViewAdapter adapter = new ArtView2RecyclerViewAdapter();
+        reviewLayout.setLayoutManager(new LinearLayoutManager(getActivity()));
+        reviewLayout.setAdapter(adapter);
+
     }
 
     @Override
@@ -102,6 +123,8 @@ public class ArtView2Fragment extends Fragment implements View.OnClickListener, 
         }
         else if (id == R.id.fragment_art_pager_expand_button){
             if (getActivity() instanceof ArtView2Activity){
+                viewModel.setmCurrentPage(viewPager.getCurrentItem());
+                Log.d("Curr", ""+viewPager.getCurrentItem());
                 ((ArtView2Activity) getActivity()).replaceFragment(this);
             }
         }
@@ -109,19 +132,19 @@ public class ArtView2Fragment extends Fragment implements View.OnClickListener, 
 
     private void resizeDescLayout(){
         ConstraintLayout descLayout = (ConstraintLayout) view.findViewById(R.id.fragment_art_desc_view);
-        ConstraintLayout titleLayout = (ConstraintLayout)view.findViewById(R.id.fragment_art_title_layout);
+        //ConstraintLayout titleLayout = (ConstraintLayout)view.findViewById(R.id.fragment_art_title_layout);
 
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) descLayout.getLayoutParams();
-        ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) titleLayout.getLayoutParams();
+        //ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) titleLayout.getLayoutParams();
 
         Button button = (Button) view.findViewById(R.id.fragment_art_expand_button);
 
         if (isExpanded){
-            params.height = titleParams.height;
+            params.height = descLayout.getMinHeight();
             button.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.collapse, getActivity().getTheme()));
         }
         else {
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            params.height = descLayout.getMaxHeight();
             button.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.expand, getActivity().getTheme()));
         }
 

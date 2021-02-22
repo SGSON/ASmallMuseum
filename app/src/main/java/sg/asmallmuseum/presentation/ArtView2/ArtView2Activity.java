@@ -27,9 +27,8 @@ public class ArtView2Activity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-
         mArtViewFragment = new ArtView2Fragment();
-        mArtViewExpandFragment = new ArtViewMuseumExpandFragment();
+        mArtViewExpandFragment = new ArtViewExpandFragment();
         viewModel = new ViewModelProvider(this).get(ArtView2ViewModel.class);
 
         replaceFragment(null);
