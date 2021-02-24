@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation.ArtView2;
+package sg.asmallmuseum.presentation.ArtView;
 
 import android.net.Uri;
 
@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ArtView2ViewModel extends ViewModel {
+public class ArtViewViewModel extends ViewModel {
     private final MutableLiveData<List<Uri>> mUriList = new MutableLiveData<>();
     private final MutableLiveData<Integer> mCurrentPage = new MutableLiveData<>();
 

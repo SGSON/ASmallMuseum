@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation.ArtView2;
+package sg.asmallmuseum.presentation.ArtView;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,7 @@ public class ArtViewExpandFragment extends Fragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_art_view_expanded, container, false);
+        view = inflater.inflate(R.layout.fragment_art_view_expand, container, false);
 
         Button mClose = (Button) view.findViewById(R.id.fragment_large_close);
         mClose.setOnClickListener(this);
@@ -49,7 +48,7 @@ public class ArtViewExpandFragment extends Fragment implements View.OnClickListe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArtView2ViewModel viewModel = new ViewModelProvider(requireActivity()).get(ArtView2ViewModel.class);
+        ArtViewViewModel viewModel = new ViewModelProvider(requireActivity()).get(ArtViewViewModel.class);
         viewModel.getUriList().observe(getViewLifecycleOwner(), new Observer<List<Uri>>() {
             @Override
             public void onChanged(List<Uri> uris) {
@@ -93,8 +92,8 @@ public class ArtViewExpandFragment extends Fragment implements View.OnClickListe
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.fragment_large_close){
-            if (getActivity() instanceof ArtView2Activity){
-                ((ArtView2Activity) getActivity()).replaceFragment(this);
+            if (getActivity() instanceof ArtViewActivity){
+                ((ArtViewActivity) getActivity()).replaceFragment(this);
             }
         }
     }

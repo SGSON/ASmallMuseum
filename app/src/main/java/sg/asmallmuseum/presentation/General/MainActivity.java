@@ -10,6 +10,8 @@ import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.ArtList.ArtListImageViewAdapter;
 import sg.asmallmuseum.presentation.ArtUpload.ArtUploadPageActivity;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -19,17 +21,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.crashlytics.internal.common.CrashlyticsCore;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ManagerListener, RecyclerViewOnClickListener, SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity implements RecyclerViewOnClickListener, SwipeRefreshLayout.OnRefreshListener,
+        ArtWorkLoadCompleteListener {
     private FirebaseAuth mAuth;
     private final int REQUEST_CODE = 1;
     private ArtworkManager manager;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
 
         //Set a listener to Artwork Manager
         manager = new ArtworkManager();
-        manager.setListener(this);
+        manager.setArtworkLoadCompleteListener(this);
 
         //will be move to the upload activity
         requestPermission();
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
     /***Get image information from ArtManager
      * Then, update the recycler view***/
     @Override
-    public void onDownloadCompleteListener(List<Artwork> artworks){
+    public void onArtworkLoadComplete(List<Artwork> artworks) {
         updateList(artworks);
     }
 
@@ -183,16 +184,4 @@ public class MainActivity extends AppCompatActivity implements ManagerListener, 
         }
     }
     /***End***/
-
-    @Override
-    public void onUploadCompleteListener(boolean status) {
-        //empty
-    }
-
-    @Override
-    public void onNumPostLoadComplete(int result) {
-
-    }
-
-
 }

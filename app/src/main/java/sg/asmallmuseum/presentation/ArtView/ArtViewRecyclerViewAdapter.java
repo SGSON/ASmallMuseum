@@ -6,42 +6,49 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.R;
 
-public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHolder> {
-    private List<String[]> review;
-    public ReviewAdapter(List<String[]> review){
-        this.review = review;
+public class ArtViewRecyclerViewAdapter extends RecyclerView.Adapter<ArtViewRecyclerViewAdapter.ArtView2ViewHolder> {
+    private List<String[]> mList;
+
+    public ArtViewRecyclerViewAdapter(){
+        mList = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public ReviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ArtView2ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review, parent, false);
-        return new ReviewHolder(view);
+        return new ArtView2ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReviewHolder holder, int position) {
-        holder.setDetail(review.get(position));
+    public void onBindViewHolder(@NonNull ArtView2ViewHolder holder, int position) {
+        holder.setDetail(mList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return review.size();
+        return mList.size();
     }
 
-    class ReviewHolder extends RecyclerView.ViewHolder{
+    public void updateList(List<String[]> newList){
+        this.mList = newList;
+        notifyDataSetChanged();
+    }
+
+    static class ArtView2ViewHolder extends RecyclerView.ViewHolder{
         private TextView uNick;
         private TextView uDate;
         private TextView uReview;
         private RatingBar uRating;
 
-        public ReviewHolder(@NonNull View itemView) {
+        public ArtView2ViewHolder(@NonNull View itemView) {
             super(itemView);
             uNick = (TextView)itemView.findViewById(R.id.review_id);
             uDate = (TextView)itemView.findViewById(R.id.review_time);

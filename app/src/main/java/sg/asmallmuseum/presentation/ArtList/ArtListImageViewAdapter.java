@@ -20,8 +20,7 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.ArtView.ArtViewActivity;
-import sg.asmallmuseum.presentation.ArtView2.ArtView2Activity;
-import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageViewAdapter.ArtListImageViewHolder> implements ArtListViewAdapterInterface {
     private List<Artwork> mArtList;
@@ -51,7 +50,7 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), ArtView2Activity.class);
+                    Intent intent = new Intent(view.getContext(), ArtViewActivity.class);
                     intent.putExtra("DocPath", mArtList.get(position).getaID().getPath());
                     mListener.onItemClick(position, intent);
                 }

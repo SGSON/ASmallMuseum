@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Messages.ArtAttachedError;
 import sg.asmallmuseum.Domain.Messages.ArtDescError;
 import sg.asmallmuseum.Domain.Messages.ArtGenreError;
@@ -13,7 +12,7 @@ import sg.asmallmuseum.Domain.Messages.ArtTypeError;
 import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
-import sg.asmallmuseum.presentation.General.ManagerListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UploadCompleteListener;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -43,14 +42,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class ArtUploadPageActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, ManagerListener {
+public class ArtUploadPageActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, UploadCompleteListener {
     private Spinner mType;
     private Spinner mGenre;
     private EditText mTitle;
@@ -79,7 +77,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         map = new HashMap<>();
 
         manager = new ArtworkManager();
-        manager.setListener(this);
+        manager.setUpLoadCompleteListener(this);
 
         mPathList = new ArrayList<>();
         mFileName = new ArrayList<>();
@@ -236,20 +234,10 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     }
 
     @Override
-    public void onDownloadCompleteListener(List<Artwork> artworks) {
-
-    }
-
-    @Override
-    public void onUploadCompleteListener(boolean status) {
+    public void onUploadComplete(boolean status) {
         //Toast.makeText(this, "Upload finished", Toast.LENGTH_SHORT).show();
         dialog.dismiss();
         finish();
-    }
-
-    @Override
-    public void onNumPostLoadComplete(int result) {
-
     }
 
     /***End***/

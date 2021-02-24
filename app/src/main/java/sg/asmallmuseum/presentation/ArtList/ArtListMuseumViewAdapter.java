@@ -1,16 +1,11 @@
 package sg.asmallmuseum.presentation.ArtList;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,12 +13,10 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
-import sg.asmallmuseum.Domain.Museum;
 import sg.asmallmuseum.R;
-import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.persistence.SomaGallery;
 import sg.asmallmuseum.presentation.ArtView.ArtViewActivity;
-import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseumViewAdapter.MuseumViewHolder> implements ArtListViewAdapterInterface {
     private List<Artwork> mArtList;

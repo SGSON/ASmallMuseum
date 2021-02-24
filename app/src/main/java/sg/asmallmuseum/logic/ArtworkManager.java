@@ -2,6 +2,8 @@ package sg.asmallmuseum.logic;
 
 import android.net.Uri;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.FileNotFoundException;
@@ -18,11 +20,17 @@ import sg.asmallmuseum.Domain.Paint;
 import sg.asmallmuseum.Domain.Picture;
 import sg.asmallmuseum.persistence.ArtworkDB;
 import sg.asmallmuseum.persistence.ArtworkDBInterface;
-import sg.asmallmuseum.presentation.General.ManagerListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UploadCompleteListener;
 
 public class ArtworkManager implements DBListener {
     private final ArtworkDBInterface db;
-    private ManagerListener mListener;
+
+    private UploadCompleteListener upListener;
+    private ArtWorkLoadCompleteListener downListener;
+    private NumPostLoadCompleteListener numListener;
+
     private final int REQUEST_SINGLE = 2;
     private final int REQUEST_MULTIPLE = 8;
 
@@ -37,8 +45,16 @@ public class ArtworkManager implements DBListener {
         map = new HashMap<>();
     }
 
-    public void setListener(ManagerListener mListener){
-        this.mListener = mListener;
+    public void setUpLoadCompleteListener(UploadCompleteListener mListener){
+        this.upListener = mListener;
+    }
+
+    public void setArtworkLoadCompleteListener(ArtWorkLoadCompleteListener mListener){
+        this.downListener = mListener;
+    }
+
+    public void setNumPostLoadCompleteListener(NumPostLoadCompleteListener mListener){
+        this.numListener = mListener;
     }
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
@@ -125,12 +141,12 @@ public class ArtworkManager implements DBListener {
                     return 1;
                 }
             });
-            mListener.onDownloadCompleteListener(list);
+            downListener.onArtworkLoadComplete(list);
     }
 
     @Override
     public void onFileUploadComplete(boolean complete) {
-        mListener.onUploadCompleteListener(complete);
+        upListener.onUploadComplete(complete);
     }
 
     @Override
@@ -141,14 +157,18 @@ public class ArtworkManager implements DBListener {
             uploadAttachedFile(paths, refs, id, art);
         }
         else{
-            mListener.onUploadCompleteListener(false);
+            upListener.onUploadComplete(false);
         }
     }
 
     @Override
     public void onNumPostDownloadComplete(int numPost, int request_number) {
         if (request_number == REQUEST_USER){
-            mListener.onNumPostLoadComplete(numPost);
+            numListener.onNumPostLoadComplete(numPost);
+
+            if (numListener != null){
+                numListener.onNumPostLoadComplete(numPost);
+            }
         }
         else if (request_number == REQUEST_UPLOAD){
             db.updatePostingNumber(map, numPost);

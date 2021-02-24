@@ -7,9 +7,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
-import sg.asmallmuseum.presentation.General.ManagerListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
 import sg.asmallmuseum.presentation.General.MenuEvents;
-import sg.asmallmuseum.presentation.General.RecyclerViewOnClickListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -24,7 +25,8 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtListActivity extends AppCompatActivity implements RecyclerViewOnClickListener, ManagerListener, SwipeRefreshLayout.OnRefreshListener {
+public class ArtListActivity extends AppCompatActivity implements RecyclerViewOnClickListener, SwipeRefreshLayout.OnRefreshListener,
+        NumPostLoadCompleteListener, ArtWorkLoadCompleteListener {
     private FirebaseAuth mAuth;
     private ArtworkManager manager;
     private boolean signedIn;
@@ -55,7 +57,8 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
         mAuth = FirebaseAuth.getInstance();
 
         manager = new ArtworkManager();
-        manager.setListener(this);
+        manager.setArtworkLoadCompleteListener(this);
+        manager.setNumPostLoadCompleteListener(this);
 
         manager.getNumPost(intent.getStringExtra("Type"), intent.getStringExtra("Genre"), REQUEST_USER);
 
@@ -136,7 +139,7 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     }
 
     @Override
-    public void onDownloadCompleteListener(List<Artwork> artworks) {
+    public void onArtworkLoadComplete(List<Artwork> artworks) {
         updateList(artworks);
     }
 
@@ -161,10 +164,5 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     }
 
     /***End***/
-
-    @Override
-    public void onUploadCompleteListener(boolean status) {
-        //empty
-    }
 
 }

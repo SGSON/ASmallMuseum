@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation.ArtView2;
+package sg.asmallmuseum.presentation.ArtView;
 
 import android.net.Uri;
 
@@ -7,7 +7,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-import sg.asmallmuseum.presentation.ArtView.ArtViewFragment;
 
 public class ArtViewPagerAdapter extends FragmentStateAdapter {
     private List<Uri> mList;
@@ -19,7 +18,7 @@ public class ArtViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        ArtViewFragment fragment = new ArtViewFragment();
+        ArtViewImageFragment fragment = new ArtViewImageFragment();
         fragment.setImage(mList.get(position));
         return fragment;
     }
