@@ -26,10 +26,16 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
     private List<Artwork> mArtList;
     private RecyclerViewOnClickListener mListener;
     private ArtworkManager manager;
+    private ArtListMuseumViewAdapter.OnBottomReachedListener mBottomReachedListener;
 
     public ArtListImageViewAdapter(List<Artwork> mArtList, ArtworkManager manager){
         this.mArtList = mArtList;
         this.manager = manager;
+    }
+
+    @Override
+    public void setOnBottomReachedListener(ArtListMuseumViewAdapter.OnBottomReachedListener listener) {
+        mBottomReachedListener = listener;
     }
 
     @NonNull
@@ -45,6 +51,10 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
         List<StorageReference> ref = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
         holder.setCard(mArtList.get(position), ref.get(0));
         //Glide.with(holder.itemView).load(ref).into(holder.mImage);
+
+        if (position == mArtList.size()-1){
+            mBottomReachedListener.onBottomReached();
+        }
 
         if (mListener != null){
             holder.itemView.setOnClickListener(new View.OnClickListener() {

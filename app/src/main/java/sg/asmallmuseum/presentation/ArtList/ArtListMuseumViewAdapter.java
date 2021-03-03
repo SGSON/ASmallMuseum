@@ -1,6 +1,7 @@
 package sg.asmallmuseum.presentation.ArtList;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +22,14 @@ import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClick
 public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseumViewAdapter.MuseumViewHolder> implements ArtListViewAdapterInterface {
     private List<Artwork> mArtList;
     private RecyclerViewOnClickListener mListener;
+    private OnBottomReachedListener mBottomReachedListener;
 
     public ArtListMuseumViewAdapter(List<Artwork> mArtList) {
         this.mArtList = mArtList;
+    }
+
+    public void setOnBottomReachedListener(OnBottomReachedListener listener){
+        this.mBottomReachedListener = listener;
     }
 
     @NonNull
@@ -37,6 +43,10 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
     public void onBindViewHolder(@NonNull MuseumViewHolder holder, int position) {
         holder.setCard(mArtList.get(position));
         //Glide.with(holder.itemView).load(ref).into(holder.mImage);
+
+        if(position == mArtList.size()-1){
+            mBottomReachedListener.onBottomReached();
+        }
 
         if (mListener != null){
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +72,10 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
 
     @Override
     public void updateList(List<Artwork> artworks) {
-        this.mArtList = artworks;
+
+        this.mArtList.addAll(artworks);
+        Log.d("NUM_ELEMENTS", ""+mArtList.size());
+        notifyDataSetChanged();
     }
 
     static class MuseumViewHolder extends RecyclerView.ViewHolder{
@@ -80,13 +93,13 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
         }
 
         public void setCard(Artwork artwork){
-            SomaGallery soma = new SomaGallery();
-            try{
-                soma.getArtInfo(artwork.getaAuthor(), artwork.getaTitle());
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
+//            SomaGallery soma = new SomaGallery();
+//            try{
+//                soma.getArtInfo(artwork.getaAuthor(), artwork.getaTitle());
+//            }
+//            catch (IOException e){
+//                e.printStackTrace();
+//            }
 
 //            if (artwork instanceof Museum){
 //                Glide.with(itemView.getContext()).load(((Museum) artwork).getaThumbnail()).into(mImage);
@@ -96,5 +109,9 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
             mAuthor.setText(artwork.getaAuthor());
             mDate.setText(artwork.getaDate());
         }
+    }
+
+    interface OnBottomReachedListener{
+        void onBottomReached();
     }
 }

@@ -7,5 +7,6 @@ import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClick
 
 public interface ArtListViewAdapterInterface {
     void setOnClickListener(RecyclerViewOnClickListener listener);
+    void setOnBottomReachedListener(ArtListMuseumViewAdapter.OnBottomReachedListener listener);
     void updateList(List<Artwork> artworks);
 }

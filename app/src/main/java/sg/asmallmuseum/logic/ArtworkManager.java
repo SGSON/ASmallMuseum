@@ -100,7 +100,9 @@ public class ArtworkManager implements DBListener {
 
     /***Get a image and image info from the Firestore and the storage***/
     public void getArtInfoList(String type, String genre, int currPost){
-        db.getArtInfoList(type, genre, currPost);
+        if (currPost > 0){
+            db.getArtInfoList(type, genre, currPost);
+        }
     }
 
     public List<StorageReference> getArtImages(String type, List<String> loc){
@@ -164,7 +166,7 @@ public class ArtworkManager implements DBListener {
     @Override
     public void onNumPostDownloadComplete(int numPost, int request_number) {
         if (request_number == REQUEST_USER){
-            numListener.onNumPostLoadComplete(numPost);
+            //numListener.onNumPostLoadComplete(numPost);
 
             if (numListener != null){
                 numListener.onNumPostLoadComplete(numPost);

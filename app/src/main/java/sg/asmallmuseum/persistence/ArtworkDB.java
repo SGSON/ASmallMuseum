@@ -35,9 +35,7 @@ public class ArtworkDB implements ArtworkDBInterface {
     private final FirebaseFirestore db;
     private final FirebaseStorage storage;
     private DBListener mListener;
-    private final String TAG = "ART DB Connection: ";
-    private final String TAG2 = "UPLOAD: ";
-    private final int MAX_LIST_SIZE = 16;
+    private final int MAX_LIST_SIZE = 10;
 
     private final int REQUEST_USER = 2010;
     private final int REQUEST_UPLOAD = 2011;
@@ -122,8 +120,13 @@ public class ArtworkDB implements ArtworkDBInterface {
     public void getArtInfoList(String type, String genre, int currPost){
         List<Artwork> list = new ArrayList<>();
 
+        int numPost = MAX_LIST_SIZE;
+        if (currPost < 10){
+            numPost = currPost;
+        }
+
         CollectionReference colRef = db.collection("Art").document(type).collection(genre);
-        colRef.whereLessThanOrEqualTo("aPostNum", currPost).orderBy("aPostNum", Query.Direction.DESCENDING).limit(30).get().addOnCompleteListener(task -> {
+        colRef.whereLessThanOrEqualTo("aPostNum", currPost).orderBy("aPostNum", Query.Direction.DESCENDING).limit(numPost).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
                     Artwork artwork = getArtObject(collection, type);

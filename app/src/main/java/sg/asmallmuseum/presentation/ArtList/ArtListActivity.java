@@ -114,6 +114,8 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
 
     /***Load File from DB***/
     private void initRecyclerView(List<Artwork> artworks){
+        Intent intent = getIntent();
+
         if (isMuseum){
             adapter = new ArtListMuseumViewAdapter(artworks);
         }
@@ -124,6 +126,13 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
             adapter = new ArtListImageViewAdapter(artworks, manager);
         }
         adapter.setOnClickListener(this);
+        adapter.setOnBottomReachedListener(new ArtListMuseumViewAdapter.OnBottomReachedListener() {
+            @Override
+            public void onBottomReached() {
+                manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"), currentPost);
+                currentPost -= 10;
+            }
+        });
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.art_list);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -134,7 +143,6 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
 
     private void updateList(List<Artwork> list){
         adapter.updateList(list);
-        ((RecyclerView.Adapter) adapter).notifyDataSetChanged();
         dialog.dismiss();
     }
 
@@ -146,9 +154,8 @@ public class ArtListActivity extends AppCompatActivity implements RecyclerViewOn
     @Override
     public void onNumPostLoadComplete(int result) {
         totalPost = result;
-        currentPost = result;
+        currentPost = result-10;
 
-        Log.d("NUM", ""+result);
         Intent intent = getIntent();
         manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"), totalPost);
     }

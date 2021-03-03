@@ -28,10 +28,16 @@ public class ArtListTextViewAdapter extends RecyclerView.Adapter<ArtListTextView
     private RecyclerViewOnClickListener mListener;
     private final ArtworkManager manager;
     private Context context;
+    private ArtListMuseumViewAdapter.OnBottomReachedListener mBottomReachedListener;
 
     public ArtListTextViewAdapter(List<Artwork> mArtwork, ArtworkManager manager){
         this.mArtList = mArtwork;
         this.manager = manager;
+    }
+
+    @Override
+    public void setOnBottomReachedListener(ArtListMuseumViewAdapter.OnBottomReachedListener listener) {
+        mBottomReachedListener = listener;
     }
 
     @NonNull
@@ -45,6 +51,10 @@ public class ArtListTextViewAdapter extends RecyclerView.Adapter<ArtListTextView
     public void onBindViewHolder(@NonNull ArtListTextViewHolder holder, int position) {
         List<StorageReference> refs = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
         holder.setCard(mArtList.get(position), refs.get(0));
+
+        if (position == mArtList.size()-1){
+            mBottomReachedListener.onBottomReached();
+        }
 
         Artwork artwork = mArtList.get(position);
         if (mListener != null){
