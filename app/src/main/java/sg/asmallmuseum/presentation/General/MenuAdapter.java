@@ -55,7 +55,6 @@ public class MenuAdapter extends BaseAdapter {
                 view.setBackgroundColor(view.getResources().getColor(R.color.boarder, view.getContext().getTheme()));
                 mCurrentView = view;
             }
-
         }
         else{
             viewHolder = (ViewHolder)view.getTag();
@@ -63,26 +62,8 @@ public class MenuAdapter extends BaseAdapter {
         String item = menu_list.get(i);
         viewHolder.item_txt.setText(item);
 
-        switch (item){
-            case "Books":
-                viewHolder.item_img.setImageResource(R.drawable.image_book);
-                break;
-            case "Museums":
-                viewHolder.item_img.setImageResource(R.drawable.image_museum);
-                break;
-            case "Pictures":
-                viewHolder.item_img.setImageResource(R.drawable.image_picture);
-                break;
-            case "Paints":
-                viewHolder.item_img.setImageResource(R.drawable.image_paint);
-                break;
-            case "Music":
-                viewHolder.item_img.setImageResource(R.drawable.image_music);
-                break;
-            case "Etc..":
-                viewHolder.item_img.setImageResource(R.drawable.image_etc);
-                break;
-        }
+        setImages(viewHolder, item);
+
         return view;
     }
 
@@ -100,6 +81,26 @@ public class MenuAdapter extends BaseAdapter {
 
     public String getClickedData(int i){
         return menu_list.get(i);
+    }
+
+    private void setImages(ViewHolder viewHolder, String item){
+        switch (item){
+            case "Fine Arts":
+                viewHolder.item_img.setImageResource(R.drawable.image_paint);
+                break;
+            case "Visual Arts":
+                viewHolder.item_img.setImageResource(R.drawable.image_picture);
+                break;
+            case "Applied Arts":
+                viewHolder.item_img.setImageResource(R.drawable.image_applied);
+                break;
+            case "Others":
+                viewHolder.item_img.setImageResource(R.drawable.image_etc);
+                break;
+            case "Museums":
+                viewHolder.item_img.setImageResource(R.drawable.image_museum);
+                break;
+        }
     }
 
     static class ViewHolder{

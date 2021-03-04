@@ -27,14 +27,13 @@
     <string name="up_genre">Genre: </string>
 
 
-    <string-array name="types">
+    <string-array name="arts_categories">
         <item>Select</item>
-        <item>Books</item>
-        <item>Pictures</item>
-        <item>Paints</item>
-        <item>Music</item>
+        <item>Fine Arts</item>
+        <item>Visual Arts</item>
+        <item>Applied Arts</item>
+        <item>Others</item>
         <item>Museums</item>
-        <item>Etc..</item>
     </string-array>
 
     <string-array name="museums">
@@ -44,37 +43,40 @@
         <item>Test</item>
     </string-array>
 
-    <string-array name="genre_book">
+    <string-array name="type_fine">
         <item>Select</item>
-        <item>Novel</item>
-        <item>Non-Fiction</item>
-        <item>Fiction</item>
-        <item>Poem</item>
-        <item>Science-Fiction</item>
+        <item>Drawing</item>
+        <item>Painting</item>
+        <item>Sculpture</item>
+        <item>Printing</item>
+        <item>Calligraphy</item>
         <item>Etc..</item>
     </string-array>
 
-    <string-array name="genre_music">
+    <string-array name="type_visual">
         <item>Select</item>
-        <item>Classic</item>
-        <item>New Age</item>
-        <item>Rock</item>
-        <item>Pop</item>
-        <item>Jazz</item>
+        <item>Photography Arts</item>
+        <item>Environment Arts</item>
+        <item>Assemblage</item>
+        <item>Collage</item>
+        <item>Conceptual</item>
+        <item>Installation</item>
         <item>Etc..</item>
     </string-array>
 
-    <string-array name="genre_picture">
+    <string-array name="type_applied">
         <item>Select</item>
-        <item>Land</item>
-        <item>Town</item>
+        <item>Computer Arts</item>
+        <item>Graphic Arts</item>
+        <item>Fashion Arts</item>
+        <item>Interior Arts</item>
         <item>Etc..</item>
     </string-array>
 
-    <string-array name="genre_paints">
+    <string-array name="type_others">
         <item>Select</item>
-        <item>Land</item>
-        <item>Town</item>
+        <item>Plastic Arts</item>
+        <item>Decorative Arts</item>
         <item>Etc..</item>
     </string-array>
 

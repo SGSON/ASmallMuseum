@@ -169,7 +169,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     }
 
     private void setTypeSpinner(){
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.types, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.arts_categories, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mType.setAdapter(adapter);
     }
@@ -178,13 +178,13 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         int id;
         switch (type){
             case "Books":
-                id = R.array.genre_book;
+                id = R.array.type_fine;
                 break;
             case "Music":
-                id =R.array.genre_music;
+                id =R.array.type_visual;
                 break;
             case "Pictures":
-                id = R.array.genre_picture;
+                id = R.array.type_applied;
                 break;
             default:
                 id = R.array.spinner_select;

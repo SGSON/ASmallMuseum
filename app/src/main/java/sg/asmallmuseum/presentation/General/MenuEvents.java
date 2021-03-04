@@ -3,7 +3,6 @@ package sg.asmallmuseum.presentation.General;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -100,8 +98,8 @@ public class MenuEvents implements View.OnClickListener {
     }
 
     private void setMenuAdapter(Context context, View view){
-        List<String> types = new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.types)));
-        List<String> genres = new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_book)));
+        List<String> types = new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.arts_categories)));
+        List<String> genres = new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.type_fine)));
 
         //shows genres of book first
         map.put("Type", "Books");
@@ -123,20 +121,20 @@ public class MenuEvents implements View.OnClickListener {
                 switch (types.get(i)){
                     case "Books":
                         //move to user profile
-                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_book))));
+                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.type_fine))));
                         break;
                     case "Museums":
                         //move to user profile
                         menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.museums))));
                         break;
                     case "Pictures":
-                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_picture))));
+                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.type_applied))));
                         break;
                     case "Paints":
-                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_paints))));
+                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.type_others))));
                         break;
                     case "Music":
-                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.genre_music))));
+                        menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.type_visual))));
                         break;
                     case "Etc..":
                         menuItemAdapter.updateData(new ArrayList<>(Arrays.asList(view.getResources().getStringArray(R.array.etc))));
