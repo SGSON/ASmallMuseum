@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.presentation.General.MainMenuFragment;
+import sg.asmallmuseum.presentation.General.MainMenuViewModel;
 
 import android.os.Bundle;
 
@@ -16,6 +18,7 @@ public class ArtViewActivity extends AppCompatActivity {
     private Fragment mArtViewFragment;
     private Fragment mArtViewExpandFragment;
     private ArtViewViewModel viewModel;
+    private MainMenuViewModel menuViewModel;
 
     private FirebaseAuth mAuth;
 
@@ -29,6 +32,7 @@ public class ArtViewActivity extends AppCompatActivity {
         mArtViewFragment = new ArtViewFragment();
         mArtViewExpandFragment = new ArtViewExpandFragment();
         viewModel = new ViewModelProvider(this).get(ArtViewViewModel.class);
+        menuViewModel = new ViewModelProvider(this).get(MainMenuViewModel.class);
 
         replaceFragment(null);
     }
@@ -37,6 +41,7 @@ public class ArtViewActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
+        menuViewModel.setUser(user);
     }
 
     public void replaceFragment(Fragment fragment){
@@ -49,6 +54,16 @@ public class ArtViewActivity extends AppCompatActivity {
         else if (fragment instanceof ArtViewFragment){
             fragmentTransaction.replace(R.id.fragment_art_view_container, mArtViewExpandFragment);
         }
+
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    public void openMenuFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.replace(R.id.fragment_art_view_container, new MainMenuFragment());
 
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();

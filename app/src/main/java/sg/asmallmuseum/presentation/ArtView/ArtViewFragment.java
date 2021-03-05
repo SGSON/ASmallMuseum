@@ -137,8 +137,9 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
             }
         }
         else if (id == R.id.top_menu_button){
-            MenuEvents menuEvents = new MenuEvents(FirebaseAuth.getInstance(), getActivity());
-            menuEvents.openMenu(FirebaseAuth.getInstance().getCurrentUser() != null);
+            if(getActivity() instanceof ArtViewActivity){
+                ((ArtViewActivity) getActivity()).openMenuFragment();
+            }
         }
         else if (id == R.id.back_button){
             getActivity().finish();

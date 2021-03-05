@@ -2,6 +2,10 @@ package sg.asmallmuseum.presentation.General;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -29,59 +33,27 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RecyclerViewOnClickListener, SwipeRefreshLayout.OnRefreshListener,
-        ArtWorkLoadCompleteListener {
+public class MainActivity extends AppCompatActivity  {
     private FirebaseAuth mAuth;
     private final int REQUEST_CODE = 1;
-    private ArtworkManager manager;
-    private ArtListImageViewAdapter adapter;
-
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private ProgressDialog dialog;
-    private boolean signedIn;
+    private MainMenuViewModel viewModel;
+    private Fragment mMainFragment;
+    private Fragment mMainMenuFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dialog = new ProgressDialog(this, android.R.style.Theme_Material_Dialog_Alert);
-        dialog.setMessage("LOADING..");
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-
-        mAuth = FirebaseAuth.getInstance();
-
-        //Set a listener to Artwork Manager
-        manager = new ArtworkManager();
-        manager.setArtworkLoadCompleteListener(this);
-
         //will be move to the upload activity
         requestPermission();
+        mAuth = FirebaseAuth.getInstance();
+        viewModel = new ViewModelProvider(this).get(MainMenuViewModel.class);
 
-        //Load recent upload images
-        //initiate with empty data set and then the view will be updated when loads complete.
-        initRecentView(new ArrayList<Artwork>());
+        mMainFragment = new MainFragment();
+        mMainMenuFragment = new MainMenuFragment();
 
-        //Remove the back button.
-        Button mBackButton = (Button)findViewById(R.id.back_button);
-        mBackButton.setVisibility(View.INVISIBLE);
-
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.main_swipe_layout);
-        swipeRefreshLayout.setOnRefreshListener(this);
-
-        Intent intent = new Intent(this, ArtUploadPageActivity.class);
-
-        //Set onClickMethods for the quick button
-        ImageButton mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
-        mQuick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(intent);
-                //throw new RuntimeException("Teest");
-            }
-        });
+        replaceFragment(null);
     }
 
     /***Verify a signed-in user***/
@@ -89,82 +61,25 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewOnCli
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null){
-            signedIn = false;
-        }
-        else {
-            signedIn = true;
-        }
-
+        viewModel.setUser(user);
     }
 
-    @Override
-    public void onRefresh() {
-        manager.getRecent();
-        swipeRefreshLayout.setRefreshing(false);
+    public void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.replace(R.id.fragment_main_container, mMainFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
-    /***Initiate Recycler view
-     * Start with a empty list. then it will show latest uploading images when image load finish***/
-    private void initRecentView(List<Artwork> artworks){
-        adapter = new ArtListImageViewAdapter(artworks, manager);
-        adapter.setOnClickListener(this);
+    public void openMenuFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        RecyclerView recent_view = (RecyclerView)findViewById(R.id.view_recent);
-        recent_view.setLayoutManager(new LinearLayoutManager(this));
-        recent_view.setAdapter(adapter);
-
-        manager.getRecent();
-    }
-
-    /***Start an activity what user clicked***/
-    @Override
-    public void onItemClick(int position, Intent intent) {
-        startActivity(intent);
-    }
-
-    @Override
-    public void onItemClick(int position, List<String> mList) {
-        //Has to be empty
-    }
-
-    /***Get image information from ArtManager
-     * Then, update the recycler view***/
-    @Override
-    public void onArtworkLoadComplete(List<Artwork> artworks) {
-        updateList(artworks);
-    }
-
-    private void updateList(List<Artwork> artworks){
-        adapter.updateList(artworks);
-        adapter.notifyDataSetChanged();
-        dialog.dismiss();
-    }
-
-    /***
-     * Top-bar events
-     * ***/
-    private void makeText(String text){
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-    }
-
-    /***Move to the main activity***/
-    public void onMainButtonPressed(View view) {
-        makeText("Pressed Main Button");
-    }
-
-    /***Open the menu window***/
-    public void onMenuButtonPressed(View view) {
-        makeText("Pressed Menu Button");
-
-        //Configure the main menu
-        MenuEvents menuEvents = new MenuEvents(mAuth ,this);
-        menuEvents.openMenu(signedIn);
-    }
-
-    /***Nothing***/
-    public void onBackButtonPressed(View view) {
-        //do not insert codes
+        fragmentTransaction.replace(R.id.fragment_main_container, mMainMenuFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     /***Get a storage access permission***/
