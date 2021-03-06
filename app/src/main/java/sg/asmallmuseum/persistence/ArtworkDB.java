@@ -1,7 +1,6 @@
 package sg.asmallmuseum.persistence;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,12 +23,12 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import sg.asmallmuseum.Domain.Artwork;
-import sg.asmallmuseum.Domain.Book;
+import sg.asmallmuseum.Domain.VisualArts;
 import sg.asmallmuseum.Domain.Museum;
-import sg.asmallmuseum.Domain.Music;
-import sg.asmallmuseum.Domain.Paint;
-import sg.asmallmuseum.Domain.Picture;
-import sg.asmallmuseum.logic.DBListener;
+import sg.asmallmuseum.Domain.AppliedArts;
+import sg.asmallmuseum.Domain.Others;
+import sg.asmallmuseum.Domain.FineArts;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.DBListener;
 
 public class ArtworkDB implements ArtworkDBInterface {
     private final FirebaseFirestore db;
@@ -53,7 +52,7 @@ public class ArtworkDB implements ArtworkDBInterface {
     @Override
     public void uploadArtInfo(Artwork art, List<Uri> paths, List<String> ext) {
 
-        DocumentReference ref = db.collection("Art").document(art.getaType()).collection(art.getaGenre()).document();
+        DocumentReference ref = db.collection("Art").document(art.getaCategory()).collection(art.getaType()).document();
         DocumentReference recentRef = db.collection("Art").document("Recent");
         Map<String, String> map = new HashMap<>();
         ref.set(art)
@@ -112,12 +111,12 @@ public class ArtworkDB implements ArtworkDBInterface {
 
     @Override
     public void updatePostingNumber(Map<String, String> map, int numPost){
-        DocumentReference ref = db.collection("Art").document(map.get("type")).collection(map.get("genre")).document(map.get("id"));
+        DocumentReference ref = db.collection("Art").document(map.get("Category")).collection(map.get("Type")).document(map.get("id"));
         ref.update("aPostNum", numPost);
     }
 
     /***Get a image and a info***/
-    public void getArtInfoList(String type, String genre, int currPost){
+    public void getArtInfoList(String category, String type, int currPost){
         List<Artwork> list = new ArrayList<>();
 
         int numPost = MAX_LIST_SIZE;
@@ -125,11 +124,11 @@ public class ArtworkDB implements ArtworkDBInterface {
             numPost = currPost;
         }
 
-        CollectionReference colRef = db.collection("Art").document(type).collection(genre);
+        CollectionReference colRef = db.collection("Art").document(category).collection(type);
         colRef.whereLessThanOrEqualTo("aPostNum", currPost).orderBy("aPostNum", Query.Direction.DESCENDING).limit(numPost).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
-                    Artwork artwork = getArtObject(collection, type);
+                    Artwork artwork = getArtObject(collection, category);
                     list.add(artwork);
                 }
                 mListener.onFileDownloadComplete(list, 0);
@@ -138,7 +137,7 @@ public class ArtworkDB implements ArtworkDBInterface {
     }
 
     @Override
-    public List<StorageReference> getArtImages(String type, List<String> loc){
+    public List<StorageReference> getArtImages(String category, List<String> loc){
         List<StorageReference> refs = new ArrayList<>();
         for (int i = 0 ; i < loc.size() ; i++){
             refs.add(storage.getReference().child(loc.get(i)));
@@ -168,7 +167,7 @@ public class ArtworkDB implements ArtworkDBInterface {
 
             DocumentReference ref = db.collection(info[0]).document(info[1]).collection(info[2]).document(info[3]);
             ref.get().addOnSuccessListener(documentSnapshot -> {
-                Artwork art = documentSnapshot.toObject(Book.class);
+                Artwork art = documentSnapshot.toObject(VisualArts.class);
                 artworks.add(art);
                 if (artworks.size() == paths.size())
                     mListener.onFileDownloadComplete(artworks, requestCode);
@@ -196,8 +195,8 @@ public class ArtworkDB implements ArtworkDBInterface {
     }
 
     @Override
-    public void getNumPost(String type, String genre, int request_id){
-        CollectionReference colRef = db.collection("Art").document(type).collection(genre);
+    public void getNumPost(String category, String type, int request_id){
+        CollectionReference colRef = db.collection("Art").document(category).collection(type);
         colRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 if(task.getResult() != null){
@@ -214,18 +213,18 @@ public class ArtworkDB implements ArtworkDBInterface {
     private List<String> setReferences(List<String> ext, String id, Artwork art){
         List<String> files = new ArrayList<>();
         for (int i = 0 ; i < ext.size() ; i++){
-            files.add(art.getaType()+"/"+art.getaGenre()+"/"+id+"("+(i+1)+")"+"."+ext.get(i));
+            files.add(art.getaCategory()+"/"+art.getaType()+"/"+id+"("+(i+1)+")"+"."+ext.get(i));
         }
         return files;
     }
 
-    private void getCollection(CollectionReference ref, String type, String genre){
+    private void getCollection(CollectionReference ref, String category, String type){
         List<Artwork> list = new ArrayList<>();
 
         ref.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
-                    Artwork artwork = getArtObject(collection, type);
+                    Artwork artwork = getArtObject(collection, category);
                     list.add(artwork);
                 }
                 mListener.onFileDownloadComplete(list, 0);
@@ -233,23 +232,23 @@ public class ArtworkDB implements ArtworkDBInterface {
         });
     }
 
-    private Artwork getArtObject(DocumentSnapshot collection, String type){
+    private Artwork getArtObject(DocumentSnapshot collection, String category){
         Artwork artwork = null;
-        switch (type){
+        switch (category){
             case "Books":
-                artwork = collection.toObject(Book.class);
+                artwork = collection.toObject(VisualArts.class);
                 break;
             case "Music":
-                artwork = collection.toObject(Music.class);
+                artwork = collection.toObject(AppliedArts.class);
                 break;
             case "Paints":
-                artwork = collection.toObject(Paint.class);
+                artwork = collection.toObject(Others.class);
                 break;
             case "Museums":
                 artwork = collection.toObject(Museum.class);
                 break;
             default:
-                artwork = collection.toObject(Picture.class);
+                artwork = collection.toObject(FineArts.class);
                 break;
         }
         return artwork;

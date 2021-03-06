@@ -7,8 +7,8 @@ import java.util.List;
 import sg.asmallmuseum.Domain.Messages.ArtAttachedError;
 import sg.asmallmuseum.Domain.Messages.ArtDescError;
 import sg.asmallmuseum.Domain.Messages.ArtTitleError;
-import sg.asmallmuseum.Domain.Messages.ArtGenreError;
 import sg.asmallmuseum.Domain.Messages.ArtTypeError;
+import sg.asmallmuseum.Domain.Messages.ArtCategoryError;
 import sg.asmallmuseum.Domain.Messages.CustomException;
 
 public class ValidateArt {
@@ -18,23 +18,23 @@ public class ValidateArt {
     private static final String DESC_ERROR = "Please enter the description of the art.";
     private static final String ATTACHED_ERROR = "Please attached the files.";
 
-    public static void validateAll(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) throws CustomException {
-        validateType(type);
-        validateGenre(genre);
+    public static void validateAll(List<Uri> paths, List<String> ext, String category, String type, String title, String author, String date, String desc) throws CustomException {
+        validateType(category);
+        validateGenre(type);
         validateTitle(title);
         validateDesc(desc);
         validateAttached(paths);
     }
 
-    public static void validateType(String type) throws ArtTypeError {
-        if (type == null || type.equals("Select")){
-            throw new ArtTypeError(TYPE_ERROR);
+    public static void validateType(String category) throws ArtCategoryError {
+        if (category == null || category.equals("Select")){
+            throw new ArtCategoryError(TYPE_ERROR);
         }
     }
 
-    public static void validateGenre(String genre) throws ArtGenreError{
-        if (genre == null || genre.equals("Select")){
-            throw new ArtGenreError(GENRE_ERROR);
+    public static void validateGenre(String type) throws ArtTypeError {
+        if (type == null || type.equals("Select")){
+            throw new ArtTypeError(GENRE_ERROR);
         }
     }
 

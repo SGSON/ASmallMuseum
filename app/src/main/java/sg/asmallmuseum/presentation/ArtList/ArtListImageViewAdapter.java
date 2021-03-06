@@ -48,7 +48,7 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
     @Override
     public void onBindViewHolder(@NonNull ArtListImageViewHolder holder, int position) {
 
-        List<StorageReference> ref = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
+        List<StorageReference> ref = manager.getArtImages(mArtList.get(position).getaCategory(), mArtList.get(position).getaFileLoc());
         holder.setCard(mArtList.get(position), ref.get(0));
         //Glide.with(holder.itemView).load(ref).into(holder.mImage);
 

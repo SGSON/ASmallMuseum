@@ -7,8 +7,8 @@ public class Museum extends Artwork {
 
     public Museum(){}
 
-    public Museum(String aType, String aGenre, String aTitle, String aAuthor, String aDate, String aDesc, String aThumbnail, String aMainImage, String aMaterial){
-        super(aType, aGenre, aTitle, aAuthor, aDate, aDesc);
+    public Museum(String aCategory, String aType, String aTitle, String aAuthor, String aDate, String aDesc, String aThumbnail, String aMainImage, String aMaterial){
+        super(aCategory, aType, aTitle, aAuthor, aDate, aDesc);
         this.aThumbnail = aThumbnail;
         this.aMainImage = aMainImage;
         this.aMaterial = aMaterial;

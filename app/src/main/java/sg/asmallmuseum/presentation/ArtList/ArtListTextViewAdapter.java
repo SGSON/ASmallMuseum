@@ -49,7 +49,7 @@ public class ArtListTextViewAdapter extends RecyclerView.Adapter<ArtListTextView
 
     @Override
     public void onBindViewHolder(@NonNull ArtListTextViewHolder holder, int position) {
-        List<StorageReference> refs = manager.getArtImages(mArtList.get(position).getaType(), mArtList.get(position).getaFileLoc());
+        List<StorageReference> refs = manager.getArtImages(mArtList.get(position).getaCategory(), mArtList.get(position).getaFileLoc());
         holder.setCard(mArtList.get(position), refs.get(0));
 
         if (position == mArtList.size()-1){

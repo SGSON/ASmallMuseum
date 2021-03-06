@@ -85,6 +85,14 @@
         <item>Etc..</item>
     </string-array>
 
+    <string-array name="arts_categories_spinner">
+        <item>Select</item>
+        <item>Fine Arts</item>
+        <item>Visual Arts</item>
+        <item>Applied Arts</item>
+        <item>Others</item>
+    </string-array>
+
     <string-array name="spinner_select">
         <item>Select</item>
     </string-array>

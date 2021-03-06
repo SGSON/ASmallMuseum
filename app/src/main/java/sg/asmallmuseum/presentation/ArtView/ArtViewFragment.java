@@ -17,10 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -35,7 +33,6 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
-import sg.asmallmuseum.presentation.General.MenuEvents;
 
 public class ArtViewFragment extends Fragment implements View.OnClickListener, ArtWorkLoadCompleteListener {
     private View view;
@@ -179,8 +176,8 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         List<Uri> uriList = new ArrayList<>();
         Artwork artwork = artworks.get(0);
 
-        if (!artwork.getaType().equals("Museums")){
-            List<StorageReference> refs = manager.getArtImages(artwork.getaType(), artwork.getaFileLoc());
+        if (!artwork.getaCategory().equals("Museums")){
+            List<StorageReference> refs = manager.getArtImages(artwork.getaCategory(), artwork.getaFileLoc());
             for (int i = 0 ; i < refs.size() ; i++) {
                 refs.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override

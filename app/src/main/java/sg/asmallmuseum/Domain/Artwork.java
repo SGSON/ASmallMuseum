@@ -1,15 +1,14 @@
 package sg.asmallmuseum.Domain;
 
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
 public abstract class Artwork {
     private DocumentReference aID;
     private int aPostNum;
+    private String aCategory;
     private String aType;
-    private String aGenre;
     private String aTitle;
     private String aAuthor;
     private String aDate;
@@ -21,9 +20,9 @@ public abstract class Artwork {
 
     }
 
-    public Artwork(String aType, String aGenre, String aTitle, String aAuthor, String aDate, String aDesc){
+    public Artwork(String aCategory, String aType, String aTitle, String aAuthor, String aDate, String aDesc){
+        this.aCategory = aCategory;
         this.aType = aType;
-        this.aGenre = aGenre;
         this.aTitle = aTitle;
         this.aAuthor = aAuthor;
         this.aDate = aDate;
@@ -39,20 +38,20 @@ public abstract class Artwork {
         this.aID = aID;
     }
 
+    public String getaCategory() {
+        return aCategory;
+    }
+
+    public void setaCategory(String aCategory) {
+        this.aCategory = aCategory;
+    }
+
     public String getaType() {
         return aType;
     }
 
     public void setaType(String aType) {
         this.aType = aType;
-    }
-
-    public String getaGenre() {
-        return aGenre;
-    }
-
-    public void setaGenre(String aGenre) {
-        this.aGenre = aGenre;
     }
 
     public String getaTitle() {

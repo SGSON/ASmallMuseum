@@ -2,8 +2,6 @@ package sg.asmallmuseum.logic;
 
 import android.net.Uri;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.FileNotFoundException;
@@ -13,14 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 import sg.asmallmuseum.Domain.Artwork;
-import sg.asmallmuseum.Domain.Book;
+import sg.asmallmuseum.Domain.VisualArts;
 import sg.asmallmuseum.Domain.Messages.CustomException;
-import sg.asmallmuseum.Domain.Music;
-import sg.asmallmuseum.Domain.Paint;
-import sg.asmallmuseum.Domain.Picture;
+import sg.asmallmuseum.Domain.AppliedArts;
+import sg.asmallmuseum.Domain.Others;
+import sg.asmallmuseum.Domain.FineArts;
 import sg.asmallmuseum.persistence.ArtworkDB;
 import sg.asmallmuseum.persistence.ArtworkDBInterface;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.DBListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UploadCompleteListener;
 
@@ -58,30 +57,30 @@ public class ArtworkManager implements DBListener {
     }
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
-    public void upLoadArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) {
+    public void upLoadArt(List<Uri> paths, List<String> ext, String category, String type, String title, String author, String date, String desc) {
         Artwork art = null;
         switch (type){
-            case "Books":
-                art = new Book(type, genre, title, author, date, desc);
+            case "Visual Arts":
+                art = new VisualArts(category, type, title, author, date, desc);
                 break;
-            case "Music":
-                art = new Music(type, genre, title, author, date, desc);
+            case "Applied Arts":
+                art = new AppliedArts(category, type, title, author, date, desc);
                 break;
-            case "Paints":
-                art = new Paint(type, genre, title, author, date, desc);
+            case "Others":
+                art = new Others(category, type, title, author, date, desc);
                 break;
             default:
-                art = new Picture(type, genre, title, author, date, desc);
+                art = new FineArts(category, type, title, author, date, desc);
                 break;
         }
-        map.put("type", type);
-        map.put("genre", genre);
+        map.put("Category", category);
+        map.put("Type", type);
 
         db.uploadArtInfo(art, paths, ext);
     }
 
-    public void validateArt(List<Uri> paths, List<String> ext, String type, String genre, String title, String author, String date, String desc) throws CustomException{
-        ValidateArt.validateAll(paths, ext, type, genre, title, author, date, desc);
+    public void validateArt(List<Uri> paths, List<String> ext, String category, String type, String title, String author, String date, String desc) throws CustomException{
+        ValidateArt.validateAll(paths, ext, category, type, title, author, date, desc);
     }
 
     //Private Methods
@@ -99,14 +98,14 @@ public class ArtworkManager implements DBListener {
     /***End***/
 
     /***Get a image and image info from the Firestore and the storage***/
-    public void getArtInfoList(String type, String genre, int currPost){
+    public void getArtInfoList(String category, String type, int currPost){
         if (currPost > 0){
-            db.getArtInfoList(type, genre, currPost);
+            db.getArtInfoList(category, type, currPost);
         }
     }
 
-    public List<StorageReference> getArtImages(String type, List<String> loc){
-        return db.getArtImages(type, loc);
+    public List<StorageReference> getArtImages(String category, List<String> loc){
+        return db.getArtImages(category, loc);
     }
 
     public void getSingleArtInfoByPath(String id){
@@ -121,12 +120,12 @@ public class ArtworkManager implements DBListener {
         db.getRecent();
     }
 
-    public void getNumPost(String type, String genre, int request_id){
+    public void getNumPost(String category, String type, int request_id){
         if (request_id == REQUEST_USER){
-            db.getNumPost(type, genre, REQUEST_USER);
+            db.getNumPost(category, type, REQUEST_USER);
         }
         else {
-            db.getNumPost(type, genre, REQUEST_UPLOAD);
+            db.getNumPost(category, type, REQUEST_UPLOAD);
         }
 
     }
@@ -155,7 +154,7 @@ public class ArtworkManager implements DBListener {
     public void onInfoUploadComplete(boolean complete, List<Uri> paths, List<String> refs, String id, Artwork art) {
         if (complete){
             map.put("id", id);
-            db.getNumPost(map.get("type"), map.get("genre"), REQUEST_UPLOAD);
+            db.getNumPost(map.get("Category"), map.get("Type"), REQUEST_UPLOAD);
             uploadAttachedFile(paths, refs, id, art);
         }
         else{

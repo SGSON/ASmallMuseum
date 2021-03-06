@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Messages.ArtAttachedError;
 import sg.asmallmuseum.Domain.Messages.ArtDescError;
-import sg.asmallmuseum.Domain.Messages.ArtGenreError;
-import sg.asmallmuseum.Domain.Messages.ArtTitleError;
 import sg.asmallmuseum.Domain.Messages.ArtTypeError;
+import sg.asmallmuseum.Domain.Messages.ArtTitleError;
+import sg.asmallmuseum.Domain.Messages.ArtCategoryError;
 import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
@@ -49,8 +49,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ArtUploadPageActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, UploadCompleteListener {
+    private Spinner mCategory;
     private Spinner mType;
-    private Spinner mGenre;
     private EditText mTitle;
     private EditText mDesc;
     private Button mPost;
@@ -84,8 +84,8 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         mExtensions = new ArrayList<>();
         adapter = new ArtUploadAdapter(mPathList, mFileName);
 
+        mCategory = (Spinner) findViewById(R.id.upload_category_spinner);
         mType = (Spinner) findViewById(R.id.upload_type_spinner);
-        mGenre = (Spinner) findViewById(R.id.upload_genre_spinner);
         mTitle = (EditText) findViewById(R.id.upload_title);
         mDesc = (EditText) findViewById(R.id.upload_description);
         mPost = (Button) findViewById(R.id.upload_post);
@@ -96,15 +96,15 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         mPost.setOnClickListener(this);
         mBack.setOnClickListener(this);
         mAdd.setOnClickListener(this);
+        mCategory.setOnItemSelectedListener(this);
         mType.setOnItemSelectedListener(this);
-        mGenre.setOnItemSelectedListener(this);
 
         mAttached.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mAttached.setHorizontalScrollBarEnabled(true);
         mAttached.setAdapter(adapter);
 
-        setTypeSpinner();
-        setGenreSpinner("");
+        setCategorySpinner();
+        setTypeSpinner("");
     }
 
     @Override
@@ -150,15 +150,15 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         int id  = adapterView.getId();
-        if (id == R.id.upload_type_spinner){
+        if (id == R.id.upload_category_spinner){
             String selected = adapterView.getItemAtPosition(i).toString();
             Log.d("Selected", selected);
-            map.put("type", selected);
-            setGenreSpinner(selected);
+            map.put("Category", selected);
+            setTypeSpinner(selected);
         }
-        else if (id == R.id.upload_genre_spinner){
+        else if (id == R.id.upload_type_spinner){
             String selected = adapterView.getItemAtPosition(i).toString();
-            map.put("genre", selected);
+            map.put("type", selected);
         }
 
     }
@@ -168,30 +168,33 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         //setGenreSpinner("");
     }
 
-    private void setTypeSpinner(){
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.arts_categories, android.R.layout.simple_spinner_dropdown_item);
+    private void setCategorySpinner(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.arts_categories_spinner, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mType.setAdapter(adapter);
+        mCategory.setAdapter(adapter);
     }
 
-    private void setGenreSpinner(String type){
+    private void setTypeSpinner(String category){
         int id;
-        switch (type){
-            case "Books":
+        switch (category){
+            case "Fine Arts":
                 id = R.array.type_fine;
                 break;
-            case "Music":
+            case "Visual Arts":
                 id =R.array.type_visual;
                 break;
-            case "Pictures":
+            case "Applied Arts":
                 id = R.array.type_applied;
+                break;
+            case "Others":
+                id = R.array.type_others;
                 break;
             default:
                 id = R.array.spinner_select;
         }
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, id, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mGenre.setAdapter(adapter);
+        mType.setAdapter(adapter);
     }
 
     private void getTexts(){
@@ -216,13 +219,13 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
             else if (e instanceof ArtDescError){
                 mDesc.setError(e.getErrorMsg());
             }
-            else if (e instanceof ArtGenreError){
-                TextView textView = (TextView) mGenre.getSelectedView();
+            else if (e instanceof ArtTypeError){
+                TextView textView = (TextView) mType.getSelectedView();
                 textView.setError(e.getErrorMsg());
                 textView.setTextColor(Color.RED);
             }
-            else if (e instanceof ArtTypeError){
-                TextView textView = (TextView) mGenre.getSelectedView();
+            else if (e instanceof ArtCategoryError){
+                TextView textView = (TextView) mType.getSelectedView();
                 textView.setError(e.getErrorMsg());
                 textView.setTextColor(Color.RED);
             }
