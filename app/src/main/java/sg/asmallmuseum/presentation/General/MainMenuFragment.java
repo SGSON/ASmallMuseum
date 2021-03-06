@@ -17,7 +17,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,6 +28,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.presentation.ArtList.ArtListActivity;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.MainMenuOnClickListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 public class MainMenuFragment extends Fragment implements View.OnClickListener {
@@ -37,6 +41,8 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
     private MainMenuViewModel viewModel;
     private MainMenuAdapter mCateAdapter;
     private MainMenuAdapter mTypeAdapter;
+
+    private Map<String, String> map;
 
     public MainMenuFragment() {
         // Required empty public constructor
@@ -60,6 +66,9 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
 
         Button mClose = (Button) view.findViewById(R.id.fragment_main_menu_close);
         mClose.setOnClickListener(this);
+
+        map = new HashMap<>();
+        map.put("Category", "Fine Arts");
 
         return view;
     }
@@ -92,24 +101,20 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
 
     private MainMenuAdapter setMenuList(RecyclerView recyclerView, int type){
         MainMenuAdapter adapter = new MainMenuAdapter(type, getActivity());
-        adapter.setRecyclerViewOnClickListener(new RecyclerViewOnClickListener() {
+        adapter.setRecyclerViewOnClickListener(type, new MainMenuOnClickListener() {
             @Override
-            public void onItemClick(int position, Intent intent) {
-
-            }
-
-            @Override
-            public void onItemClick(int position, List<String> mList) {
-                setMenuItem(position);
+            public void onItemClick(String item, int request_code) {
+                if (request_code == MENU_LIST){
+                    setMenuItem(item);
+                }
+                else {
+                    initNextActivity(item);
+                }
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         return adapter;
-    }
-
-    private void setInitMenu(){
-
     }
 
     private void closeFragment(){
@@ -129,25 +134,40 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void setMenuItem(int pos){
-        List<String> items;
-        switch (pos){
-            case 1:
-                items = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_visual)));
+    private List<String> getItemList(String item){
+        List<String> list;
+        switch (item){
+            case "Visual Arts":
+                list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_visual)));
                 break;
-            case 2:
-                items = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_applied)));
+            case "Applied Arts":
+                list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_applied)));
                 break;
-            case 3:
-                items = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_others)));
+            case "Others":
+                list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_others)));
                 break;
-            case 4:
-                items = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.museums)));
+            case "Museums":
+                list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.museums)));
                 break;
             default:
-                items = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_fine)));
+                list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_fine)));
                 break;
         }
-        mTypeAdapter.updateList(items);
+        return list;
+    }
+
+    private void setMenuItem(String item){
+        List<String> mList = getItemList(item);
+        map.put("Category", item);
+        mTypeAdapter.updateList(mList);
+    }
+
+    private void initNextActivity(String item){
+        if (map.containsKey("Category")){
+            Intent intent = new Intent(getActivity(), ArtListActivity.class);
+            intent.putExtra("Category", map.get("Category"));
+            intent.putExtra("Type", item);
+            startActivity(intent);
+        }
     }
 }

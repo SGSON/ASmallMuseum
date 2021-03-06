@@ -1,6 +1,7 @@
 package sg.asmallmuseum.presentation.General;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +16,20 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.presentation.ArtList.ArtListActivity;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.MainMenuOnClickListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MainMenuViewHolder> {
 
     private final int MENU_LIST = 0;
     private final int MENU_ITEM = 1;
+
     private List<String> mList;
     private int mType;
-    private RecyclerViewOnClickListener mListener;
+    private MainMenuOnClickListener mListener;
+    private List<MainMenuViewHolder> mViewHolderList;
+    private Activity mActivity;
 
     public MainMenuAdapter(int type_list, Activity mActivity) {
         if (type_list == MENU_LIST){
@@ -34,9 +40,11 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MainMe
         }
         mList.remove(0);
         mType = type_list;
+        mViewHolderList = new ArrayList<>();
+        this.mActivity = mActivity;
     }
 
-    public void setRecyclerViewOnClickListener(RecyclerViewOnClickListener mListener){
+    public void setRecyclerViewOnClickListener(int request_code, MainMenuOnClickListener mListener){
         this.mListener = mListener;
     }
 
@@ -52,7 +60,12 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MainMe
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu_item, parent, false);
                 break;
         }
-        return new MainMenuViewHolder(view);
+        MainMenuViewHolder viewHolder = new MainMenuViewHolder(view);
+        mViewHolderList.add(viewHolder);
+        if (mViewHolderList.size() == 1 && mType == MENU_LIST){
+            setActiveColor(0);
+        }
+        return viewHolder;
     }
 
     @Override
@@ -60,23 +73,21 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MainMe
         switch (mType){
             case MENU_LIST:
                 holder.setMenuListCard(mList.get(position));
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mListener.onItemClick(position, (List<String>) null);
-                    }
-                });
                 break;
             case MENU_ITEM:
                 holder.setMenuItemCard(mList.get(position));
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-//                        mListener.onItemClick(0, null);
-                    }
-                });
                 break;
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mType == MENU_LIST){
+                    setInactiveColor();
+                    setActiveColor(position);
+                }
+                mListener.onItemClick(mList.get(position), mType);
+            }
+        });
     }
 
     @Override
@@ -88,6 +99,18 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MainMe
         this.mList = mList;
         mList.remove(0);
         notifyDataSetChanged();
+    }
+
+    private void setInactiveColor(){
+        for (int i = 0 ; i < mViewHolderList.size() ; i++){
+            mViewHolderList.get(i).mImage.setBackgroundColor(mActivity.getResources().getColor(R.color.white, mActivity.getTheme()));
+            mViewHolderList.get(i).itemView.setBackgroundColor(mActivity.getResources().getColor(R.color.white, mActivity.getTheme()));
+        }
+    }
+
+    private void setActiveColor(int position){
+        mViewHolderList.get(position).itemView.setBackgroundColor(mActivity.getResources().getColor(R.color.boarder, mActivity.getTheme()));
+        mViewHolderList.get(position).mImage.setBackgroundColor(mActivity.getResources().getColor(R.color.boarder, mActivity.getTheme()));
     }
 
     class MainMenuViewHolder extends RecyclerView.ViewHolder{

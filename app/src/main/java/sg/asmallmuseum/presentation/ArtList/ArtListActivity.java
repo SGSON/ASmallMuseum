@@ -1,6 +1,9 @@
 package sg.asmallmuseum.presentation.ArtList;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -9,6 +12,8 @@ import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
+import sg.asmallmuseum.presentation.General.MainMenuFragment;
+import sg.asmallmuseum.presentation.General.MainMenuViewModel;
 import sg.asmallmuseum.presentation.General.MenuEvents;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
@@ -25,151 +30,43 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtListActivity extends AppCompatActivity implements RecyclerViewOnClickListener, SwipeRefreshLayout.OnRefreshListener,
-        NumPostLoadCompleteListener, ArtWorkLoadCompleteListener {
+public class ArtListActivity extends AppCompatActivity  {
     private FirebaseAuth mAuth;
-    private ArtworkManager manager;
-    private boolean signedIn;
-    private boolean isTypeText;
-    private boolean isMuseum;
-    private ProgressDialog dialog;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private ArtListViewAdapterInterface adapter;
-
-    private final int REQUEST_USER = 2010;
-
-    private int totalPost;
-    private int currentPost;
+    private MainMenuViewModel menuViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_art_list);
 
-        dialog = new ProgressDialog(this, android.R.style.Theme_Material_Dialog_Alert);
-        dialog.setMessage("LOADING..");
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-
-        Intent intent = getIntent();
-
         mAuth = FirebaseAuth.getInstance();
-
-        manager = new ArtworkManager();
-        manager.setArtworkLoadCompleteListener(this);
-        manager.setNumPostLoadCompleteListener(this);
-
-        manager.getNumPost(intent.getStringExtra("Type"), intent.getStringExtra("Genre"), REQUEST_USER);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.art_list_swipe_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-
-        isMuseum = intent.getStringExtra("Type").equals("Museums");
-        isTypeText = (intent.getStringExtra("Type").equals("Music") || intent.getStringExtra("Type").equals("Books"));
-
-        initRecyclerView(new ArrayList<Artwork>());
+        menuViewModel = new ViewModelProvider(this).get(MainMenuViewModel.class);
+        initFragment();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null){
-            Toast.makeText(this, "Unidentified user!", Toast.LENGTH_SHORT).show();
-            signedIn = false;
-        }
-        else{
-            Toast.makeText(this, "Signed-in user!", Toast.LENGTH_SHORT).show();
-            signedIn = true;
-        }
+        menuViewModel.setUser(user);
     }
 
-    @Override
-    public void onRefresh() {
-        Intent intent = getIntent();
-        manager.getNumPost(intent.getStringExtra("Type"), intent.getStringExtra("Genre"), REQUEST_USER);
-        mSwipeRefreshLayout.setRefreshing(false);
+    public void initFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.replace(R.id.art_list_container, new ArtListFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
-    /***Top-bar events***/
-    private void makeText(String text){
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    public void openMenuFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.replace(R.id.art_list_container, new MainMenuFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
-
-    public void onMainButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Main Button", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onMenuButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_SHORT).show();
-        MenuEvents menuEvents = new MenuEvents(mAuth, this);
-        menuEvents.openMenu(signedIn);
-    }
-
-    public void onBackButtonPressed(View view) {
-        finish();
-    }
-    /***End***/
-
-    /***Load File from DB***/
-    private void initRecyclerView(List<Artwork> artworks){
-        Intent intent = getIntent();
-
-        if (isMuseum){
-            adapter = new ArtListMuseumViewAdapter(artworks);
-        }
-        else if (isTypeText){
-            adapter = new ArtListTextViewAdapter(artworks, manager);
-        }
-        else {
-            adapter = new ArtListImageViewAdapter(artworks, manager);
-        }
-        adapter.setOnClickListener(this);
-        adapter.setOnBottomReachedListener(new ArtListMuseumViewAdapter.OnBottomReachedListener() {
-            @Override
-            public void onBottomReached() {
-                manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"), currentPost);
-                currentPost -= 10;
-            }
-        });
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.art_list);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setAdapter((RecyclerView.Adapter) adapter);
-
-        dialog.dismiss();
-    }
-
-    private void updateList(List<Artwork> list){
-        adapter.updateList(list);
-        dialog.dismiss();
-    }
-
-    @Override
-    public void onArtworkLoadComplete(List<Artwork> artworks) {
-        updateList(artworks);
-    }
-
-    @Override
-    public void onNumPostLoadComplete(int result) {
-        totalPost = result;
-        currentPost = result-10;
-
-        Intent intent = getIntent();
-        manager.getArtInfoList(intent.getStringExtra("Type"), intent.getStringExtra("Genre"), totalPost);
-    }
-
-    @Override
-    public void onItemClick(int position, Intent intent) {
-        startActivity(intent);
-    }
-
-    @Override
-    public void onItemClick(int position, List<String> mList) {
-        //Has to be empty
-    }
-
-    /***End***/
 
 }
