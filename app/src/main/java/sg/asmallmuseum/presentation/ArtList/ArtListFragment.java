@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,6 +144,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         totalPost = result;
         currentPost = result-10;
 
+        Log.d("NUM", ""+result);
         Intent intent = getActivity().getIntent();
         manager.getArtInfoList(intent.getStringExtra("Category"), intent.getStringExtra("Type"), totalPost);
     }

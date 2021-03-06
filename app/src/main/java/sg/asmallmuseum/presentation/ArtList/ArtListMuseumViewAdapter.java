@@ -53,7 +53,6 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), ArtViewActivity.class);
-                    intent.putExtra("DocPath", mArtList.get(position).getaID().getPath());
                     mListener.onItemClick(position, intent);
                 }
             });
@@ -67,7 +66,7 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
 
     @Override
     public void setOnClickListener(RecyclerViewOnClickListener listener) {
-        this.mListener = mListener;
+        this.mListener = listener;
     }
 
     @Override
