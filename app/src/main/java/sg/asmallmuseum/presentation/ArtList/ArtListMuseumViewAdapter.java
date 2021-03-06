@@ -17,6 +17,7 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.persistence.SomaGallery;
 import sg.asmallmuseum.presentation.ArtView.ArtViewActivity;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.OnBottomReachedListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseumViewAdapter.MuseumViewHolder> implements ArtListViewAdapterInterface {
@@ -69,6 +70,7 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
         this.mListener = listener;
     }
 
+
     @Override
     public void updateList(List<Artwork> artworks) {
 
@@ -108,9 +110,5 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
             mAuthor.setText(artwork.getaAuthor());
             mDate.setText(artwork.getaDate());
         }
-    }
-
-    interface OnBottomReachedListener{
-        void onBottomReached();
     }
 }

@@ -8,7 +8,9 @@ public class FineArts extends Artwork {
         super(aCategory, aType, aTitle, aAuthor, aDate, aDesc);
     }
 
-   /*public Picture(String aFileName) {
+    public FineArts() {
+    }
+/*public Picture(String aFileName) {
         super(aFileName);
     }*/
 }

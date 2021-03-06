@@ -29,8 +29,10 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.ArtList.ArtListImageViewAdapter;
+import sg.asmallmuseum.presentation.ArtList.ArtListMuseumViewAdapter;
 import sg.asmallmuseum.presentation.ArtUpload.ArtUploadPageActivity;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.OnBottomReachedListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 public class MainFragment extends Fragment implements RecyclerViewOnClickListener, SwipeRefreshLayout.OnRefreshListener,
@@ -115,6 +117,12 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
     private void initRecentView(List<Artwork> artworks){
         adapter = new ArtListImageViewAdapter(artworks, manager);
         adapter.setOnClickListener(this);
+        adapter.setOnBottomReachedListener(new OnBottomReachedListener() {
+            @Override
+            public void onBottomReached() {
+
+            }
+        });
 
         RecyclerView recent_view = (RecyclerView)view.findViewById(R.id.view_recent);
         recent_view.setLayoutManager(new LinearLayoutManager(getContext()));

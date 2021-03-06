@@ -27,6 +27,7 @@ import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.OnBottomReachedListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 import sg.asmallmuseum.presentation.General.MainMenuViewModel;
 
@@ -114,7 +115,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
             adapter = new ArtListImageViewAdapter(artworks, manager);
         }
         adapter.setOnClickListener(this);
-        adapter.setOnBottomReachedListener(new ArtListMuseumViewAdapter.OnBottomReachedListener() {
+        adapter.setOnBottomReachedListener(new OnBottomReachedListener() {
             @Override
             public void onBottomReached() {
                 manager.getArtInfoList(intent.getStringExtra("Category"), intent.getStringExtra("Type"), currentPost);

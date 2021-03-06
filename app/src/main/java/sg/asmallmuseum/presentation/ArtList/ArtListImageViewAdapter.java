@@ -20,13 +20,14 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.ArtView.ArtViewActivity;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.OnBottomReachedListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageViewAdapter.ArtListImageViewHolder> implements ArtListViewAdapterInterface {
     private List<Artwork> mArtList;
     private RecyclerViewOnClickListener mListener;
     private ArtworkManager manager;
-    private ArtListMuseumViewAdapter.OnBottomReachedListener mBottomReachedListener;
+    private OnBottomReachedListener mBottomReachedListener;
 
     public ArtListImageViewAdapter(List<Artwork> mArtList, ArtworkManager manager){
         this.mArtList = mArtList;
@@ -34,7 +35,7 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
     }
 
     @Override
-    public void setOnBottomReachedListener(ArtListMuseumViewAdapter.OnBottomReachedListener listener) {
+    public void setOnBottomReachedListener(OnBottomReachedListener listener) {
         mBottomReachedListener = listener;
     }
 
@@ -55,6 +56,7 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
         if (position == mArtList.size()-1){
             mBottomReachedListener.onBottomReached();
         }
+
 
         if (mListener != null){
             holder.itemView.setOnClickListener(new View.OnClickListener() {

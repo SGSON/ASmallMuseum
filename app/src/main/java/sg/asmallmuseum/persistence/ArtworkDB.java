@@ -97,9 +97,10 @@ public class ArtworkDB implements ArtworkDBInterface {
                     if(snapshot != null){
                         Map<String, Object> map = snapshot.getData();
                         List<String> result = (List<String>)map.get("Locs");
-                        result.add(0, path);
+
                         if (result.size() >= MAX_LIST_SIZE)
                             result.remove(result.size());
+                        result.add(0, path);
 
                         map.put("Locs", result);
                         ref.set(map);

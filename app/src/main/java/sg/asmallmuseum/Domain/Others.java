@@ -7,6 +7,8 @@ public class Others extends Artwork {
         super(aCategory, aType, aTitle, aAuthor, aDate, aDesc);
     }
 
+    public Others() {
+    }
     /*public Paint(String aFileName) {
         super(aFileName);
     }*/

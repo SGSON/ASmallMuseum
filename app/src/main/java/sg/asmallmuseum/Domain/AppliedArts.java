@@ -7,6 +7,9 @@ public class AppliedArts extends Artwork {
         super(aCategory, aType, aTitle, aAuthor, aDate, aDesc);
     }
 
+    public AppliedArts() {
+    }
+
     /*public Music(String aFileName) {
         super(aFileName);
     }*/

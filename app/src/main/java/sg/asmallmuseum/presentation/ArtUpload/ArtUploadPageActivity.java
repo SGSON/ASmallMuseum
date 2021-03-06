@@ -153,7 +153,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         if (id == R.id.upload_category_spinner){
             String selected = adapterView.getItemAtPosition(i).toString();
             Log.d("Selected", selected);
-            map.put("Category", selected);
+            map.put("category", selected);
             setTypeSpinner(selected);
         }
         else if (id == R.id.upload_type_spinner){
@@ -209,7 +209,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     /***Upload a art***/
     private void uploadArt()  {
         try{
-            manager.validateArt(mPathList, mExtensions, map.get("type"), map.get("genre"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
+            manager.validateArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
             showAlertDialog().show();
         }
         catch (CustomException e){
@@ -300,7 +300,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //before the uploading, please check the type and genre has been selected
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-                        manager.upLoadArt(mPathList, mExtensions, map.get("type"), map.get("genre"), map.get("title"), "tempuser", currentDate, map.get("desc"));
+                        manager.upLoadArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), "tempuser", currentDate, map.get("desc"));
                         dialog = new ProgressDialog(ArtUploadPageActivity.this, android.R.style.Theme_Material_Dialog_Alert);
                         dialog.setMessage("LOADING..");
                         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

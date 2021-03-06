@@ -21,6 +21,7 @@ import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.ArtView.ArtViewActivity;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.OnBottomReachedListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 public class ArtListTextViewAdapter extends RecyclerView.Adapter<ArtListTextViewAdapter.ArtListTextViewHolder> implements ArtListViewAdapterInterface {
@@ -28,7 +29,7 @@ public class ArtListTextViewAdapter extends RecyclerView.Adapter<ArtListTextView
     private RecyclerViewOnClickListener mListener;
     private final ArtworkManager manager;
     private Context context;
-    private ArtListMuseumViewAdapter.OnBottomReachedListener mBottomReachedListener;
+    private OnBottomReachedListener mBottomReachedListener;
 
     public ArtListTextViewAdapter(List<Artwork> mArtwork, ArtworkManager manager){
         this.mArtList = mArtwork;
@@ -36,7 +37,7 @@ public class ArtListTextViewAdapter extends RecyclerView.Adapter<ArtListTextView
     }
 
     @Override
-    public void setOnBottomReachedListener(ArtListMuseumViewAdapter.OnBottomReachedListener listener) {
+    public void setOnBottomReachedListener(OnBottomReachedListener listener) {
         mBottomReachedListener = listener;
     }
 
