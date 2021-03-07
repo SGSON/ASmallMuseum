@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.UserProfile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,7 +38,7 @@ public class UserProfileActivity extends AppCompatActivity {
         updatePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),UpdatePasswordActivity.class);
+                Intent intent = new Intent(getApplicationContext(), UpdatePasswordActivity.class);
                 startActivity(intent);
             }
         });
@@ -53,7 +53,7 @@ public class UserProfileActivity extends AppCompatActivity {
         updateInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),UpdateUserInfoActivity.class);
+                Intent intent = new Intent(getApplicationContext(), UpdateUserInfoActivity.class);
                 intent.putExtra("getUser",user);
                 intent.putExtra("type",type);
                 startActivity(intent);

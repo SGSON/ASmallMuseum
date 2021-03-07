@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.SignUp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +30,8 @@ import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.persistence.FacebookUserDB;
+import sg.asmallmuseum.presentation.General.MainActivity;
+import sg.asmallmuseum.presentation.UserInformInterface;
 
 public class FacebookSignInActivity extends AppCompatActivity implements UserInformInterface {
     private UserManager userManager;
@@ -133,7 +135,7 @@ public class FacebookSignInActivity extends AppCompatActivity implements UserInf
             sb.append(s+"/");
         }
 
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("getUser",user);
         intent.putExtra("getAllUser", (Serializable) sb);
         intent.putExtra("type","facebook");

@@ -10,11 +10,15 @@ import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 
-import sg.asmallmuseum.Domain.CustomException;
+import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.SignUp.SignInWelcomeActivity;
+
+/**
+ * never used
+ * */
 
 public class GoogleUserDBActivity extends AppCompatActivity {
     EditText nick;
@@ -52,7 +56,7 @@ public class GoogleUserDBActivity extends AppCompatActivity {
                 }
 
                 Intent i = getIntent();
-                Intent intent = new Intent(getApplicationContext(),SignInWelcomeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SignInWelcomeActivity.class);
                 intent.putExtra("type","google");
                 intent.putExtra("nickname",uNick);
                 startActivity(intent);

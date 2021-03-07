@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Map;
 
 import sg.asmallmuseum.Domain.Artwork;
-import sg.asmallmuseum.presentation.CustomListenerInterfaces.DBListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkDBListener;
 
 public interface ArtworkDBInterface {
     void uploadArtInfo(Artwork art, List<Uri> paths, List<String> ext);
     void uploadAttachedImage(List<Uri> paths, List<String> refs, String id, Artwork art) throws FileNotFoundException;
-    void setListener(DBListener DBListener);
+    void setListener(ArtWorkDBListener ArtWorkDBListener);
     void getArtInfoList(String type, String genre, int currPost);
     List<StorageReference> getArtImages(String type, List<String> loc);
     void getArtInfoByPath(String path, int requestCode);

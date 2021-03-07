@@ -1,31 +1,26 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.SignUp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.UserInformInterface;
 
-public class LoginForm extends AppCompatActivity implements UserInformInterface {
+public class LoginFormActivity extends AppCompatActivity implements UserInformInterface {
     private UserManager eUserManager;
     private UserManager fUserManager;
     private UserManager gUserManager;
@@ -65,7 +60,7 @@ public class LoginForm extends AppCompatActivity implements UserInformInterface 
         emailLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Login.class);
+                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -73,7 +68,7 @@ public class LoginForm extends AppCompatActivity implements UserInformInterface 
         facebookLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),FacebookSignInActivity.class);
+                Intent intent = new Intent(getApplicationContext(), FacebookSignInActivity.class);
                 startActivity(intent);
             }
         });
@@ -81,7 +76,7 @@ public class LoginForm extends AppCompatActivity implements UserInformInterface 
         googleLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),GoogleSignInActivity.class);
+                Intent intent = new Intent(getApplicationContext(), GoogleSignInActivity.class);
                 startActivity(intent);
             }
         });
@@ -131,7 +126,7 @@ public class LoginForm extends AppCompatActivity implements UserInformInterface 
             sb.append(s+"/");
         }
 
-        Intent intent = new Intent(getApplicationContext(),SignUp.class);
+        Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
         intent.putExtra("getAllUser", (Serializable) sb);
         intent.putExtra("type","email");
         startActivity(intent);

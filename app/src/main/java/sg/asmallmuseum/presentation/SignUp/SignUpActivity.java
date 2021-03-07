@@ -1,28 +1,21 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.SignUp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -32,13 +25,14 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-import sg.asmallmuseum.Domain.CustomException;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.persistence.EmailUserDB;
+import sg.asmallmuseum.presentation.General.MainActivity;
+import sg.asmallmuseum.presentation.SignUp.EmailVerifiedActivity;
 
-public class SignUp extends AppCompatActivity implements View.OnClickListener{
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
     private FirebaseAuth mAuth;
     private UserManager userManager;
 
@@ -180,7 +174,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"MainActivity",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -224,7 +218,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                             String uLastName = lastName.getText().toString();
 
                             User nUser = new User(uNick, uLastName, uFirstName, uEmailID, uBirth);
-                            Intent intent = new Intent(getApplicationContext(),EmailVerifiedActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), EmailVerifiedActivity.class);
                             intent.putExtra("type","email");
                             intent.putExtra("nUser", nUser);
                             startActivity(intent);

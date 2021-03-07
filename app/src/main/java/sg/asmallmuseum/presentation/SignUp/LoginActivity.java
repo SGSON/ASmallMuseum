@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.SignUp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,8 +22,10 @@ import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.persistence.EmailUserDB;
+import sg.asmallmuseum.presentation.General.MainActivity;
+import sg.asmallmuseum.presentation.UserInformInterface;
 
-public class Login extends AppCompatActivity implements UserInformInterface {
+public class LoginActivity extends AppCompatActivity implements UserInformInterface {
     private UserManager userManager;
     private FirebaseAuth mAuth;
 
@@ -42,8 +44,8 @@ public class Login extends AppCompatActivity implements UserInformInterface {
 
         emailID = (EditText)findViewById(R.id.emailID);
         password= (EditText)findViewById(R.id.password);
-        loginBtn = (Button)findViewById(R.id.logInBtn);
-        homeBtn = (Button)findViewById(R.id.homeBtn);
+        loginBtn = (Button)findViewById(R.id.log_in_btn);
+        homeBtn = (Button)findViewById(R.id.home_btn);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +62,7 @@ public class Login extends AppCompatActivity implements UserInformInterface {
         homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);//<< MainActivity
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);//<< MainActivity
                 startActivity(intent);
             }
         });

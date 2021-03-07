@@ -1,6 +1,5 @@
 package sg.asmallmuseum.persistence;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,17 +15,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import sg.asmallmuseum.Domain.User;
-import sg.asmallmuseum.logic.DBListener;
-import sg.asmallmuseum.presentation.UserInformInterface;
+import sg.asmallmuseum.logic.UserDBListener;
 
 public class EmailUserDB implements UserDBInterface {
 
-    private DBListener dbListener;
+    private UserDBListener userDbListener;
     private FirebaseFirestore db;
     public EmailUserDB(){
 
@@ -35,8 +31,8 @@ public class EmailUserDB implements UserDBInterface {
     }
 
     @Override
-    public void setDBListener(DBListener dbListener) {
-        this.dbListener = dbListener;
+    public void setDBListener(UserDBListener userDbListener) {
+        this.userDbListener = userDbListener;
     }
 
     @Override
@@ -74,7 +70,7 @@ public class EmailUserDB implements UserDBInterface {
                 }else if(user == null){
                     ;
                 }
-                dbListener.setUserListener(list);
+                userDbListener.setUserListener(list);
             }
 
         });
@@ -104,7 +100,7 @@ public class EmailUserDB implements UserDBInterface {
                 }else if(user == null){
                     list.add("null");
                 }
-                dbListener.setAllUserListener(list);
+                userDbListener.setAllUserListener(list);
             }
 
         });
@@ -128,7 +124,7 @@ public class EmailUserDB implements UserDBInterface {
                           }
 
                           Log.d("getAllEmailUser", sb.toString());
-                          dbListener.setAllUserListener(list);
+                          userDbListener.setAllUserListener(list);
                       } else {
                           Log.d("getAllUser", "Error getting documents: ", task.getException());
                       }

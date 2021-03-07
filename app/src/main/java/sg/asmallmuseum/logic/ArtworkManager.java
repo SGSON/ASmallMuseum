@@ -19,11 +19,11 @@ import sg.asmallmuseum.Domain.FineArts;
 import sg.asmallmuseum.persistence.ArtworkDB;
 import sg.asmallmuseum.persistence.ArtworkDBInterface;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
-import sg.asmallmuseum.presentation.CustomListenerInterfaces.DBListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkDBListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UploadCompleteListener;
 
-public class ArtworkManager implements DBListener {
+public class ArtworkManager implements ArtWorkDBListener {
     private final ArtworkDBInterface db;
 
     private UploadCompleteListener upListener;

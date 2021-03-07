@@ -6,9 +6,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -16,17 +13,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import sg.asmallmuseum.Domain.User;
-import sg.asmallmuseum.logic.DBListener;
-import sg.asmallmuseum.presentation.UserInformInterface;
+import sg.asmallmuseum.logic.UserDBListener;
 
 public class FacebookUserDB implements UserDBInterface {
-    private DBListener dbListener;
+    private UserDBListener userDbListener;
     private FirebaseFirestore db;
 
     public FacebookUserDB(){
@@ -36,8 +31,8 @@ public class FacebookUserDB implements UserDBInterface {
     }
 
     @Override
-    public void setDBListener(DBListener dbListener) {
-        this.dbListener = dbListener;
+    public void setDBListener(UserDBListener userDbListener) {
+        this.userDbListener = userDbListener;
     }
 
     @Override
@@ -69,7 +64,7 @@ public class FacebookUserDB implements UserDBInterface {
                 }else if(user == null){
                     list.add("null");
                 }
-                dbListener.setAllUserListener(list);
+                userDbListener.setAllUserListener(list);
             }
 
         });
@@ -99,7 +94,7 @@ public class FacebookUserDB implements UserDBInterface {
                             }
 
                             Log.d("getAllFacebookUser", sb.toString());
-                            dbListener.setAllUserListener(list);
+                            userDbListener.setAllUserListener(list);
 
                         } else {
                             Log.d("getAllUser", "Error getting documents: ", task.getException());

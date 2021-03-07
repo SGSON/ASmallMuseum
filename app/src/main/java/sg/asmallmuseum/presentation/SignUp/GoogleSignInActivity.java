@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.SignUp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +33,8 @@ import java.util.List;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.General.MainActivity;
+import sg.asmallmuseum.presentation.UserInformInterface;
 
 public class GoogleSignInActivity extends AppCompatActivity implements UserInformInterface {
     private UserManager userManager;
@@ -141,7 +143,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements UserInfor
             sb.append(s+"/");
         }
 
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("getUser",user);
         intent.putExtra("getAllUser", (Serializable) sb);
         intent.putExtra("type","google");

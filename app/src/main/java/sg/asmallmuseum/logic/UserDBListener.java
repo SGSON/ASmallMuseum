@@ -4,7 +4,7 @@ import java.util.List;
 
 import sg.asmallmuseum.Domain.User;
 
-public interface DBListener {
+public interface UserDBListener {
     void setUserListener(List<String> list);
     void setAllUserListener(List<String> list);
 }

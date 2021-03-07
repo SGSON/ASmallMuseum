@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.SignUp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,17 +8,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.Serializable;
 import java.util.List;
 
-import sg.asmallmuseum.Domain.CustomException;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.General.MainActivity;
+import sg.asmallmuseum.presentation.UserInformInterface;
+import sg.asmallmuseum.presentation.UserProfile.UpdatePasswordActivity;
+import sg.asmallmuseum.presentation.UserProfile.UpdateUserInfoActivity;
 
 public class ConfirmUpdataActivity extends AppCompatActivity implements UserInformInterface {
     private UserManager userManager;
@@ -48,7 +50,7 @@ public class ConfirmUpdataActivity extends AppCompatActivity implements UserInfo
         updatePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),UpdatePasswordActivity.class);
+                Intent intent = new Intent(getApplicationContext(), UpdatePasswordActivity.class);
                 startActivity(intent);
             }
         });
@@ -64,7 +66,7 @@ public class ConfirmUpdataActivity extends AppCompatActivity implements UserInfo
         updateInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),UpdateUserInfoActivity.class);
+                Intent intent = new Intent(getApplicationContext(), UpdateUserInfoActivity.class);
                 intent.putExtra("getUser",user);
                 intent.putExtra("type",type);
                 startActivity(intent);
@@ -126,7 +128,7 @@ public class ConfirmUpdataActivity extends AppCompatActivity implements UserInfo
             sb.append(s+"/");
         }
 
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("type",type);
         intent.putExtra("getUser",user);
         intent.putExtra("getAllUser", (Serializable) sb);

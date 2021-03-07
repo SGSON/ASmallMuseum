@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.SignUp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -22,10 +22,12 @@ import com.google.firebase.auth.FirebaseUser;
 import java.io.Serializable;
 import java.util.List;
 
-import sg.asmallmuseum.Domain.CustomException;
+import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.General.MainActivity;
+import sg.asmallmuseum.presentation.UserInformInterface;
 
 public class SignInWelcomeActivity extends AppCompatActivity implements UserInformInterface {
     private FirebaseUser user;
@@ -155,7 +157,7 @@ public class SignInWelcomeActivity extends AppCompatActivity implements UserInfo
             sb.append(s+"/");
         }
 
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("type",type);
         intent.putExtra("getUser",user);
         intent.putExtra("getAllUser", (Serializable) sb);

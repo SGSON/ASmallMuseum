@@ -13,12 +13,14 @@ import com.facebook.Profile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.List;
-
-import sg.asmallmuseum.Domain.CustomException;
-import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.SignUp.SignInWelcomeActivity;
+
+/**
+ * never used
+ * */
 
 public class FacebookUserDBActivity extends AppCompatActivity{
     private FirebaseUser user;
@@ -54,7 +56,7 @@ public class FacebookUserDBActivity extends AppCompatActivity{
                 } catch (CustomException e) {
                     e.printStackTrace();
                 }
-                Intent intent = new Intent(getApplicationContext(),SignInWelcomeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SignInWelcomeActivity.class);
                 intent.putExtra("type","facebook");
                 intent.putExtra("nickname",uNick);
                 startActivity(intent);

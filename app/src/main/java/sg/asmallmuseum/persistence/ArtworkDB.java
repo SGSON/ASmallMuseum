@@ -28,12 +28,12 @@ import sg.asmallmuseum.Domain.Museum;
 import sg.asmallmuseum.Domain.AppliedArts;
 import sg.asmallmuseum.Domain.Others;
 import sg.asmallmuseum.Domain.FineArts;
-import sg.asmallmuseum.presentation.CustomListenerInterfaces.DBListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkDBListener;
 
 public class ArtworkDB implements ArtworkDBInterface {
     private final FirebaseFirestore db;
     private final FirebaseStorage storage;
-    private DBListener mListener;
+    private ArtWorkDBListener mListener;
     private final int MAX_LIST_SIZE = 10;
 
     private final int REQUEST_USER = 2010;
@@ -44,7 +44,7 @@ public class ArtworkDB implements ArtworkDBInterface {
         storage = FirebaseStorage.getInstance();
     }
 
-    public void setListener(DBListener mListener){
+    public void setListener(ArtWorkDBListener mListener){
         this.mListener = mListener;
     }
 

@@ -4,31 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import sg.asmallmuseum.Domain.Artwork;
+
 import sg.asmallmuseum.R;
-import sg.asmallmuseum.logic.ArtworkManager;
-import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
-import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
 import sg.asmallmuseum.presentation.General.MainMenuFragment;
 import sg.asmallmuseum.presentation.General.MainMenuViewModel;
-import sg.asmallmuseum.presentation.General.MenuEvents;
-import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ArtListActivity extends AppCompatActivity  {
     private FirebaseAuth mAuth;

@@ -9,7 +9,7 @@ import java.util.List;
 
 import sg.asmallmuseum.Domain.Artwork;
 
-public interface DBListener {
+public interface ArtWorkDBListener {
     void onRecentFileDownloadComplete(List<String> list);
     void onFileDownloadComplete(List<Artwork> list, int request_code);
     void onFileUploadComplete(boolean complete);

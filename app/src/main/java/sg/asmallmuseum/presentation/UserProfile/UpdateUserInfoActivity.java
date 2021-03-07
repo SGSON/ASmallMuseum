@@ -1,4 +1,4 @@
-package sg.asmallmuseum.presentation;
+package sg.asmallmuseum.presentation.UserProfile;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,12 +13,11 @@ import android.widget.EditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.List;
-
-import sg.asmallmuseum.Domain.CustomException;
+import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.SignUp.ConfirmUpdataActivity;
 
 public class UpdateUserInfoActivity extends AppCompatActivity {
     private UserManager userManager;
@@ -95,7 +94,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 User tempUser = new User(uNickname,uLastName,uFirstName,uEmail,uBirth);
-                Intent intent = new Intent(getApplicationContext(),ConfirmUpdataActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ConfirmUpdataActivity.class);
                 intent.putExtra("getUserT",tempUser);
                 intent.putExtra("type",type);
                 startActivity(intent);

@@ -1,14 +1,9 @@
 package sg.asmallmuseum.persistence;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-import androidx.annotation.Nullable;
-
 import java.util.List;
-import java.util.Map;
 
 import sg.asmallmuseum.Domain.User;
-import sg.asmallmuseum.logic.DBListener;
+import sg.asmallmuseum.logic.UserDBListener;
 
 public interface UserDBInterface {
     void addUser(User user);
@@ -17,6 +12,6 @@ public interface UserDBInterface {
     void getAllUser(List<String> list);
     void updateUser();
     void deleteUser(String email);
-    void setDBListener(DBListener dbListener);
+    void setDBListener(UserDBListener userDbListener);
 
 }
