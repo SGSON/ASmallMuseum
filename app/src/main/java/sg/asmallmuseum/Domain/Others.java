@@ -9,7 +9,4 @@ public class Others extends Artwork {
 
     public Others() {
     }
-    /*public Paint(String aFileName) {
-        super(aFileName);
-    }*/
 }

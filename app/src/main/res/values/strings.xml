@@ -10,6 +10,7 @@
     <string name="test4">2020-01-04</string>
     <string name="test5">VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY
     LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG TEXT</string>
+    <string name="welcome_test">Hi, Welcome to the "'"A Small Museum"'".</string>
 
     <string name="cat_music">Music</string>
     <string name="cat_paints">Paints</string>
@@ -26,6 +27,12 @@
     <string name="up_type">Type: </string>
     <string name="up_genre">Genre: </string>
 
+    <string name="welcome_sign_in">SignIn/Up</string>
+    <string name="main_menu_support">Support</string>
+
+    <string name="profile_profile">my profile</string>
+    <string name="profile_history">my history</string>
+    <string name="profile_sign_out">Sign-out</string>
 
     <string-array name="arts_categories">
         <item>Select</item>

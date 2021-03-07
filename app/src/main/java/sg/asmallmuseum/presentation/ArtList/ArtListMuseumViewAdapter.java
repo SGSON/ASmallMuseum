@@ -73,9 +73,7 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
 
     @Override
     public void updateList(List<Artwork> artworks) {
-
         this.mArtList.addAll(artworks);
-        Log.d("NUM_ELEMENTS", ""+mArtList.size());
         notifyDataSetChanged();
     }
 

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -71,6 +72,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         dialog.show();
 
         Intent intent = getActivity().getIntent();
+        setButtons();
 
         manager = new ArtworkManager();
         manager.setArtworkLoadCompleteListener(this);
@@ -99,6 +101,14 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         Intent intent = getActivity().getIntent();
         manager.getNumPost(intent.getStringExtra("Category"), intent.getStringExtra("Type"), REQUEST_USER);
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void setButtons(){
+        Button mTopMenu = (Button) view.findViewById(R.id.top_menu_button);
+        Button mBackButton = (Button) view.findViewById(R.id.back_button);
+
+        mTopMenu.setOnClickListener(this);
+        mBackButton.setOnClickListener(this);
     }
 
     /***Load File from DB***/
@@ -168,6 +178,9 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
             if (getActivity() instanceof ArtListActivity){
                 ((ArtListActivity) getActivity()).openMenuFragment();
             }
+        }
+        else if (id == R.id.back_button){
+            getActivity().finish();
         }
     }
 

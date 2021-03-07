@@ -167,7 +167,9 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
             Intent intent = new Intent(getActivity(), ArtListActivity.class);
             intent.putExtra("Category", map.get("Category"));
             intent.putExtra("Type", item);
+
             startActivity(intent);
+            closeFragment();
         }
     }
 }

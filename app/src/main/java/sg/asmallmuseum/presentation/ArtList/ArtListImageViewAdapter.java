@@ -82,6 +82,7 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
 
     public void updateList(List<Artwork> artworks){
         this.mArtList = artworks;
+        notifyDataSetChanged();
     }
 
 

@@ -12,9 +12,12 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -91,6 +94,13 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         mTopMenu.setOnClickListener(this);
     }
 
+    private void showPopup(){
+        PopupMenu popup = new PopupMenu(getContext(), view.findViewById(R.id.fragment_art_more_button));
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_more_enable, popup.getMenu());
+        popup.show();
+    }
+
     private void setViewPager(List<Uri> mList){
         //run when image loads finished.
         mList.sort(new Comparator<Uri>() {
@@ -124,7 +134,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
             resizeDescLayout();
         }
         else if (id == R.id.fragment_art_more_button){
-
+            showPopup();
         }
         else if (id == R.id.fragment_art_pager_expand_button){
             if (getActivity() instanceof ArtViewActivity){

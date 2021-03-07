@@ -166,7 +166,6 @@ public class ArtworkManager implements DBListener {
     public void onNumPostDownloadComplete(int numPost, int request_number) {
         if (request_number == REQUEST_USER){
             //numListener.onNumPostLoadComplete(numPost);
-
             if (numListener != null){
                 numListener.onNumPostLoadComplete(numPost);
             }
