@@ -15,11 +15,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import sg.asmallmuseum.R;
-import sg.asmallmuseum.presentation.General.MainActivity;
-import sg.asmallmuseum.presentation.General.MenuEvents;
+import java.io.Serializable;
+import java.util.List;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.R;
+import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.persistence.EmailUserDB;
+
+public class Login extends AppCompatActivity implements UserInformInterface {
+    private UserManager userManager;
     private FirebaseAuth mAuth;
 
     EditText emailID;
@@ -32,48 +37,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        emailID = (EditText)findViewById(R.id.email_id);
+        userManager = new UserManager("email");
+        userManager.setListener(this);
+
+        emailID = (EditText)findViewById(R.id.emailID);
         password= (EditText)findViewById(R.id.password);
-        loginBtn = (Button)findViewById(R.id.log_in_btn);
-        homeBtn = (Button)findViewById(R.id.home_btn);
+        loginBtn = (Button)findViewById(R.id.logInBtn);
+        homeBtn = (Button)findViewById(R.id.homeBtn);
 
-        homeBtn.setOnClickListener(this);
-        loginBtn.setOnClickListener(this);
-    }
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth = FirebaseAuth.getInstance();
 
-    @Override
-    public void onClick(View view) {
-        int viewId = view.getId();
+                String uEmailID = emailID.getText().toString();
+                String uPassword = password.getText().toString();
+                signIn(uEmailID,uPassword);
 
-        if (viewId == R.id.log_in_btn){
-            mAuth = FirebaseAuth.getInstance();
+            }
+        });
 
-            String uEmailID = emailID.getText().toString();
-            String uPassword = password.getText().toString();
-            signIn(uEmailID,uPassword);
-        }
-        else if (viewId == R.id.home_btn){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);//<< MainActivity
-            startActivity(intent);
-        }
-    }
-
-    private void makeText(String text){
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-    }
-
-    public void onMainButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Main Button", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onMenuButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_SHORT).show();
-        MenuEvents menuEvents = new MenuEvents(mAuth, this);
-        menuEvents.openMenu(false);
-    }
-
-    public void onBackButtonPressed(View view) {
-        Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);//<< MainActivity
+                startActivity(intent);
+            }
+        });
     }
 
     private void signIn(String email, String password) {
@@ -83,9 +73,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                            startActivity(intent);
-                            Toast.makeText(getApplication(),"success",Toast.LENGTH_SHORT).show();
+
+                            userManager.getUserInfo(email);
 
                         } else {
 
@@ -101,5 +90,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    @Override
+    public void userInfo(List<String> list) {
 
+    }
+
+    @Override
+    public void getAllUser(List<String> list) {
+        StringBuilder sb = new StringBuilder();
+        User user = new User();
+
+        if(!list.get(3).equals("null")){
+            user.setuEmail(list.get(3));
+            user.setuNick(list.get(4));
+            user.setuLastName(list.get(5));
+            user.setuFirstName(list.get(6));
+            user.setuBirth(list.get(7));
+        }else if(list.get(3).equals("null")){
+            ;
+        }
+        list.set(3,"");
+
+        for(String s : list){
+            sb.append(s+"/");
+        }
+
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        intent.putExtra("getUser",user);
+        intent.putExtra("getAllUser", (Serializable) sb);
+        intent.putExtra("type","email");
+        intent.putExtra("code","1");
+        startActivity(intent);
+
+    }
 }

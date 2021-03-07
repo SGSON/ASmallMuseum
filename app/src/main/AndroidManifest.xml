@@ -23,6 +23,16 @@
         </activity>
         <activity android:name=".presentation.ArtList.ArtListActivity" />
         <activity android:name=".presentation.ArtView.ArtViewActivity" />
+        <activity android:name=".presentation.EmailVerifiedActivity"></activity>
+        <activity android:name=".presentation.ConfirmUpdataActivity" />
+        <activity android:name=".presentation.UpdateUserInfoActivity" />
+        <activity android:name=".presentation.UpdatePasswordActivity" />
+        <activity android:name=".presentation.UserProfileActivity" />
+        <activity android:name=".presentation.SignInWelcomeActivity" />
+        <activity android:name=".presentation.FacebookSignInActivity" />
+        <activity android:name=".presentation.GoogleSignInActivity" />
+        <activity android:name=".presentation.GoogleUserDBActivity" />
+        <activity android:name=".presentation.FacebookUserDBActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
@@ -47,10 +57,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.SignUpActivity" />
-        <activity android:name=".presentation.LoginActivity" />
-        <activity android:name=".presentation.LoginFormActivity" />
-        <activity android:name=".presentation.General.MainActivity">
+        <activity android:name=".presentation.SignUp" />
+        <activity android:name=".presentation.Login" />
+        <activity android:name=".presentation.LoginForm" />
+        <activity android:name=".presentation.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

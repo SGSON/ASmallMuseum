@@ -1,8 +1,11 @@
 package sg.asmallmuseum.Domain;
 
-public class User {
-    private String uID;
-    private String uPassword;
+import androidx.loader.content.Loader;
+
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private String uNick;
     private String uLastName;
     private String uFirstName;
     private String uEmail;
@@ -13,20 +16,17 @@ public class User {
         //do not delete this constructor
     }
 
-    public User(String uID, String lastname, String firstname, String email, String birth){
-        this.uID = uID;
+    public User(String uNick, String lastname, String firstname, String email, String birth){
+
+        this.uNick = uNick;
         this.uFirstName = firstname;
         this.uLastName = lastname;
         this.uEmail = email;
         this.uBirth = birth;
     }
 
-    public String getuID() {
-        return uID;
-    }
-
-    public String getuPassword() {
-        return uPassword;
+    public String getuNick() {
+        return uNick;
     }
 
     public String getuLastName() {
@@ -45,12 +45,8 @@ public class User {
         return uBirth;
     }
 
-    public void setuID(String uID) {
-        this.uID = uID;
-    }
-
-    public void setuPassword(String uPassword) {
-        this.uPassword = uPassword;
+    public void setuNick(String uNick) {
+        this.uNick = uNick;
     }
 
     public void setuLastName(String uLastName) {
