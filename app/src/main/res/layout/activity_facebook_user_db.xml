@@ -5,26 +5,20 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/emailID"
-        android:hint="id"
+        android:id="@+id/user_nickname"
+        android:hint="nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <EditText
-        android:id="@+id/password"
-        android:hint="password"
+        android:id="@+id/user_birth"
+        android:text="birth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/logInBtn"
-        android:text="login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/homeBtn"
-        android:text="home"
+        android:id="@+id/submitBtn"
+        android:text="submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

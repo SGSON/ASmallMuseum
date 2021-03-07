@@ -8,10 +8,24 @@
     tools:context=".presentation.LoginForm">
 
     <Button
-        android:id="@+id/logIn"
+        android:id="@+id/email_login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="login"/>
+        android:text="email_sign_in"/>
+
+    <Button
+        android:id="@+id/facebook_login_button"
+        android:text="facebook_sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/google_login_button"
+        android:text="google_sign_in"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/signUp"

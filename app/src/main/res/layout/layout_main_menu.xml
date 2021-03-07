@@ -82,6 +82,18 @@
                 app:layout_constraintStart_toEndOf="@id/profile_picture"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/logInBtn"
+                app:layout_constraintBottom_toBottomOf="@id/logout_button"/>
+
+            <Button
+                android:layout_width="90dp"
+                android:layout_height="30dp"
+                android:id="@+id/logout_button"
+                android:text="logout_button"
+                android:gravity="center|start"
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toEndOf="@id/profile_picture"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/signUpBtn"
                 app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

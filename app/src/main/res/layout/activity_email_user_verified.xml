@@ -4,27 +4,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/emailID"
-        android:hint="id"
+    <TextView
+        android:text="click next button \n after confirm your email"
+        android:textSize="20dp"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/password"
-        android:hint="password"
+    <Button
+        android:id="@+id/resend_email"
+        android:text="resend verification email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/logInBtn"
-        android:text="login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/homeBtn"
-        android:text="home"
+        android:id="@+id/next_button"
+        android:text="next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

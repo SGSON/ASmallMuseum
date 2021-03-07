@@ -1,40 +1,44 @@
 package sg.asmallmuseum.presentation;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import sg.asmallmuseum.Domain.Artwork;
-import sg.asmallmuseum.Domain.Picture;
+import androidx.core.app.ActivityCompat;
+
+import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.MenuAction;
 import sg.asmallmuseum.logic.UserManager;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UserInformInterface{
     private FirebaseAuth mAuth;
-    private RecyclerView recent_view;
-    private List<Artwork> mArtList;
-    private CardViewAdapter adapter;
-    private final int REQUEST_CODE = 20180201;
-
+    private FirebaseUser user;
+    private UserManager userManager;
+    private GoogleSignInClient mGoogleSignInClient;
+    private String code;
     private ImageButton mQuick;
 
     @Override
@@ -42,53 +46,188 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /***Google Sign-in Test***/
-        /*UserManager manager = new UserManager("Google");
+        mAuth = FirebaseAuth.getInstance();
 
-        mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
-        mQuick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = manager.signUPWithGoogle(view.getContext(), mAuth);
-                startActivity(intent);
-            }
-        });*/
-        /***End***/
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
 
-        mQuick = (ImageButton)findViewById(R.id.quick_menu_button);
-        Intent intent = new Intent(this, ArtViewActivity.class);
-        mQuick.setOnClickListener(new View.OnClickListener() {
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        Button confirm = (Button)findViewById(R.id.confirm);
+        Button logOut = (Button)findViewById(R.id.logOut);
+        Button getAllUser = (Button)findViewById(R.id.get_all_user_button);
+        Button goToIntentActivity = (Button)findViewById(R.id.go_to_intent);
+
+        Intent i = getIntent();
+        User getU = (User) i.getSerializableExtra("getUser");
+        String type = i.getStringExtra("type");
+        String getAllUserS = i.getStringExtra("getAllUser");
+        code = i.getStringExtra("code");
+
+        confirm.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                startActivity(intent);
+            public void onClick(View v) {
+                FirebaseUser user = mAuth.getCurrentUser();
+
+                if (user != null ) {
+                    Toast.makeText(getApplicationContext(), " type : "+type +" /userEmail : "+ user.getEmail()+" /firstName : "+getU.getuFirstName(),Toast.LENGTH_LONG).show();
+
+                } else{
+                    Toast.makeText(getApplicationContext(),"Please sign in ",Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 
-        mArtList = new ArrayList<>();
-        adapter = new CardViewAdapter(mArtList);
-        setData();
-        initRecentView();
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                LoginManager.getInstance().logOut();
+                googleSignOut();
+                startActivity(getIntent());
+            }
+        });
+
+        getAllUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),getAllUserS+" ",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        goToIntentActivity.setText("app exit");
+        goToIntentActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finishAffinity();
+                //finishAndRemoveTask();
+                //moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+                //finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+                //android.os.Process.killProcess(android.os.Process.myPid());	// 앱 프로세스 종료
+                System.exit(0);
+            }
+        });
+
+    }
+
+
+    public void googleSignOut(){
+        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                    }
+                });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                //account.
-            }
-            catch (ApiException e){
+    protected void onStart() {
+        super.onStart();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        /*페이지 간 넘겨야할 정보
+        * type
+        * getUser
+        **/
+        if(user !=null){
+            Intent i = getIntent();
+            String type = i.getStringExtra("type");
+
+            if(type != null){
+
+                userManager = new UserManager(type);
+                userManager.setListener(this);
+
+                User getUser = (User) i.getSerializableExtra("getUser");
+                String[] getAllUser=i.getStringExtra("getAllUser").split("/");
+
+                List<String> str = new ArrayList<>();
+                str.add("00");
+                for(String s : getAllUser) {
+                    if (s.equals(user.getEmail())) {
+                        str.set(0,"1");
+                    }
+                }
+
+                if (str.get(0).equals("1")) {
+                    /*userManager.deleteUser(user.getEmail());
+                    deleteUser();
+                    FirebaseAuth.getInstance().signOut();
+                    LoginManager.getInstance().logOut();*/
+                    //alert();
+
+                }else if(str.get(0).equals("00")) {
+                    if(getUser.getuFirstName() == null && type.equals("email")) {
+                        userManager.getTempUserInfo(user.getEmail());
+
+                    }else if(getUser.getuFirstName() == null && type.equals("facebook")){
+                        Intent intent = new Intent(getApplicationContext(),FacebookUserDBActivity.class);
+                        intent.putExtra("type","facebook");
+                        startActivity(intent);
+
+                    }else if(getUser.getuFirstName() == null && type.equals("google")){
+                        Intent intent = new Intent(getApplicationContext(),GoogleUserDBActivity.class);
+                        intent.putExtra("type","google");
+                        startActivity(intent);
+
+                    }
+                }
+
+
 
             }
         }
     }
 
-    private void initRecentView(){
-        recent_view = (RecyclerView)findViewById(R.id.view_recent);
-        recent_view.setLayoutManager(new LinearLayoutManager(this));
-        recent_view.setAdapter(adapter);
+    @Override
+    public void onBackPressed() {
+        String code2 = code;
+        if(code2 != null){
+            ;
+        }else if(code2 == null) {
+            super.onBackPressed();
+        }
+
+    }
+
+    public void alert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Alert");
+        builder.setMessage("exist same emailID, failed");
+        builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                startActivity(getIntent());
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
+    public void deleteUser(){
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+
+                        }
+                    }
+                });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     private void makeText(String text){
@@ -100,49 +239,57 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onMenuButtonPressed(View view) {
+        Intent i = getIntent();
+        User getUser = (User)getIntent().getSerializableExtra("getUser");
+        String type = i.getStringExtra("type");
         Toast.makeText(this, "Pressed Menu Button", Toast.LENGTH_SHORT).show();
         MenuAction menuAction = new MenuAction();
         menuAction.openMenu(this);
+        menuAction.getUserConnection(getUser);
+        menuAction.getUserType(type);
     }
 
     public void onBackButtonPressed(View view) {
         Toast.makeText(this, "Pressed Back Button", Toast.LENGTH_SHORT).show();
     }
 
-    private void setData(){
-        mArtList.add(new Picture("123089123","asd","asdasdasd","asdasd","asdasdasd"));
-        mArtList.add(new Picture("183902","fdwwdfw","wegwbv","svc","atehaebba"));
-        mArtList.add(new Picture("1348140","wfdscvs","vscvc","dfw","a"));
-        mArtList.add(new Picture("918376481","jryrjt","svcvvcsv","bwfbw","wn"));
-        mArtList.add(new Picture("34958043","ero6l","scvscv","htt","qbe"));
+    @Override
+    public void userInfo(List<String> list) {
+
+        User user = new User(list.get(1),list.get(2),list.get(3),list.get(0),list.get(4));
+        Intent intent = new Intent(getApplicationContext(), EmailVerifiedActivity.class);
+        intent.putExtra("type","email");
+        intent.putExtra("nUser",user);
+        startActivity(intent);
+
     }
 
-    /***Google Sign-Up methods***/
-    /*
-     * signUPWithGoogle: get a google sign-up page
-     * firebaseSignWithGoogle: Authentication with Google*/
-    public Intent signUPWithGoogle(Context context, FirebaseAuth mAuth){
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.default_web_client_id)).requestEmail().build();
-        GoogleSignInClient mClient = GoogleSignIn.getClient(context, gso);
-        Intent intent = mClient.getSignInIntent();
-        return intent;
+    @Override
+    public void getAllUser(List<String> list) {
+        StringBuilder sb = new StringBuilder();
+        User user = new User();
+
+        if(!list.get(3).equals("null")){
+            user.setuEmail(list.get(3));
+            user.setuNick(list.get(4));
+            user.setuLastName(list.get(5));
+            user.setuFirstName(list.get(6));
+            user.setuBirth(list.get(7));
+        }else if(list.get(3).equals("null")){
+            ;
+        }
+        list.set(3,"");
+
+        for(String s : list){
+            sb.append(s+"/");
+        }
+
+        Intent intent = new Intent(getApplicationContext(),SignUp.class);
+        intent.putExtra("getAllUser", (Serializable) sb);
+        intent.putExtra("type","email");
+        startActivity(intent);
+
     }
 
-    private void firebaseSignInWithGoogle(String idToken, FirebaseAuth mAuth, Context context){
-        AuthCredential mAuthCredential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(mAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    Log.d("LOGIN: ","LOGIN SUCCESS!");
-                }
-                else {
-                    Log.w("LOGIN: ", "FAIL TO LOGIN");
-                }
-            }
-        });
-    }
-    /***End***/
 
 }
