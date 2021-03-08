@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -30,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.presentation.ArtList.ArtListActivity;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.MainMenuOnClickListener;
-import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 public class MainMenuFragment extends Fragment implements View.OnClickListener {
 
@@ -77,7 +75,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(MainMenuViewModel.class);
-        viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
+        viewModel.getFirebaseUser().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
                 setProfileContainer(firebaseUser);

@@ -1,0 +1,122 @@
+package sg.asmallmuseum.presentation.UserProfile;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.R;
+
+public class UserProfileFragment extends Fragment implements View.OnClickListener{
+
+    private View view;
+    private UserProfileViewModel viewModel;
+
+    private User user;
+    private String type;
+
+    public UserProfileFragment() {
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_user_profile, container, false);
+
+        Button updatePass = (Button) view.findViewById(R.id.update_password);
+        Button home = (Button) view.findViewById(R.id.home_button);
+        Button updateInfo = (Button) view.findViewById(R.id.update_user_information);
+
+        updatePass.setOnClickListener(this);
+        home.setOnClickListener(this);
+        updateInfo.setOnClickListener(this);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(UserProfileViewModel.class);
+        getProfileFromViewModel();
+    }
+
+    private void getProfileFromViewModel(){
+        viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user != null){
+                    setTexts(user);
+                }
+
+            }
+        });
+
+        viewModel.getType().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s != null){
+                    setType(s);
+                }
+            }
+        });
+    }
+
+    private void setTexts(User user){
+        this.user = user;
+
+        TextView nickname = (TextView) view.findViewById(R.id.user_nickname);
+        TextView firstName = (TextView) view.findViewById(R.id.user_firstname);
+        TextView lastName = (TextView) view.findViewById(R.id.user_lastname);
+        TextView birth = (TextView) view.findViewById(R.id.user_birth);
+
+        nickname.setText(user.getuNick());
+        firstName.setText(user.getuFirstName());
+        lastName.setText(user.getuLastName());
+        birth.setText(user.getuBirth());
+    }
+
+    private void setType(String type){
+        this.type = type;
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.update_password){
+            if (getActivity() instanceof UserProfileActivity){
+                ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_PASSWORD);
+            }
+        }
+        else if (id == R.id.home_button){
+            getActivity().finish();
+        }
+        else if (id == R.id.update_user_information){
+            if (getActivity() instanceof UserProfileActivity){
+                ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_INFO);
+            }
+        }
+    }
+}

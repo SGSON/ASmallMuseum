@@ -1,24 +1,13 @@
-package sg.asmallmuseum.presentation.General;
-
-import com.google.firebase.auth.FirebaseUser;
+package sg.asmallmuseum.presentation.UserProfile;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import sg.asmallmuseum.Domain.User;
 
-public class MainMenuViewModel extends ViewModel {
-    private final MutableLiveData<FirebaseUser> mFirebaseUser = new MutableLiveData<>();
+public class UserProfileViewModel extends ViewModel {
     private final MutableLiveData<User> mUser = new MutableLiveData<>();
     private final MutableLiveData<String> mType = new MutableLiveData<>();
-
-    public void setFirebaseUser(FirebaseUser user){
-        mFirebaseUser.setValue(user);
-    }
-
-    public LiveData<FirebaseUser> getFirebaseUser(){
-        return mFirebaseUser;
-    }
 
     public void setUser(User user){
         mUser.setValue(user);
@@ -35,5 +24,4 @@ public class MainMenuViewModel extends ViewModel {
     public LiveData<String> getType(){
         return mType;
     }
-
 }

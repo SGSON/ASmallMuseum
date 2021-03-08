@@ -32,7 +32,7 @@ public class ArtListActivity extends AppCompatActivity  {
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
-        menuViewModel.setUser(user);
+        menuViewModel.setFirebaseUser(user);
     }
 
     public void initFragment(){

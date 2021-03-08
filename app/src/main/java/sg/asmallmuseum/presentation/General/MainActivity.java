@@ -6,32 +6,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
-import sg.asmallmuseum.logic.ArtworkManager;
-import sg.asmallmuseum.presentation.ArtList.ArtListImageViewAdapter;
-import sg.asmallmuseum.presentation.ArtUpload.ArtUploadPageActivity;
-import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
-import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
 import android.Manifest;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
     private FirebaseAuth mAuth;
@@ -61,7 +43,7 @@ public class MainActivity extends AppCompatActivity  {
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
-        viewModel.setUser(user);
+        viewModel.setFirebaseUser(user);
     }
 
     public void replaceFragment(Fragment fragment){

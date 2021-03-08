@@ -13,9 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ASmallMuseum">
-        <activity android:name=".presentation.ArtView.ArtViewActivity"></activity>
-        <activity android:name=".presentation.ArtViewMuseum.ArtViewMuseumActivity" />
-        <activity android:name=".presentation.CategoryView.CategoryViewActivity" />
         <activity android:name=".presentation.ArtUpload.ArtUploadPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
@@ -24,9 +21,6 @@
         <activity android:name=".presentation.ArtList.ArtListActivity" />
         <activity android:name=".presentation.ArtView.ArtViewActivity" />
         <activity android:name=".presentation.SignUp.EmailVerifiedActivity"></activity>
-        <activity android:name=".presentation.SignUp.ConfirmUpdataActivity" />
-        <activity android:name=".presentation.UserProfile.UpdateUserInfoActivity" />
-        <activity android:name=".presentation.UserProfile.UpdatePasswordActivity" />
         <activity android:name=".presentation.UserProfile.UserProfileActivity" />
         <activity android:name=".presentation.SignUp.SignInWelcomeActivity" />
         <activity android:name=".presentation.SignUp.FacebookSignInActivity" />
@@ -58,9 +52,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.SignUp.SignUpActivity" />
-        <activity android:name=".presentation.Login" />
+        <activity android:name=".presentation.SignUp.LoginActivity" />
         <activity android:name=".presentation.SignUp.LoginFormActivity" />
-        <activity android:name=".presentation.MainActivity">
+        <activity android:name=".presentation.General.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

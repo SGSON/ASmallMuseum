@@ -8,59 +8,63 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 
 public class UserProfileActivity extends AppCompatActivity {
+    protected static final int REQUEST_PASSWORD = 3601;
+    protected static final int REQUEST_INFO = 3602;
+    protected static final int REQUEST_END = 3603;
+
+    private UserProfileFragment mUserProfileFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        TextView nickname = (TextView) findViewById(R.id.user_nickname);
-        Button updatePass = (Button) findViewById(R.id.update_password);
-        TextView firstName = (TextView) findViewById(R.id.user_firstname);
-        TextView lastName = (TextView) findViewById(R.id.user_lastname);
-        TextView birth = (TextView) findViewById(R.id.user_birth);
-        Button home = (Button) findViewById(R.id.home_button);
-        Button updateInfo = (Button) findViewById(R.id.update_user_information);
+        UserProfileViewModel viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
+        mUserProfileFragment = new UserProfileFragment();
 
-        Intent i = getIntent();
-        User user = (User)i.getSerializableExtra("getUser");
-        String type = i.getStringExtra("type");
+        Intent intent = getIntent();
+        User user = (User)intent.getSerializableExtra("getUser");
+        String type = intent.getStringExtra("type");
 
-        nickname.setText(user.getuNick());
-        firstName.setText(user.getuFirstName());
-        lastName.setText(user.getuLastName());
-        birth.setText(user.getuBirth());
+        viewModel.setUser(user);
+        viewModel.setType(type);
 
-        updatePass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UpdatePasswordActivity.class);
-                startActivity(intent);
-            }
-        });
+        initFragment();
+    }
 
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+    private void initFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.user_profile_container, mUserProfileFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
 
-        updateInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UpdateUserInfoActivity.class);
-                intent.putExtra("getUser",user);
-                intent.putExtra("type",type);
-                startActivity(intent);
-            }
-        });
+    public void replaceFragment(int request){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-
+        switch (request){
+            case REQUEST_PASSWORD:
+                fragmentTransaction.replace(R.id.user_profile_container, new UserProfileUpdatePasswordFragment());
+                break;
+            case REQUEST_INFO:
+                fragmentTransaction.replace(R.id.user_profile_container, new UserProfileUpdateInfoFragment());
+                break;
+            case REQUEST_END:
+                fragmentManager.popBackStack();
+                break;
+        }
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
 }
