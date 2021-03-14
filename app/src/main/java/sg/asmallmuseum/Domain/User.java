@@ -10,6 +10,7 @@ public class User implements Serializable {
     private String uFirstName;
     private String uEmail;
     private String uBirth;
+    private String uType;
 
     public User(){
         //default constructor
@@ -23,6 +24,15 @@ public class User implements Serializable {
         this.uLastName = lastname;
         this.uEmail = email;
         this.uBirth = birth;
+    }
+
+    public User(String uNick, String lastname, String firstname, String email, String birth, String method){
+        this.uNick = uNick;
+        this.uFirstName = firstname;
+        this.uLastName = lastname;
+        this.uEmail = email;
+        this.uBirth = birth;
+        this.uType = method;
     }
 
     public String getuNick() {
@@ -63,5 +73,13 @@ public class User implements Serializable {
 
     public void setuBirth(String uBirth) {
         this.uBirth = uBirth;
+    }
+
+    public String getuType() {
+        return uType;
+    }
+
+    public void setuType(String uType) {
+        this.uType = uType;
     }
 }

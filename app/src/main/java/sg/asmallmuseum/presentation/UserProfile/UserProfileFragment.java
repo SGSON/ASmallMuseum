@@ -68,22 +68,13 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 if (user != null){
                     setTexts(user);
                 }
-
-            }
-        });
-
-        viewModel.getType().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                if (s != null){
-                    setType(s);
-                }
             }
         });
     }
 
     private void setTexts(User user){
         this.user = user;
+        setType(user.getuType());
 
         TextView nickname = (TextView) view.findViewById(R.id.fragment_user_profile_user_nickname);
         TextView firstName = (TextView) view.findViewById(R.id.fragment_user_profile_user_firstname);
@@ -98,6 +89,10 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
     private void setType(String type){
         this.type = type;
+        if (!this.type.equals("eMail")){
+            Button updatePass = (Button) view.findViewById(R.id.fragment_user_profile_update_password_button);
+            updatePass.setVisibility(View.GONE);
+        }
     }
 
 

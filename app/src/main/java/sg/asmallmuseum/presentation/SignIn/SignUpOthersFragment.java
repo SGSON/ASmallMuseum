@@ -64,7 +64,7 @@ public class SignUpOthersFragment extends Fragment {
 
                 try {
                     ValidateUser.validUser(uNick,uLastName,uFirstName,uBirth);
-                    mManager.addNewUser(uNick,uLastName,uFirstName,uEmail,uBirth);
+                    mManager.addNewUser(uNick, uLastName, uFirstName, uEmail, uBirth, mType);
                     if (getActivity() instanceof SignInActivity){
                         ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_END_SIGN_UP);
                     }
@@ -91,6 +91,12 @@ public class SignUpOthersFragment extends Fragment {
            @Override
            public void onChanged(UserManager userManager) {
                 mManager = userManager;
+           }
+       });
+       viewModel.getType().observe(getViewLifecycleOwner(), new Observer<String>() {
+           @Override
+           public void onChanged(String s) {
+               mType = s;
            }
        });
     }

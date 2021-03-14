@@ -42,6 +42,11 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
         viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
         mUserProfileFragment = new UserProfileFragment();
 
+        Button mBack = findViewById(R.id.back_button);
+        Button mMenu = findViewById(R.id.top_menu_button);
+        mBack.setOnClickListener(this);
+        mMenu.setOnClickListener(this);
+
         initFragment();
     }
 

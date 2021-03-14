@@ -123,8 +123,10 @@ public class EmailUserDB implements UserDBInterface {
     }
 
     @Override
-    public void updateUser() {
-
+    public void updateUser(User user) {
+        DocumentReference documentReference = db.collection("Users").document("eMailUser").collection("Users").document(user.getuEmail());
+        documentReference.update("uFirstName", user.getuFirstName(), "uLastName", user.getuLastName(),
+                                    "uBirth", user.getuBirth(), "uNick", user.getuNick());
     }
 
     @Override

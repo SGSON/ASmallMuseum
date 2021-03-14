@@ -85,7 +85,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
         userManager.setListener(this);
 
         setButtons();
-        //setFacebook();
+        setFacebook();
 
         return view;
     }
@@ -246,6 +246,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             user = mAuth.getCurrentUser();
+                            viewModel.setType("Google");
                             moveNextPage(user);
                             //userManager.getUserInfo(user.getEmail());
                             Log.d("Google login", "signInWithCredential:success");
@@ -295,7 +296,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             user = mAuth.getCurrentUser();
-                            //userManager.getUserInfo(user.getEmail()+"");
+                            viewModel.setType("Facebook");
                             moveNextPage(user);
                         } else {
                             // If sign in fails, display a message to the user.

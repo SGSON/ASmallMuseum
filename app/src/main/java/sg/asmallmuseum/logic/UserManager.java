@@ -27,9 +27,9 @@ public class UserManager implements UserDBListener {
     }
 
     /***this is for a email Sign-up method.***/
-    public void addNewUser(String uNick, String lastname, String firstname, String email, String birth) throws CustomException {
+    public void addNewUser(String uNick, String lastname, String firstname, String email, String birth, String method) {
 
-        User user = new User(uNick, lastname, firstname, email, birth);
+        User user = new User(uNick, lastname, firstname, email, birth, method);
 
         db.addUser(user);
 
@@ -56,6 +56,11 @@ public class UserManager implements UserDBListener {
         db.getAllUser();
 
     }*/
+
+    public void updateUser(String uNick, String lastname, String firstname, String email, String birth){
+        User user = new User(uNick, lastname, firstname, email, birth);
+        db.updateUser(user);
+    }
 
     public void deleteUser(String email){
         db.deleteUser(email);

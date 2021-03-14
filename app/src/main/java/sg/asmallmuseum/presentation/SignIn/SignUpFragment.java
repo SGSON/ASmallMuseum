@@ -225,7 +225,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
                             String uFirstName = firstName.getText().toString();
                             String uLastName = lastName.getText().toString();
 
-                            User user = new User(uNick, uLastName, uFirstName, uEmailID, uBirth);
+                            User user = new User(uNick, uLastName, uFirstName, uEmailID, uBirth, "eMail");
                             viewModel.setUser(user);
                             if(getActivity() instanceof SignInActivity){
                                 ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_EMAIL_VERIFY);

@@ -25,6 +25,7 @@ import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.logic.ValidateUser;
 
 
 public class UserProfileUpdateInfoFragment extends Fragment implements View.OnClickListener{
@@ -54,6 +55,7 @@ public class UserProfileUpdateInfoFragment extends Fragment implements View.OnCl
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_profile_update_info, container, false);
+        userManager = new UserManager();
 
         Button backBtn = (Button) view.findViewById(R.id.fragment_user_profile_update_detail_home_button);
         Button updateBtn = (Button) view.findViewById(R.id.fragment_user_profile_update_detail_update_user_information);
@@ -103,7 +105,7 @@ public class UserProfileUpdateInfoFragment extends Fragment implements View.OnCl
 
     private void setType(String type){
         this.type = type;
-        userManager = new UserManager();
+
     }
 
 
@@ -122,7 +124,8 @@ public class UserProfileUpdateInfoFragment extends Fragment implements View.OnCl
                 String uBirth = birth.getText().toString();
 
                 try {
-                    userManager.addNewUser(uNickname,uLastName,uFirstName,uEmail,uBirth);
+                    ValidateUser.validUser(uNickname,uLastName,uFirstName,uBirth);
+                    userManager.updateUser(uNickname,uLastName,uFirstName,uEmail,uBirth);
                 } catch (CustomException e) {
                     e.printStackTrace();
                 }

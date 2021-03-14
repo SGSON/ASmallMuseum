@@ -10,7 +10,7 @@ public interface UserDBInterface {
     void getUser(String email, int request_code);
     void getTempUser(String email);
     void getAllUser(List<String> list);
-    void updateUser();
+    void updateUser(User user);
     void deleteUser(String email);
     void setDBListener(UserDBListener userDbListener);
 
