@@ -34,6 +34,46 @@
     <string name="profile_history">my history</string>
     <string name="profile_sign_out">Sign-out</string>
 
+    <!-- SignInActivity -->
+    <string name="id">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign-In</string>
+    <string name="sign_up">Sign-Up</string>
+    <string name="or">---OR---</string>
+
+    <string name="email_verify_text">click next button \n after confirm your email</string>
+    <string name="resend">resend verification email</string>
+    <string name="next">Next</string>
+    <string name="welcome">Welcome</string>
+    <string name="home">Home</string>
+
+    <string name="email_id">Email ID</string>
+    <string name="spinner">\u0040</string>
+    <string name="verified_password">Verify password</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="nick_name">Nick Name</string>
+    <string name="birth">Date of Birth</string>
+    <string name="back">Back</string>
+    <string name="submit">Submit</string>
+
+    <!-- UserProfileActivity -->
+    <string name="nick_name_text">Nick Name: </string>
+    <string name="user_nick_name">user nickname</string>
+    <string name="update_pwd">Update Password</string>
+    <string name="first_name_text">First Name: </string>
+    <string name="user_first_name">user first name</string>
+    <string name="last_name_text">Last Name: </string>
+    <string name="user_last_name">user last name</string>
+    <string name="birth_text">Birth: </string>
+    <string name="user_birth">user birth</string>
+    <string name="update_info">Update Information</string>
+    <string name="new_pwd_text">New Password: </string>
+    <string name="new_pwd">New Password</string>
+    <string name="ver_pwd_text">Verify Password: </string>
+    <string name="ver_pwd">Verify Password</string>
+
+
     <string-array name="arts_categories">
         <item>Select</item>
         <item>Fine Arts</item>
@@ -121,4 +161,8 @@
     <string name="upload_message">Are you sure?</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="internet_connection_fail">Internet Connection Failed.</string>
+    <string name="ok">OK</string>
+    <string name="enter_email">ENTER THE EMAIL</string>
 </resources>

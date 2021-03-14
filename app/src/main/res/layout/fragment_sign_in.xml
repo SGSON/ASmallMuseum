@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.SignIn.SignInFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_top_bar"
+            android:id="@+id/fragment_sign_in_top_bar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/fragment_sign_in_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragment_sign_in_layout"
+            app:layout_constraintTop_toBottomOf="@id/fragment_sign_in_top_bar"
+            app:layout_constraintBottom_toTopOf="@id/fragment_sign_in_or"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_sign_in_email"
+                android:hint="@string/id"
+                android:inputType="textEmailAddress"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/fragment_sign_in_password"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_sign_in_password"
+                android:hint="@string/password"
+                android:inputType="textWebPassword"
+                app:layout_constraintTop_toBottomOf="@id/fragment_sign_in_email"
+                app:layout_constraintBottom_toTopOf="@id/fragment_sign_in_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_sign_in_button"
+                android:text="@string/sign_in"
+                app:layout_constraintTop_toBottomOf="@id/fragment_sign_in_password"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:id="@+id/fragment_sign_in_or"
+            android:text="@string/or"
+            app:layout_constraintTop_toBottomOf="@id/fragment_sign_in_layout"
+            app:layout_constraintBottom_toTopOf="@id/fragment_sign_in_sign_up"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:id="@+id/fragment_sign_in_sign_up"
+            android:text="@string/sign_up"
+            app:layout_constraintTop_toBottomOf="@id/fragment_sign_in_or"
+            app:layout_constraintBottom_toTopOf="@id/fragment_sign_in_google"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.gms.common.SignInButton
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:id="@+id/fragment_sign_in_google"
+            app:layout_constraintTop_toBottomOf="@id/fragment_sign_in_sign_up"
+            app:layout_constraintBottom_toTopOf="@id/fragment_sign_in_facebook"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.facebook.login.widget.LoginButton
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:id="@+id/fragment_sign_in_facebook"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintTop_toBottomOf="@id/fragment_sign_in_google"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

@@ -1,5 +1,6 @@
 package sg.asmallmuseum.presentation.General;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -9,7 +10,12 @@ import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.R;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +34,7 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
 
         //will be move to the upload activity
+        //networkConnection();
         requestPermission();
         mAuth = FirebaseAuth.getInstance();
         viewModel = new ViewModelProvider(this).get(MainMenuViewModel.class);
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity  {
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
+
         viewModel.setFirebaseUser(user);
     }
 
@@ -81,4 +89,19 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
     /***End***/
+
+    private void networkConnection(){
+        ConnectivityManager connManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo network = connManager.getActiveNetworkInfo();
+        if (network == null && !network.isConnectedOrConnecting()){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage(R.string.internet_connection_fail)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    });
+        }
+    }
 }

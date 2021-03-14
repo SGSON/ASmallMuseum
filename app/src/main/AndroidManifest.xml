@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ASmallMuseum">
+        <activity android:name=".presentation.SignIn.SignInActivity"/>
         <activity android:name=".presentation.ArtUpload.ArtUploadPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
@@ -20,13 +21,7 @@
         </activity>
         <activity android:name=".presentation.ArtList.ArtListActivity" />
         <activity android:name=".presentation.ArtView.ArtViewActivity" />
-        <activity android:name=".presentation.SignUp.EmailVerifiedActivity"></activity>
         <activity android:name=".presentation.UserProfile.UserProfileActivity" />
-        <activity android:name=".presentation.SignUp.SignInWelcomeActivity" />
-        <activity android:name=".presentation.SignUp.FacebookSignInActivity" />
-        <activity android:name=".presentation.SignUp.GoogleSignInActivity" />
-        <activity android:name=".presentation.GoogleUserDBActivity" />
-        <activity android:name=".presentation.FacebookUserDBActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
@@ -51,9 +46,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.SignUp.SignUpActivity" />
-        <activity android:name=".presentation.SignUp.LoginActivity" />
-        <activity android:name=".presentation.SignUp.LoginFormActivity" />
         <activity android:name=".presentation.General.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

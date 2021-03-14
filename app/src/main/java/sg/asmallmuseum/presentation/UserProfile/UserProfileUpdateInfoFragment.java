@@ -55,8 +55,8 @@ public class UserProfileUpdateInfoFragment extends Fragment implements View.OnCl
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_profile_update_info, container, false);
 
-        Button backBtn = (Button) view.findViewById(R.id.home_button);
-        Button updateBtn = (Button) view.findViewById(R.id.update_user_information);
+        Button backBtn = (Button) view.findViewById(R.id.fragment_user_profile_update_detail_home_button);
+        Button updateBtn = (Button) view.findViewById(R.id.fragment_user_profile_update_detail_update_user_information);
 
         backBtn.setOnClickListener(this);
         updateBtn.setOnClickListener(this);
@@ -90,10 +90,10 @@ public class UserProfileUpdateInfoFragment extends Fragment implements View.OnCl
     }
 
     private void setTexts(User user){
-        nickname = (EditText) view.findViewById(R.id.user_nickname);
-        lastName = (EditText) view.findViewById(R.id.user_lastname);
-        firstName = (EditText) view.findViewById(R.id.user_firstname);
-        birth = (EditText) view.findViewById(R.id.user_birth);
+        nickname = (EditText) view.findViewById(R.id.fragment_user_profile_update_detail_user_nickname);
+        lastName = (EditText) view.findViewById(R.id.fragment_user_profile_update_detail_user_lastname);
+        firstName = (EditText) view.findViewById(R.id.fragment_user_profile_update_detail_user_firstname);
+        birth = (EditText) view.findViewById(R.id.fragment_user_profile_update_detail_user_birth);
 
         nickname.setText(user.getuNick());
         firstName.setText(user.getuFirstName());
@@ -103,14 +103,7 @@ public class UserProfileUpdateInfoFragment extends Fragment implements View.OnCl
 
     private void setType(String type){
         this.type = type;
-
-        if(type.equals("email")){
-            userManager = new UserManager("email");
-        }else if(type.equals("facebook")){
-            userManager = new UserManager("facebook");
-        }else if(type.equals("google")){
-            userManager = new UserManager("google");
-        }
+        userManager = new UserManager();
     }
 
 
@@ -160,10 +153,10 @@ public class UserProfileUpdateInfoFragment extends Fragment implements View.OnCl
     public void onClick(View view) {
         int id = view.getId();
 
-        if (id == R.id.home_button){
+        if (id == R.id.fragment_user_profile_update_detail_home_button){
             closeWindow();
         }
-        else if (id == R.id.update_user_information){
+        else if (id == R.id.fragment_user_profile_update_detail_update_user_information){
             alertMessage();
         }
     }

@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.logic.UserDBListener;
@@ -70,7 +72,7 @@ public class EmailUserDB implements UserDBInterface {
                 }else if(user == null){
                     ;
                 }
-                userDbListener.setUserListener(list);
+                userDbListener.onUserLoadComplete(user, 0);
             }
 
         });
@@ -78,53 +80,41 @@ public class EmailUserDB implements UserDBInterface {
     }
 
     @Override
-    public void getUser(String email) {
+    public void getUser(String email, int request_code) {
+//        if (task is successful)
+//            then shows exist alert
+//        else
+//            pass
 
         DocumentReference docRef = db.collection("Users").document("eMailUser").collection("Users").document(email);
 
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Log.d("getUser", documentSnapshot.getId()+" "+documentSnapshot.getString("uFirstName"));
-                List<String> list = new ArrayList<>();
-                User user = documentSnapshot.toObject(User.class);
-                list.add("email");
-                list.add("sType");
-                list.add("loop");
-                if(user != null){
-                    list.add(user.getuEmail());
-                    list.add(user.getuNick());
-                    list.add(user.getuLastName());
-                    list.add(user.getuFirstName());
-                    list.add(user.getuBirth());
-                }else if(user == null){
-                    list.add("null");
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                User user = null;
+                if (task.getResult() != null){
+                    List<String> list = new ArrayList<>();
+                    user = task.getResult().toObject(User.class);
                 }
-                userDbListener.setAllUserListener(list);
+                userDbListener.onUserLoadComplete(user, request_code);
             }
-
         });
-
     }
 
      @Override
      public void getAllUser(List<String> list){
-
-      db.collection("Users").document("eMailUser").collection("Users")
+        List<String> userList = new ArrayList<>();
+        db.collection("Users").document("eMailUser").collection("Users")
               .get()
               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                   @Override
                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
                       if (task.isSuccessful()) {
-                          list.set(1,"emailDB");
-                          StringBuilder sb = new StringBuilder();
                           for (QueryDocumentSnapshot document : task.getResult()) {
-                              list.add(document.getId());
-                              sb.append(document.getId()+", ");
+                              User user = document.toObject(User.class);
+                              userList.add(user.getuEmail());
                           }
-
-                          Log.d("getAllEmailUser", sb.toString());
-                          userDbListener.setAllUserListener(list);
+                          userDbListener.onAllUserLoadComplete(list);
                       } else {
                           Log.d("getAllUser", "Error getting documents: ", task.getException());
                       }

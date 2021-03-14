@@ -13,132 +13,132 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="nickname : "
-            android:textSize="25dp"
-            android:id="@+id/nickname"
-            android:layout_marginLeft="10dp"
+            android:text="@string/nick_name"
+            android:textSize="30sp"
+            android:id="@+id/fragment_user_profile_nickname"
+            android:layout_marginStart="10dp"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/user_nickname"
-            app:layout_constraintBottom_toTopOf="@id/update_password"
+            app:layout_constraintRight_toLeftOf="@id/fragment_user_profile_user_nickname"
+            app:layout_constraintBottom_toTopOf="@id/fragment_user_profile_update_password_button"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="user nickname"
-            android:textSize="30dp"
-            android:id="@+id/user_nickname"
-            app:layout_constraintLeft_toRightOf="@id/nickname"
+            android:text="@string/user_nick_name"
+            android:textSize="40sp"
+            android:id="@+id/fragment_user_profile_user_nickname"
+            app:layout_constraintLeft_toRightOf="@id/fragment_user_profile_nickname"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/update_password"
+            app:layout_constraintBottom_toTopOf="@id/fragment_user_profile_update_password_button"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="update password"
-            android:id="@+id/update_password"
+            android:text="@string/update_pwd"
+            android:id="@+id/fragment_user_profile_update_password_button"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/user_firstname"
-            app:layout_constraintTop_toBottomOf="@id/user_nickname"/>
+            app:layout_constraintBottom_toTopOf="@id/fragment_user_profile_user_firstname"
+            app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_user_nickname"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="firstname : "
-            android:id="@+id/firstname"
-            android:textSize="25dp"
-            android:layout_marginLeft="10dp"
+            android:text="@string/first_name_text"
+            android:id="@+id/fragment_user_profile_firstname_text"
+            android:textSize="30sp"
+            android:layout_marginStart="10dp"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/user_firstname"
-            app:layout_constraintBottom_toTopOf="@id/user_lastname"
-            app:layout_constraintTop_toBottomOf="@id/update_password"/>
+            app:layout_constraintRight_toLeftOf="@id/fragment_user_profile_user_firstname"
+            app:layout_constraintBottom_toTopOf="@id/fragment_user_profile_user_lastname"
+            app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_update_password_button"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="user firstname"
-            android:id="@+id/user_firstname"
-            android:textSize="30dp"
-            app:layout_constraintLeft_toRightOf="@+id/firstname"
+            android:text="@string/user_first_name"
+            android:id="@+id/fragment_user_profile_user_firstname"
+            android:textSize="30sp"
+            app:layout_constraintLeft_toRightOf="@id/fragment_user_profile_firstname_text"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/user_lastname"
-            app:layout_constraintTop_toBottomOf="@id/update_password"/>
+            app:layout_constraintBottom_toTopOf="@id/fragment_user_profile_user_lastname"
+            app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_update_password_button"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="lastname : "
-            android:id="@+id/lastname"
-            android:textSize="25dp"
-            android:layout_marginLeft="10dp"
+            android:text="@string/last_name_text"
+            android:id="@+id/fragment_user_profile_lastname_text"
+            android:textSize="30sp"
+            android:layout_marginStart="10dp"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/user_lastname"
-            app:layout_constraintBottom_toTopOf="@id/user_birth"
-            app:layout_constraintTop_toBottomOf="@id/user_firstname"/>
+            app:layout_constraintRight_toLeftOf="@id/fragment_user_profile_user_lastname"
+            app:layout_constraintBottom_toTopOf="@id/fragment_user_profile_user_birth"
+            app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_user_firstname"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="user lastname"
-            android:id="@+id/user_lastname"
-            android:textSize="30dp"
-            app:layout_constraintLeft_toRightOf="@+id/lastname"
+            android:text="@string/user_last_name"
+            android:id="@+id/fragment_user_profile_user_lastname"
+            android:textSize="30sp"
+            app:layout_constraintLeft_toRightOf="@id/fragment_user_profile_lastname_text"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/user_birth"
-            app:layout_constraintTop_toBottomOf="@id/user_firstname"/>
+            app:layout_constraintBottom_toTopOf="@id/fragment_user_profile_user_birth"
+            app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_user_firstname"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="birth : "
-            android:id="@+id/birth"
-            android:textSize="25dp"
-            android:layout_marginLeft="10dp"
+            android:text="@string/birth_text"
+            android:id="@+id/fragment_user_profile_birth"
+            android:textSize="30sp"
+            android:layout_marginStart="10dp"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/user_birth"
-            app:layout_constraintBottom_toTopOf="@id/update_user_information"
-            app:layout_constraintTop_toBottomOf="@id/user_lastname"/>
+            app:layout_constraintRight_toLeftOf="@id/fragment_user_profile_user_birth"
+            app:layout_constraintBottom_toTopOf="@id/fragment_user_profile_update_user_information_button"
+            app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_user_lastname"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="user birth"
-            android:id="@+id/user_birth"
-            android:textSize="30dp"
-            app:layout_constraintLeft_toRightOf="@+id/birth"
+            android:text="@string/user_birth"
+            android:id="@+id/fragment_user_profile_user_birth"
+            android:textSize="30sp"
+            app:layout_constraintLeft_toRightOf="@id/fragment_user_profile_birth"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/update_user_information"
-            app:layout_constraintTop_toBottomOf="@id/user_lastname"/>
+            app:layout_constraintBottom_toTopOf="@id/fragment_user_profile_update_user_information_button"
+            app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_user_lastname"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="back"
-            android:id="@+id/home_button"
+            android:text="@string/back"
+            android:id="@+id/fragment_user_profile_home_button"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/update_user_information"
+            app:layout_constraintRight_toLeftOf="@id/fragment_user_profile_update_user_information_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_birth"/>
+            app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_user_birth"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="update information"
-            android:id="@+id/update_user_information"
-            app:layout_constraintLeft_toRightOf="@id/home_button"
+            android:text="@string/update_info"
+            android:id="@+id/fragment_user_profile_update_user_information_button"
+            app:layout_constraintLeft_toRightOf="@id/fragment_user_profile_home_button"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_birth"/>
+            app:layout_constraintTop_toBottomOf="@id/fragment_user_profile_user_birth"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

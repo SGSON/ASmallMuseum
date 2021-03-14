@@ -31,7 +31,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +42,9 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
-        Button updatePass = (Button) view.findViewById(R.id.update_password);
-        Button home = (Button) view.findViewById(R.id.home_button);
-        Button updateInfo = (Button) view.findViewById(R.id.update_user_information);
+        Button updatePass = (Button) view.findViewById(R.id.fragment_user_profile_update_password_button);
+        Button home = (Button) view.findViewById(R.id.fragment_user_profile_home_button);
+        Button updateInfo = (Button) view.findViewById(R.id.fragment_user_profile_update_user_information_button);
 
         updatePass.setOnClickListener(this);
         home.setOnClickListener(this);
@@ -86,10 +85,10 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     private void setTexts(User user){
         this.user = user;
 
-        TextView nickname = (TextView) view.findViewById(R.id.user_nickname);
-        TextView firstName = (TextView) view.findViewById(R.id.user_firstname);
-        TextView lastName = (TextView) view.findViewById(R.id.user_lastname);
-        TextView birth = (TextView) view.findViewById(R.id.user_birth);
+        TextView nickname = (TextView) view.findViewById(R.id.fragment_user_profile_user_nickname);
+        TextView firstName = (TextView) view.findViewById(R.id.fragment_user_profile_user_firstname);
+        TextView lastName = (TextView) view.findViewById(R.id.fragment_user_profile_user_lastname);
+        TextView birth = (TextView) view.findViewById(R.id.fragment_user_profile_user_birth);
 
         nickname.setText(user.getuNick());
         firstName.setText(user.getuFirstName());
@@ -105,15 +104,15 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.update_password){
+        if (id == R.id.fragment_user_profile_update_password_button){
             if (getActivity() instanceof UserProfileActivity){
                 ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_PASSWORD);
             }
         }
-        else if (id == R.id.home_button){
+        else if (id == R.id.fragment_user_profile_home_button){
             getActivity().finish();
         }
-        else if (id == R.id.update_user_information){
+        else if (id == R.id.fragment_user_profile_update_user_information_button){
             if (getActivity() instanceof UserProfileActivity){
                 ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_INFO);
             }

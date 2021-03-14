@@ -1,5 +1,6 @@
 package sg.asmallmuseum.presentation.General;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.presentation.SignIn.SignInActivity;
 
 public class MainMenuWelcomeFragment extends Fragment implements View.OnClickListener{
 
@@ -42,7 +44,8 @@ public class MainMenuWelcomeFragment extends Fragment implements View.OnClickLis
         int id = view.getId();
 
         if (id == R.id.fragment_main_menu_welcome_sign_in){
-
+            Intent intent = new Intent(getActivity(), SignInActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.fragment_main_menu_welcome_support){
 

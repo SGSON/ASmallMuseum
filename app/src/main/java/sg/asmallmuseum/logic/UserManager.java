@@ -4,36 +4,26 @@ import java.util.List;
 
 import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.User;
-import sg.asmallmuseum.persistence.FacebookUserDB;
-import sg.asmallmuseum.persistence.GoogleUserDB;
 import sg.asmallmuseum.persistence.EmailUserDB;
 import sg.asmallmuseum.persistence.UserDBInterface;
-import sg.asmallmuseum.presentation.UserInformInterface;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserLoadListener;
 
 public class UserManager implements UserDBListener {
     private UserDBInterface db;
-    private UserInformInterface userInformInterface;
+    private UserLoadListener userLoadListener;
 
-    public void setListener(UserInformInterface userInformInterface){
-        this.userInformInterface = userInformInterface;
+    private static final int REQUEST_EXIST = 3301;
+    private static final int REQUEST_USER = 3302;
+    private static final int REQUEST_USER_LIST = 3303;
+
+    public void setListener(UserLoadListener userLoadListener){
+        this.userLoadListener = userLoadListener;
     }
 
     /***Set a Db***/
-    public UserManager(String path){
-        switch (path){
-            case "email":
-                db = new EmailUserDB();
-                db.setDBListener(this);
-                break;
-            case "google":
-                db = new GoogleUserDB();
-                db.setDBListener(this);
-                break;
-            case "facebook":
-                db = new FacebookUserDB();
-                db.setDBListener(this);
-                break;
-        }
+    public UserManager(){
+        db = new EmailUserDB();
+        db.setDBListener(this);
     }
 
     /***this is for a email Sign-up method.***/
@@ -51,10 +41,15 @@ public class UserManager implements UserDBListener {
 
     }
 
-    public void getUserInfo(String email){
+    public void getUserInfo(String email, int request_code){
 
-        db.getUser(email);
+        db.getUser(email, request_code);
 
+    }
+
+    public boolean hasExisted(String email){
+        getUserInfo(email, REQUEST_EXIST);
+        return true;
     }
 
     /*public void getAllUser(){
@@ -67,54 +62,52 @@ public class UserManager implements UserDBListener {
     }
 
     @Override
-    public void setUserListener(List<String> list) {
-
-        userInformInterface.userInfo(list);
+    public void onUserLoadComplete(User user, int request_code) {
+        userLoadListener.userInfo(user);
     }
 
     @Override
-    public void setAllUserListener(List<String> list) {
-        String fType = list.get(0);
-        String sType = list.get(1);
-        String loop = list.get(2);
-
-        if(fType.equals("email") && sType.equals("sType")){
-            db = new GoogleUserDB();
-            db.setDBListener(this);
-            db.getAllUser(list);
-        }else if(fType.equals("google") && sType.equals("sType")){
-            db = new EmailUserDB();
-            db.setDBListener(this);
-            db.getAllUser(list);
-        }else if(fType.equals("facebook") && sType.equals("sType")){
-            db = new EmailUserDB();
-            db.setDBListener(this);
-            db.getAllUser(list);
-        }
-
-        if(fType.equals("email") && sType.equals("googleDB")){
-            list.set(2,"end");
-            db = new FacebookUserDB();
-            db.setDBListener(this);
-            db.getAllUser(list);
-        }else if(fType.equals("google") && sType.equals("emailDB")){
-            list.set(2,"end");
-            db = new FacebookUserDB();
-            db.setDBListener(this);
-            db.getAllUser(list);
-        }else if(fType.equals("facebook") && sType.equals("emailDB")){
-            list.set(2,"end");
-            db = new GoogleUserDB();
-            db.setDBListener(this);
-            db.getAllUser(list);
-        }
-
-        if(loop.equals("end")){
-            userInformInterface.getAllUser(list);
-        }
+    public void onAllUserLoadComplete(List<String> list) {
+//        String fType = list.get(0);
+//        String sType = list.get(1);
+//        String loop = list.get(2);
+//
+//        if(fType.equals("email") && sType.equals("sType")){
+//            db = new GoogleUserDB();
+//            db.setDBListener(this);
+//            db.getAllUser(list);
+//        }else if(fType.equals("google") && sType.equals("sType")){
+//            db = new EmailUserDB();
+//            db.setDBListener(this);
+//            db.getAllUser(list);
+//        }else if(fType.equals("facebook") && sType.equals("sType")){
+//            db = new EmailUserDB();
+//            db.setDBListener(this);
+//            db.getAllUser(list);
+//        }
+//
+//        if(fType.equals("email") && sType.equals("googleDB")){
+//            list.set(2,"end");
+//            db = new FacebookUserDB();
+//            db.setDBListener(this);
+//            db.getAllUser(list);
+//        }else if(fType.equals("google") && sType.equals("emailDB")){
+//            list.set(2,"end");
+//            db = new FacebookUserDB();
+//            db.setDBListener(this);
+//            db.getAllUser(list);
+//        }else if(fType.equals("facebook") && sType.equals("emailDB")){
+//            list.set(2,"end");
+//            db = new GoogleUserDB();
+//            db.setDBListener(this);
+//            db.getAllUser(list);
+//        }
+//
+//        if(loop.equals("end")){
+//            userLoadListener.getAllUser(list);
+//        }
 
     }
-
     /***this method is for other sign-up methods. It does not get a password.***/
     /*public User addNewUser(FirebaseAuth mAuth, String uNick, String lastName,
                            String firstName, String eMail, @Nullable String birth) throws CustomException{

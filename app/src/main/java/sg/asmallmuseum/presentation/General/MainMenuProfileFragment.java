@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.Domain.User;
@@ -24,6 +26,9 @@ public class MainMenuProfileFragment extends Fragment implements View.OnClickLis
     private View view;
     private User mUser;
     private String mType;
+
+    private FirebaseAuth mAuth;
+    private MainMenuViewModel viewModel;
 
     public MainMenuProfileFragment() {
         // Required empty public constructor
@@ -48,7 +53,7 @@ public class MainMenuProfileFragment extends Fragment implements View.OnClickLis
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MainMenuViewModel viewModel = new ViewModelProvider(requireActivity()).get(MainMenuViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(MainMenuViewModel.class);
         viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -89,8 +94,6 @@ public class MainMenuProfileFragment extends Fragment implements View.OnClickLis
 
         if (id == R.id.fragment_main_menu_profile_view_profile_button){
             Intent intent = new Intent(getContext(), UserProfileActivity.class);
-            intent.putExtra("getUser", mUser);
-            intent.putExtra("type", mType);
             startActivity(intent);
         }
         else if (id == R.id.fragment_main_menu_profile_view_history_button){
@@ -100,7 +103,9 @@ public class MainMenuProfileFragment extends Fragment implements View.OnClickLis
 
         }
         else if (id == R.id.fragment_main_menu_profile_sign_out_button){
-
+            FirebaseAuth.getInstance().signOut();
+            viewModel.setFirebaseUser(FirebaseAuth.getInstance().getCurrentUser());
+            getParentFragmentManager().popBackStack();
         }
     }
 }

@@ -12,29 +12,29 @@ import sg.asmallmuseum.Domain.Messages.ArtCategoryError;
 import sg.asmallmuseum.Domain.Messages.CustomException;
 
 public class ValidateArt {
-    private static final String TYPE_ERROR = "Please select the type.";
-    private static final String GENRE_ERROR = "Please select the genre.";
+    private static final String CATEGORY_ERROR = "Please select the type.";
+    private static final String TYPE_ERROR = "Please select the genre.";
     private static final String TITLE_ERROR = "Please enter the title of the art.";
     private static final String DESC_ERROR = "Please enter the description of the art.";
     private static final String ATTACHED_ERROR = "Please attached the files.";
 
     public static void validateAll(List<Uri> paths, List<String> ext, String category, String type, String title, String author, String date, String desc) throws CustomException {
-        validateType(category);
-        validateGenre(type);
+        validateCategory(category);
+        validateType(type);
         validateTitle(title);
         validateDesc(desc);
         validateAttached(paths);
     }
 
-    public static void validateType(String category) throws ArtCategoryError {
+    public static void validateCategory(String category) throws ArtCategoryError {
         if (category == null || category.equals("Select")){
-            throw new ArtCategoryError(TYPE_ERROR);
+            throw new ArtCategoryError(CATEGORY_ERROR);
         }
     }
 
-    public static void validateGenre(String type) throws ArtTypeError {
+    public static void validateType(String type) throws ArtTypeError {
         if (type == null || type.equals("Select")){
-            throw new ArtTypeError(GENRE_ERROR);
+            throw new ArtTypeError(TYPE_ERROR);
         }
     }
 
