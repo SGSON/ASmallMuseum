@@ -50,6 +50,12 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         home.setOnClickListener(this);
         updateInfo.setOnClickListener(this);
 
+        Button mBack = view.findViewById(R.id.back_button);
+        Button mMenu = view.findViewById(R.id.top_menu_button);
+
+        mBack.setOnClickListener(this);
+        mMenu.setOnClickListener(this);
+
         return view;
     }
 
@@ -111,6 +117,14 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             if (getActivity() instanceof UserProfileActivity){
                 ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_INFO);
             }
+        }
+        else if (id == R.id.top_menu_button){
+            if (getActivity() instanceof UserProfileActivity){
+                ((UserProfileActivity) getActivity()).openMainMenu();
+            }
+        }
+        else if (id == R.id.back_button){
+            getActivity().finish();
         }
     }
 }

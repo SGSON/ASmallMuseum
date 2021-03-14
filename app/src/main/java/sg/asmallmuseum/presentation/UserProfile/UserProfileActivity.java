@@ -39,13 +39,10 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
         setContentView(R.layout.activity_user_profile);
 
         mMainMenuViewModel = new ViewModelProvider(this).get(MainMenuViewModel.class);
+        mMainMenuViewModel.setFirebaseUser(FirebaseAuth.getInstance().getCurrentUser());
+
         viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
         mUserProfileFragment = new UserProfileFragment();
-
-        Button mBack = findViewById(R.id.back_button);
-        Button mMenu = findViewById(R.id.top_menu_button);
-        mBack.setOnClickListener(this);
-        mMenu.setOnClickListener(this);
 
         initFragment();
     }
@@ -92,6 +89,15 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
         fragmentTransaction.commit();
     }
 
+    public void openMainMenu(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.replace(R.id.user_profile_container, new MainMenuFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
     @Override
     public void userInfo(User user) {
         viewModel.setUser(user);
@@ -118,7 +124,9 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
             }
         }
         else if (id == R.id.top_menu_button){
-            fragmentTransaction.replace(R.id.user_profile_menu_container, new MainMenuFragment());
+            //error
+            Fragment mMainMenuFragment = new MainMenuFragment();
+            fragmentTransaction.replace(R.id.user_profile_container, mMainMenuFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }

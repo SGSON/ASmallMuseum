@@ -44,10 +44,16 @@ public class UserProfileUpdatePasswordFragment extends Fragment implements View.
         view = inflater.inflate(R.layout.fragment_user_profile_update_password, container, false);
 
         Button updatePassword = (Button) view.findViewById(R.id.update_password);
-        Button backBtn = (Button) view.findViewById(R.id.back_button);
+        Button backBtn = (Button) view.findViewById(R.id.fragment_user_profile_update_password_back_button);
 
         backBtn.setOnClickListener(this);
         updatePassword.setOnClickListener(this);
+
+        Button mBack = view.findViewById(R.id.back_button);
+        Button mMenu = view.findViewById(R.id.top_menu_button);
+
+        mBack.setOnClickListener(this);
+        mMenu.setOnClickListener(this);
 
         return view;
     }
@@ -115,11 +121,19 @@ public class UserProfileUpdatePasswordFragment extends Fragment implements View.
     @Override
     public void onClick(View view) {
         int id  = view.getId();
-        if (id == R.id.back_button){
+        if (id == R.id.fragment_user_profile_update_password_back_button){
             closeWindow();
         }
         else if (id == R.id.update_password){
             getNewPassword();
+        }
+        else if (id == R.id.top_menu_button){
+            if (getActivity() instanceof UserProfileActivity){
+                ((UserProfileActivity) getActivity()).openMainMenu();
+            }
+        }
+        else if (id == R.id.back_button){
+            getParentFragmentManager().popBackStack();
         }
     }
 }

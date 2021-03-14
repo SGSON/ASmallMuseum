@@ -63,6 +63,12 @@ public class UserProfileUpdateInfoFragment extends Fragment implements View.OnCl
         backBtn.setOnClickListener(this);
         updateBtn.setOnClickListener(this);
 
+        Button mBack = view.findViewById(R.id.back_button);
+        Button mMenu = view.findViewById(R.id.top_menu_button);
+
+        mBack.setOnClickListener(this);
+        mMenu.setOnClickListener(this);
+
         return view;
     }
 
@@ -161,6 +167,14 @@ public class UserProfileUpdateInfoFragment extends Fragment implements View.OnCl
         }
         else if (id == R.id.fragment_user_profile_update_detail_update_user_information){
             alertMessage();
+        }
+        else if (id == R.id.top_menu_button){
+            if (getActivity() instanceof UserProfileActivity){
+                ((UserProfileActivity) getActivity()).openMainMenu();
+            }
+        }
+        else if (id == R.id.back_button){
+            getParentFragmentManager().popBackStack();
         }
     }
 }
