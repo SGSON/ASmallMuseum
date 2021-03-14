@@ -117,10 +117,6 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
 
     private void closeFragment(){
         FragmentManager fragmentManager = getParentFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.remove(this);
-        fragmentTransaction.commit();
         fragmentManager.popBackStack();
     }
 
@@ -167,7 +163,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
             intent.putExtra("Type", item);
 
             startActivity(intent);
-            closeFragment();
+            //closeFragment();
         }
     }
 }
