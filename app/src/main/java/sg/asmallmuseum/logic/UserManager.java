@@ -1,6 +1,8 @@
 package sg.asmallmuseum.logic;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.User;
@@ -60,6 +62,13 @@ public class UserManager implements UserDBListener {
     public void updateUser(String uNick, String lastname, String firstname, String email, String birth){
         User user = new User(uNick, lastname, firstname, email, birth);
         db.updateUser(user);
+    }
+
+    public void updateUserPost(String uEmail, String field, String path){
+        String[] paths = path.split("/");
+        Map<String, String> map = new HashMap<>();
+        map.put("path", path);
+        db.addUserPosting(uEmail, field, paths[paths.length-1], map);
     }
 
     public void deleteUser(String email){

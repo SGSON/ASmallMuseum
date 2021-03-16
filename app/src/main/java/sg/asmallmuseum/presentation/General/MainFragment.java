@@ -86,17 +86,6 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.main_swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        Intent intent = new Intent(getActivity(), ArtUploadPageActivity.class);
-
-        //Set onClickMethods for the quick button
-        ImageButton mQuick = (ImageButton)view.findViewById(R.id.quick_menu_button);
-        mQuick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(intent);
-                //throw new RuntimeException("Teest");
-            }
-        });
         return view;
     }
 

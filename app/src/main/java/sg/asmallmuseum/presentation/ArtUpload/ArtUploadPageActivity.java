@@ -12,7 +12,9 @@ import sg.asmallmuseum.Domain.Messages.ArtCategoryError;
 import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
+import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UploadCompleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserLoadListener;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -65,6 +67,8 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     private ArtUploadAdapter adapter;
     private List<String> mExtensions;
 
+    private FirebaseUser mUser;
+    private UserManager userManager;
     private ProgressDialog dialog;
     private final int REQUEST_CODE = 3020;
 
@@ -78,6 +82,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
 
         manager = new ArtworkManager();
         manager.setUpLoadCompleteListener(this);
+        userManager = new UserManager();
 
         mPathList = new ArrayList<>();
         mFileName = new ArrayList<>();
@@ -113,6 +118,9 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null){
             //show warning message
+        }
+        else {
+            mUser = user;
         }
     }
 
@@ -230,17 +238,22 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                 textView.setTextColor(Color.RED);
             }
             else if (e instanceof ArtAttachedError){
-                Toast.makeText(this, e.getErrorMsg(), Toast.LENGTH_SHORT);
+                Toast.makeText(this, e.getErrorMsg(), Toast.LENGTH_SHORT).show();
             }
         }
 
     }
 
     @Override
-    public void onUploadComplete(boolean status) {
+    public void onUploadComplete(boolean status, String path, int result_code) {
         //Toast.makeText(this, "Upload finished", Toast.LENGTH_SHORT).show();
-        dialog.dismiss();
-        finish();
+        if(result_code == ArtworkManager.RESULT_UPLOAD_INFO_OK){
+            userManager.updateUserPost(mUser.getEmail(), "Posts", path);
+        }
+        else{
+            dialog.dismiss();
+            finish();
+        }
     }
 
     /***End***/
@@ -259,12 +272,12 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
 
                 }
             }
-//            else{
-//                if (data.getData() != null){
-//                    Uri uri = data.getData();
-//                    updateList(uri, paths);
-//                }
-//            }
+            else{
+                if (data.getData() != null){
+                    Uri uri = data.getData();
+                    updateList(uri, paths);
+                }
+            }
             adapter.updateList();
         }
         else {
@@ -287,6 +300,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
 
         String[] extension = type.split("/");
         String[] file = image.split("/");
+
         mExtensions.add(extension[1]);
         mFileName.add(file[file.length-1]);
         mPathList.add(uri);
@@ -302,7 +316,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
                         manager.upLoadArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), "tempuser", currentDate, map.get("desc"));
                         dialog = new ProgressDialog(ArtUploadPageActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-                        dialog.setMessage("LOADING..");
+                        dialog.setMessage("UPLOADING..");
                         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                         dialog.setCanceledOnTouchOutside(false);
                         dialog.show();

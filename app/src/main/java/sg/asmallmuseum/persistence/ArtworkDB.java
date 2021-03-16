@@ -64,7 +64,7 @@ public class ArtworkDB implements ArtworkDBInterface {
 
                 updateRecentList(ref.getPath());
 
-                mListener.onInfoUploadComplete(true, paths, refs, ref.getId(), art);
+                mListener.onInfoUploadComplete(true, paths, refs, ref.getPath(), art);
             }).addOnFailureListener(e -> {
                 //Log.w(TAG, "FAILED");
                 mListener.onInfoUploadComplete(false, null, null, null, null);

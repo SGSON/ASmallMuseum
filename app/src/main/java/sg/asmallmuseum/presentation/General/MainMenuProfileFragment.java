@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.presentation.ArtUpload.ArtUploadPageActivity;
 import sg.asmallmuseum.presentation.UserProfile.UserProfileActivity;
 
 
@@ -77,13 +78,13 @@ public class MainMenuProfileFragment extends Fragment implements View.OnClickLis
     }
 
     private void setButtons(){
+        Button mPosting = (Button) view.findViewById(R.id.fragment_main_menu_profile_posting_button);
         Button mProfile = (Button) view.findViewById(R.id.fragment_main_menu_profile_view_profile_button);
-        Button mHistory = (Button) view.findViewById(R.id.fragment_main_menu_profile_view_history_button);
         Button mSupport = (Button) view.findViewById(R.id.fragment_main_menu_profile_support_button);
         Button mSignOut = (Button) view.findViewById(R.id.fragment_main_menu_profile_sign_out_button);
 
         mProfile.setOnClickListener(this);
-        mHistory.setOnClickListener(this);
+        mPosting.setOnClickListener(this);
         mSupport.setOnClickListener(this);
         mSignOut.setOnClickListener(this);
     }
@@ -92,12 +93,13 @@ public class MainMenuProfileFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         int id = view.getId();
 
-        if (id == R.id.fragment_main_menu_profile_view_profile_button){
-            Intent intent = new Intent(getContext(), UserProfileActivity.class);
+        if (id == R.id.fragment_main_menu_profile_posting_button){
+            Intent intent = new Intent(getContext(), ArtUploadPageActivity.class);
             startActivity(intent);
         }
-        else if (id == R.id.fragment_main_menu_profile_view_history_button){
-
+        else if (id == R.id.fragment_main_menu_profile_view_profile_button){
+            Intent intent = new Intent(getContext(), UserProfileActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.fragment_main_menu_profile_support_button){
 

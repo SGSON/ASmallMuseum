@@ -33,6 +33,7 @@
     <string name="profile_profile">my profile</string>
     <string name="profile_history">my history</string>
     <string name="profile_sign_out">Sign-out</string>
+    <string name="profile_posting">Posting</string>
 
     <!-- SignInActivity -->
     <string name="id">Email</string>

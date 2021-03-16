@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import sg.asmallmuseum.Domain.User;
@@ -48,6 +49,18 @@ public class EmailUserDB implements UserDBInterface {
 
         db.collection("Users").document("eMailUser").collection("TempUsers").document(user.getuEmail()).set(user);
 
+    }
+
+    @Override
+    public void addUserPosting(String uEmail, String field, String id, Map<String, String> map){
+        DocumentReference docRef = db.collection("Users").document("eMailUser").collection("Users")
+                .document(uEmail).collection(field).document(id);
+        docRef.set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d("ADD", "ASD");
+            }
+        });
     }
 
     @Override

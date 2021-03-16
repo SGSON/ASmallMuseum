@@ -36,6 +36,10 @@ public class ArtworkManager implements ArtWorkDBListener {
     private final int REQUEST_USER = 2010;
     private final int REQUEST_UPLOAD = 2011;
 
+    public static final int RESULT_UPLOAD_OK = 2301;
+    public static final int RESULT_UPLOAD_INFO_OK = 2302;
+    public static final int RESULT_UPLOAD_FAIL = 2303;
+
     private final Map<String, String> map;
 
     public ArtworkManager() {
@@ -147,18 +151,20 @@ public class ArtworkManager implements ArtWorkDBListener {
 
     @Override
     public void onFileUploadComplete(boolean complete) {
-        upListener.onUploadComplete(complete);
+        upListener.onUploadComplete(complete, null, RESULT_UPLOAD_OK);
     }
 
     @Override
-    public void onInfoUploadComplete(boolean complete, List<Uri> paths, List<String> refs, String id, Artwork art) {
+    public void onInfoUploadComplete(boolean complete, List<Uri> paths, List<String> refs, String path, Artwork art) {
         if (complete){
-            map.put("id", id);
+            String[] pathList = path.split("/");
+            map.put("id", pathList[pathList.length-1]);
             db.getNumPost(map.get("Category"), map.get("Type"), REQUEST_UPLOAD);
-            uploadAttachedFile(paths, refs, id, art);
+            upListener.onUploadComplete(false, path, RESULT_UPLOAD_INFO_OK);
+            uploadAttachedFile(paths, refs, path, art);
         }
         else{
-            upListener.onUploadComplete(false);
+            upListener.onUploadComplete(false, null, RESULT_UPLOAD_FAIL);
         }
     }
 
