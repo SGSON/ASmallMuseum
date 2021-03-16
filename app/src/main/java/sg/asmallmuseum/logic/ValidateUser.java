@@ -47,7 +47,7 @@ public class ValidateUser {
         if (!password.equals(checkPassword)){
             throw new UserPasswordError("Does not match");
         }
-        else if (password.length() >= MIN_LENGTH && password.length() <= MAX_LENGTH){
+        else if (password.length() <= MIN_LENGTH || password.length() >= MAX_LENGTH){
             throw new UserPasswordError("Password requires at least "+MIN_LENGTH+" and less than "+MAX_LENGTH);
         }
         else if(!validForm(password)){
@@ -64,7 +64,7 @@ public class ValidateUser {
     }
 
     private static boolean validForm(String pwd){
-        Pattern pattern = Pattern.compile("[^A-Za-z0-9]]");
+        Pattern pattern = Pattern.compile("[A-Za-z0-9]");
         if (pwd == null || pwd.trim().isEmpty()){
             return false;
         }

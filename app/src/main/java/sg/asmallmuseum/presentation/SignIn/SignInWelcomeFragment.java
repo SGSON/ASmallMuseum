@@ -100,21 +100,7 @@ public class SignInWelcomeFragment extends Fragment implements View.OnClickListe
         int id = view.getId();
 
         if (id == R.id.fragment_sign_in_welcome_home){
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if(mType.equals("email")){
-                if(user.isEmailVerified()){
-                    user = FirebaseAuth.getInstance().getCurrentUser();
-                    mManager.getUserInfo(user.getEmail(), 0);
-
-                }else {
-                    alert();
-                }
-
-            }else if(!mType.equals("email")){
-                user = FirebaseAuth.getInstance().getCurrentUser();
-                mManager.getUserInfo(user.getEmail(), 0);
-
-            }
+            getActivity().finish();
         }
     }
 }

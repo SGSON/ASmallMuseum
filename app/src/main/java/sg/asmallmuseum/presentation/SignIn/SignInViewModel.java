@@ -37,7 +37,7 @@ public class SignInViewModel extends ViewModel {
     }
 
     public void setEmail(String email){
-        mType.setValue(email);
+        mEmail.setValue(email);
     }
 
     public LiveData<String> getEmail(){

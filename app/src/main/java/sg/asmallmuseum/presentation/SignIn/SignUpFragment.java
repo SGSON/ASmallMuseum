@@ -59,6 +59,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        mAuth = FirebaseAuth.getInstance();
 
         Button backBtn = (Button) view.findViewById(R.id.fragment_sign_up_back_button);
         Button submitBtn = (Button) view.findViewById(R.id.fragment_sign_up_submit_button);
@@ -84,9 +85,13 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         viewModel.getEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                ((EditText)view.findViewById(R.id.fragment_sign_up_email)).setText(s);
+                setText(s);
             }
         });
+    }
+
+    private void setText(String eMail){
+        ((EditText)view.findViewById(R.id.fragment_sign_up_email)).setText(eMail);
     }
 
     @Override
@@ -162,17 +167,17 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         String uLastName = lastName.getText().toString();
 
 
-        User user = new User(uNick, uLastName, uFirstName, uEmailID, uBirth);
+        User user = new User(uNick, uLastName, uFirstName, uEmailID, uBirth, "eMail");
         try {
             ValidateUser.validEmailUser(user, uPassword, checkPassword);
-            createAccount(user.getuEmail(), uPassword);
+            createAccount(user, user.getuEmail(), uPassword);
         }
         catch (CustomException e){
             if (e instanceof UserEmailError){
-                emailID.setError("Invalid Email");
+                emailID.setError(e.getErrorMsg());
             }
             else if (e instanceof UserPasswordError){
-                password.setError("Invalid Password");
+                password.setError(e.getErrorMsg());
             }
             else if (e instanceof UserNameError){
 
@@ -183,14 +188,14 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void createAccount(String email, String password) {
+    private void createAccount(User user, String email, String password) {
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            sendEmailVerification();
+                            sendEmailVerification(user);
                             Toast.makeText(getContext(),"success",Toast.LENGTH_SHORT).show();
 
                         } else {
@@ -202,31 +207,18 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
                 });
     }
 
-    public void sendEmailVerification() {
+    public void sendEmailVerification(User mUser) {
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        user.sendEmailVerification()
+        mFirebaseUser.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(getContext(),"Confirm your email",Toast.LENGTH_LONG).show();
 
-                            EditText emailID = (EditText) view.findViewById(R.id.fragment_sign_up_email);
-                            EditText ID = (EditText) view.findViewById(R.id.fragment_sign_up_nick);
-                            EditText birth = (EditText) view.findViewById(R.id.fragment_sign_up_birth);
-                            EditText firstName = (EditText) view.findViewById(R.id.fragment_sign_up_first_name);
-                            EditText lastName = (EditText) view.findViewById(R.id.fragment_sign_up_last_name);
-
-                            String uEmailID = emailID.getText().toString();
-                            String uNick = ID.getText().toString();
-                            String uBirth = birth.getText().toString();
-                            String uFirstName = firstName.getText().toString();
-                            String uLastName = lastName.getText().toString();
-
-                            User user = new User(uNick, uLastName, uFirstName, uEmailID, uBirth, "eMail");
-                            viewModel.setUser(user);
+                            viewModel.setUser(mUser);
                             if(getActivity() instanceof SignInActivity){
                                 ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_EMAIL_VERIFY);
                             }

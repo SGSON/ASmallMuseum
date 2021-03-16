@@ -36,6 +36,11 @@ public class UserManager implements UserDBListener {
         db.addUser(user);
 
     }
+    public void addNewUser(User user) {
+
+        db.addUser(user);
+
+    }
 
     public void getTempUserInfo(String email){
 

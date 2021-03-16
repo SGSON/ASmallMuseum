@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,12 +23,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.logic.UserManager;
 
-public class SignInEmailVerifyFragment extends Fragment {
+public class SignInEmailVerifyFragment extends Fragment  implements View.OnClickListener {
 
     private View view;
 
     private FirebaseAuth mAuth;
+    private FirebaseUser mFirebaseUser;
     private User mUser;
     private String mType;
 
@@ -47,25 +50,13 @@ public class SignInEmailVerifyFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_sign_in_email_verify, container, false);
 
         mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
 
         Button resendEmail = (Button) view.findViewById(R.id.fragment_sign_in_email_verify_resend);
         Button next = (Button) view.findViewById(R.id.fragment_sign_in_email_verify_next);
 
-        resendEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendEmailVerification();
-            }
-        });
-
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity() instanceof SignInActivity){
-                    ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_END_SIGN_UP);
-                }
-            }
-        });
+        resendEmail.setOnClickListener(this);
+        next.setOnClickListener(this);
 
         return view;
     }
@@ -98,5 +89,31 @@ public class SignInEmailVerifyFragment extends Fragment {
                     }
                 });
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+
+        if (id == R.id.fragment_sign_in_email_verify_resend){
+            sendEmailVerification();
+        }
+        else if (id == R.id.fragment_sign_in_email_verify_next){
+            mFirebaseUser.reload().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    if (mFirebaseUser.isEmailVerified()){
+                        UserManager userManager = new UserManager();
+                        userManager.addNewUser(mUser);
+                        if (getActivity() instanceof SignInActivity){
+                            ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_END_SIGN_UP);
+                        }
+                    }
+                    else {
+                        //show alert
+                    }
+                }
+            });
+        }
     }
 }
