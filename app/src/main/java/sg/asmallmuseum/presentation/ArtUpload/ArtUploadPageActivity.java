@@ -10,6 +10,7 @@ import sg.asmallmuseum.Domain.Messages.ArtTypeError;
 import sg.asmallmuseum.Domain.Messages.ArtTitleError;
 import sg.asmallmuseum.Domain.Messages.ArtCategoryError;
 import sg.asmallmuseum.Domain.Messages.CustomException;
+import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
@@ -50,7 +51,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class ArtUploadPageActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, UploadCompleteListener {
+public class ArtUploadPageActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, UploadCompleteListener, UserLoadListener {
     private Spinner mCategory;
     private Spinner mType;
     private EditText mTitle;
@@ -67,7 +68,8 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     private ArtUploadAdapter adapter;
     private List<String> mExtensions;
 
-    private FirebaseUser mUser;
+    private FirebaseUser firebaseUser;
+    private User mUser;
     private UserManager userManager;
     private ProgressDialog dialog;
     private final int REQUEST_CODE = 3020;
@@ -83,6 +85,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         manager = new ArtworkManager();
         manager.setUpLoadCompleteListener(this);
         userManager = new UserManager();
+        userManager.setListener(this);
 
         mPathList = new ArrayList<>();
         mFileName = new ArrayList<>();
@@ -116,11 +119,9 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null){
-            //show warning message
-        }
-        else {
-            mUser = user;
+        if (user != null){
+            firebaseUser = user;
+            userManager.getUserInfo(firebaseUser.getEmail(), 0);
         }
     }
 
@@ -137,21 +138,10 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
             uploadArt();
         }
         else if (id == R.id.upload_image_add){
-//            Intent intent = new Intent(Intent.ACTION_PICK);
-//            //intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-//            //intent.setAction();
-//            intent.setType("image/*");
-//            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-//            startActivityForResult(intent, REQUEST_CODE);
-
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            //Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            //intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            //intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE);
-
         }
     }
 
@@ -217,7 +207,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     /***Upload a art***/
     private void uploadArt()  {
         try{
-            manager.validateArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), "tempuser", "2020-12-13", map.get("desc"));
+            manager.validateArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), mUser.getuEmail(), "2020-12-13", map.get("desc"));
             showAlertDialog().show();
         }
         catch (CustomException e){
@@ -248,7 +238,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     public void onUploadComplete(boolean status, String path, int result_code) {
         //Toast.makeText(this, "Upload finished", Toast.LENGTH_SHORT).show();
         if(result_code == ArtworkManager.RESULT_UPLOAD_INFO_OK){
-            userManager.updateUserPost(mUser.getEmail(), "Posts", path);
+            userManager.updateUserPost(firebaseUser.getEmail(), "Posts", path);
         }
         else{
             dialog.dismiss();
@@ -314,7 +304,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //before the uploading, please check the type and genre has been selected
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-                        manager.upLoadArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), "tempuser", currentDate, map.get("desc"));
+                        manager.upLoadArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), mUser.getuNick(), currentDate, map.get("desc"));
                         dialog = new ProgressDialog(ArtUploadPageActivity.this, android.R.style.Theme_Material_Dialog_Alert);
                         dialog.setMessage("UPLOADING..");
                         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -329,5 +319,21 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                     }
                  });
         return builder.create();
+    }
+
+    @Override
+    public void userInfo(User user) {
+        if (user != null){
+            mUser = user;
+        }
+        else {
+            Toast.makeText(this, "User Information Load Failed.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    @Override
+    public void getAllUser(List<String> list) {
+
     }
 }
