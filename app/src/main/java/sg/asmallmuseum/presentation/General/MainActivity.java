@@ -90,6 +90,19 @@ public class MainActivity extends AppCompatActivity  {
     }
     /***End***/
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if (fragmentManager.getBackStackEntryCount() <= 1){
+            finish();
+        }
+        else {
+            fragmentManager.popBackStack();
+        }
+    }
+
     private void networkConnection(){
         ConnectivityManager connManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo network = connManager.getActiveNetworkInfo();

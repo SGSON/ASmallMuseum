@@ -68,4 +68,17 @@ public class ArtViewActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if (fragmentManager.getBackStackEntryCount() <= 1){
+            finish();
+        }
+        else {
+            fragmentManager.popBackStack();
+        }
+    }
 }

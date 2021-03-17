@@ -131,4 +131,17 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
             fragmentTransaction.commit();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if (fragmentManager.getBackStackEntryCount() <= 1){
+            finish();
+        }
+        else {
+            fragmentManager.popBackStack();
+        }
+    }
 }
