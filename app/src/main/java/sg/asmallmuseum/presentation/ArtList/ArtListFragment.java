@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +44,10 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
     private ProgressDialog dialog;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ArtListViewAdapterInterface adapter;
+
+    private String mCategory;
+    private String mType;
+    private String[] mItems;
 
     private final int REQUEST_USER = 2010;
 
@@ -78,13 +83,12 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         manager.setArtworkLoadCompleteListener(this);
         manager.setNumPostLoadCompleteListener(this);
 
-        manager.getNumPost(intent.getStringExtra("Category"), intent.getStringExtra("Type"), REQUEST_USER);
+        //manager.getNumPost(intent.getStringExtra("Category"), intent.getStringExtra("Type"), REQUEST_USER);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.art_list_swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        isMuseum = intent.getStringExtra("Category").equals("Museums");
-        //isTypeText = (intent.getStringExtra("Category").equals("Music") || intent.getStringExtra("Category").equals("Books"));
+        //isMuseum = intent.getStringExtra("Category").equals("Museums");
 
         initRecyclerView(new ArrayList<Artwork>());
 
@@ -94,6 +98,14 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ArtListViewModel viewModel = new ViewModelProvider(requireActivity()).get(ArtListViewModel.class);
+        viewModel.getItems().observe(getViewLifecycleOwner(), new Observer<String[]>() {
+            @Override
+            public void onChanged(String[] strings) {
+                mItems = strings;
+                manager.getNumPost(mItems[0], mItems[1], REQUEST_USER);
+            }
+        });
     }
 
     @Override
@@ -128,7 +140,8 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         adapter.setOnBottomReachedListener(new OnBottomReachedListener() {
             @Override
             public void onBottomReached() {
-                manager.getArtInfoList(intent.getStringExtra("Category"), intent.getStringExtra("Type"), currentPost);
+                //manager.getArtInfoList(intent.getStringExtra("Category"), intent.getStringExtra("Type"), currentPost);
+                manager.getArtInfoList(mItems[0], mItems[1], currentPost);
                 currentPost -= 10;
             }
         });
@@ -156,8 +169,9 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         currentPost = result-10;
 
         Log.d("NUM", ""+result);
-        Intent intent = getActivity().getIntent();
-        manager.getArtInfoList(intent.getStringExtra("Category"), intent.getStringExtra("Type"), totalPost);
+//        Intent intent = getActivity().getIntent();
+//        manager.getArtInfoList(intent.getStringExtra("Category"), intent.getStringExtra("Type"), totalPost);
+        manager.getArtInfoList(mItems[0], mItems[1], totalPost);
     }
 
     @Override

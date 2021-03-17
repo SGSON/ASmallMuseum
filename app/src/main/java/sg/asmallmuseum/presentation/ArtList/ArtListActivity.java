@@ -14,9 +14,12 @@ import android.os.Bundle;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+
 public class ArtListActivity extends AppCompatActivity  {
     private FirebaseAuth mAuth;
     private MainMenuViewModel menuViewModel;
+    private ArtListViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,14 @@ public class ArtListActivity extends AppCompatActivity  {
 
         mAuth = FirebaseAuth.getInstance();
         menuViewModel = new ViewModelProvider(this).get(MainMenuViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ArtListViewModel.class);
+
+        String[] list = {getIntent().getStringExtra("Category"), getIntent().getStringExtra("Type")};
+
+        viewModel.setCategory(getIntent().getStringExtra("Category"));
+        viewModel.setType(getIntent().getStringExtra("Type"));
+        viewModel.setItems(list);
+
         initFragment();
     }
 
@@ -51,6 +62,12 @@ public class ArtListActivity extends AppCompatActivity  {
         fragmentTransaction.replace(R.id.art_list_container, new MainMenuFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    public void openNewFragment(String category, String type){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        viewModel.setItems(new String[]{category, type});
+        fragmentManager.popBackStack();
     }
 
     @Override

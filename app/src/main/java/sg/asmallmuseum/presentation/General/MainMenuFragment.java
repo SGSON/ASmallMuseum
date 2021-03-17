@@ -157,7 +157,10 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initNextActivity(String item){
-        if (map.containsKey("Category")){
+        if (getActivity() instanceof ArtListActivity){
+            ((ArtListActivity) getActivity()).openNewFragment(map.get("Category"), item);
+        }
+        else if (map.containsKey("Category")){
             Intent intent = new Intent(getActivity(), ArtListActivity.class);
             intent.putExtra("Category", map.get("Category"));
             intent.putExtra("Type", item);
