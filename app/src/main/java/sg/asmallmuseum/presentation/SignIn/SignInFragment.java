@@ -154,7 +154,11 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
         if (getActivity() instanceof SignInActivity) {
             if (user == null) {
                 ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_OTHERS);
-            } else {
+            }
+            else if (user != null && !mAuth.getCurrentUser().isEmailVerified()){
+                ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_EMAIL_VERIFY);
+            }
+            else {
                 ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_END);
             }
         }
@@ -215,9 +219,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             userManager.getUserInfo(email, 0);
-                            if (getActivity() instanceof SignInActivity){
-                                ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_END);
-                            }
                         }
                         else {
                             Toast.makeText(getActivity(), "Invalid user Email or password", Toast.LENGTH_SHORT).show();

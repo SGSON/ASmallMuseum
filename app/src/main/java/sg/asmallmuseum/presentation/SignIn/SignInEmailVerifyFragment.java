@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.General.MainActivity;
 
 public class SignInEmailVerifyFragment extends Fragment  implements View.OnClickListener {
 
@@ -31,8 +33,6 @@ public class SignInEmailVerifyFragment extends Fragment  implements View.OnClick
 
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
-    private User mUser;
-    private String mType;
 
     public SignInEmailVerifyFragment() {
         // Required empty public constructor
@@ -54,30 +54,34 @@ public class SignInEmailVerifyFragment extends Fragment  implements View.OnClick
 
         Button resendEmail = (Button) view.findViewById(R.id.fragment_sign_in_email_verify_resend);
         Button next = (Button) view.findViewById(R.id.fragment_sign_in_email_verify_next);
+        Button singout = (Button) view.findViewById(R.id.fragment_sign_in_email_verify_sign_out);
 
         resendEmail.setOnClickListener(this);
         next.setOnClickListener(this);
+        singout.setOnClickListener(this);
 
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        SignInViewModel viewModel = new ViewModelProvider(requireActivity()).get(SignInViewModel.class);
-        viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+    private void reloadUser(){
+        mFirebaseUser.reload().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onChanged(User user) {
-                mUser = user;
+            public void onSuccess(Void aVoid) {
+                if (mFirebaseUser.isEmailVerified()){
+                    if (getActivity() instanceof SignInActivity){
+                        ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_END_SIGN_UP);
+                    }
+                }
+                else {
+                    //show alert
+                }
             }
         });
     }
 
     public void sendEmailVerification() {
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        user.sendEmailVerification()
+        mFirebaseUser.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -99,21 +103,16 @@ public class SignInEmailVerifyFragment extends Fragment  implements View.OnClick
             sendEmailVerification();
         }
         else if (id == R.id.fragment_sign_in_email_verify_next){
-            mFirebaseUser.reload().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    if (mFirebaseUser.isEmailVerified()){
-                        UserManager userManager = new UserManager();
-                        userManager.addNewUser(mUser);
-                        if (getActivity() instanceof SignInActivity){
-                            ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_END_SIGN_UP);
-                        }
-                    }
-                    else {
-                        //show alert
-                    }
-                }
-            });
+            reloadUser();
+        }
+        else if (id == R.id.fragment_sign_in_email_verify_sign_out){
+            mAuth.signOut();
+            if (! (getActivity() instanceof MainActivity)){
+                getActivity().finish();
+            }
+            else{
+                ((MainActivity) getActivity()).replaceFragment(null);
+            }
         }
     }
 }

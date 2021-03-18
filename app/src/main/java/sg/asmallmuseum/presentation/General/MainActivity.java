@@ -7,10 +7,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserLoadListener;
+import sg.asmallmuseum.presentation.SignIn.SignInEmailVerifyFragment;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -21,12 +24,16 @@ import android.os.Bundle;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity  {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity  implements UserLoadListener {
     private FirebaseAuth mAuth;
     private final int REQUEST_CODE = 1;
     private MainMenuViewModel viewModel;
     private Fragment mMainFragment;
     private Fragment mMainMenuFragment;
+
+    private FirebaseUser mFirebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,21 +49,35 @@ public class MainActivity extends AppCompatActivity  {
         mMainFragment = new MainFragment();
         mMainMenuFragment = new MainMenuFragment();
 
-        replaceFragment(null);
+
     }
 
     /***Verify a signed-in user***/
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser user = mAuth.getCurrentUser();
+        mFirebaseUser = mAuth.getCurrentUser();
+        viewModel.setFirebaseUser(mFirebaseUser);
 
-        viewModel.setFirebaseUser(user);
+        if (mFirebaseUser != null){
+            UserManager userManager = new UserManager();
+            userManager.setListener(this);
+            userManager.getUserInfo(mFirebaseUser.getEmail(), 0);
+        }
+        else{
+            replaceFragment(null);
+        }
+
     }
 
     public void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        if (fragmentManager.getBackStackEntryCount() >= 1){
+            viewModel.setFirebaseUser(null);
+            fragmentManager.popBackStack();
+        }
 
         fragmentTransaction.replace(R.id.fragment_main_container, mMainFragment);
         fragmentTransaction.addToBackStack(null);
@@ -68,6 +89,17 @@ public class MainActivity extends AppCompatActivity  {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction.replace(R.id.fragment_main_container, mMainMenuFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    public void openVerifyFragment(){
+        //replaceFragment(null);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.replace(R.id.fragment_main_container, new SignInEmailVerifyFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -116,5 +148,20 @@ public class MainActivity extends AppCompatActivity  {
                         }
                     });
         }
+    }
+
+    @Override
+    public void userInfo(User user) {
+        if (user.getuType().equals("eMail") && !mFirebaseUser.isEmailVerified()){
+            openVerifyFragment();
+        }
+        else {
+            replaceFragment(null);
+        }
+    }
+
+    @Override
+    public void getAllUser(List<String> list) {
+
     }
 }

@@ -27,23 +27,23 @@
                 android:layout_height="wrap_content"
                 android:inputType="none"/>
 
-            <EditText
-                android:id="@+id/fragment_sign_up_spinner_text"
-                android:text="@string/spinner"
-                android:background="@null"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+<!--            <EditText-->
+<!--                android:id="@+id/fragment_sign_up_spinner_text"-->
+<!--                android:text="@string/spinner"-->
+<!--                android:background="@null"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"/>-->
 
-            <EditText
-                android:id="@+id/fragment_sign_up_spinner_edit"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+<!--            <EditText-->
+<!--                android:id="@+id/fragment_sign_up_spinner_edit"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"/>-->
 
-            <Spinner
-                android:id="@+id/fragment_sign_up_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+<!--            <Spinner-->
+<!--                android:id="@+id/fragment_sign_up_spinner"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"/>-->
 
         </LinearLayout>
 

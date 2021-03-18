@@ -42,7 +42,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
     private SignInViewModel viewModel;
 
     private FirebaseAuth mAuth;
-    private UserManager manager;
 
 
     public SignUpFragment() {
@@ -67,7 +66,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         backBtn.setOnClickListener(this);
         submitBtn.setOnClickListener(this);
 
-        setSpinner();
+        //setSpinner();
 
         return view;
     }
@@ -76,12 +75,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(SignInViewModel.class);
-        viewModel.getManager().observe(getViewLifecycleOwner(), new Observer<UserManager>() {
-            @Override
-            public void onChanged(UserManager userManager) {
-                manager = userManager;
-            }
-        });
+
         viewModel.getEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -106,46 +100,46 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void setSpinner(){
-        String arrayList[] = "input, google, naver, ??".split(",");
-        String arrayList2[] ="input,gmail.com,naver.com,fdf.com".split(",");
-        ArrayAdapter arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item,
-                arrayList);
-
-
-        Spinner spinner =(Spinner)view.findViewById(R.id.fragment_sign_up_spinner);
-        spinner.setAdapter(arrayAdapter);
-
-        EditText spinnerEditText = (EditText) view.findViewById(R.id.fragment_sign_up_spinner_edit);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0){
-                    spinnerEditText.setText(null);
-                    spinnerEditText.setBackgroundResource(android.R.drawable.edit_text);
-                    spinnerEditText.setFocusableInTouchMode(true);
-                    spinnerEditText.setClickable(true);
-                    spinnerEditText.setFocusable(true);
-
-                }else if(position != 0){
-                    spinnerEditText.setBackground(null);
-                    spinnerEditText.setClickable(false);
-                    spinnerEditText.setFocusable(false);
-                    spinnerEditText.setText(arrayList2[position]);
-
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
+//    private void setSpinner(){
+//        String arrayList[] = "input, google, naver, ??".split(",");
+//        String arrayList2[] ="input,gmail.com,naver.com,fdf.com".split(",");
+//        ArrayAdapter arrayAdapter = new ArrayAdapter<>(getActivity(),
+//                android.R.layout.simple_spinner_dropdown_item,
+//                arrayList);
+//
+//
+//        Spinner spinner =(Spinner)view.findViewById(R.id.fragment_sign_up_spinner);
+//        spinner.setAdapter(arrayAdapter);
+//
+//        EditText spinnerEditText = (EditText) view.findViewById(R.id.fragment_sign_up_spinner_edit);
+//
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if(position == 0){
+//                    spinnerEditText.setText(null);
+//                    spinnerEditText.setBackgroundResource(android.R.drawable.edit_text);
+//                    spinnerEditText.setFocusableInTouchMode(true);
+//                    spinnerEditText.setClickable(true);
+//                    spinnerEditText.setFocusable(true);
+//
+//                }else if(position != 0){
+//                    spinnerEditText.setBackground(null);
+//                    spinnerEditText.setClickable(false);
+//                    spinnerEditText.setFocusable(false);
+//                    spinnerEditText.setText(arrayList2[position]);
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//    }
 
     private void getUserInput(){
         EditText emailID = (EditText) view.findViewById(R.id.fragment_sign_up_email);
@@ -155,10 +149,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         EditText birth = (EditText) view.findViewById(R.id.fragment_sign_up_birth);
         EditText firstName = (EditText) view.findViewById(R.id.fragment_sign_up_first_name);
         EditText lastName = (EditText) view.findViewById(R.id.fragment_sign_up_last_name);
-        EditText spinnerEditText = (EditText) view.findViewById(R.id.fragment_sign_up_spinner_edit);
+        //EditText spinnerEditText = (EditText) view.findViewById(R.id.fragment_sign_up_spinner_edit);
 
-        String eForm = spinnerEditText.getText().toString();
-        String uEmailID = emailID.getText().toString()+"@"+spinnerEditText.getText().toString();
+        //String eForm = spinnerEditText.getText().toString();
+        String uEmailID = emailID.getText().toString();//+"@"+spinnerEditText.getText().toString();
         String uPassword = password.getText().toString();
         String checkPassword = checkPass.getText().toString();
         String uNick = ID.getText().toString();
@@ -196,6 +190,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             sendEmailVerification(user);
+
+                            UserManager userManager = new UserManager();
+                            userManager.addNewUser(user);
+
                             Toast.makeText(getContext(),"success",Toast.LENGTH_SHORT).show();
 
                         } else {

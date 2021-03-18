@@ -29,6 +29,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <Button
+            android:id="@+id/fragment_sign_in_email_verify_sign_out"
+            android:text="@string/profile_sign_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
 
     </LinearLayout>
 
