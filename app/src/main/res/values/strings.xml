@@ -74,6 +74,10 @@
     <string name="ver_pwd_text">Verify Password: </string>
     <string name="ver_pwd">Verify Password</string>
 
+    <string name="post">Posts</string>
+    <string name="review">Reviews</string>
+    <string name="test_0">0</string>
+
 
     <string-array name="arts_categories">
         <item>Select</item>
