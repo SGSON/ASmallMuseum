@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.R;
 
 public class UserProfileViewHistoryFragment extends Fragment {
@@ -28,6 +29,12 @@ public class UserProfileViewHistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_profile_view_history, container, false);
+
         return view;
+    }
+
+    private void setRecyclerView(){
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_user_history_recycler_view);
+
     }
 }
