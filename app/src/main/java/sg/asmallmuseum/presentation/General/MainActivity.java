@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
     private Fragment mMainMenuFragment;
 
     private FirebaseUser mFirebaseUser;
+    private boolean mInit = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
         mMainFragment = new MainFragment();
         mMainMenuFragment = new MainMenuFragment();
 
-
+        replaceFragment(null);
     }
 
     /***Verify a signed-in user***/
@@ -64,9 +65,6 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
             userManager.setListener(this);
             userManager.getUserInfo(mFirebaseUser.getEmail(), 0);
         }
-        else{
-            replaceFragment(null);
-        }
 
     }
 
@@ -74,10 +72,9 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        if (fragmentManager.getBackStackEntryCount() >= 1){
-            viewModel.setFirebaseUser(null);
-            fragmentManager.popBackStack();
-        }
+//        if (fragmentManager.getBackStackEntryCount() >= 1){
+//            fragmentManager.popBackStack();
+//        }
 
         fragmentTransaction.replace(R.id.fragment_main_container, mMainFragment);
         fragmentTransaction.addToBackStack(null);
@@ -153,10 +150,8 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
     @Override
     public void userInfo(User user) {
         if (user.getuType().equals("eMail") && !mFirebaseUser.isEmailVerified()){
+            getSupportFragmentManager().popBackStack();
             openVerifyFragment();
-        }
-        else {
-            replaceFragment(null);
         }
     }
 

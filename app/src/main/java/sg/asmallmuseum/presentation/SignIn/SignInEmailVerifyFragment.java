@@ -71,6 +71,9 @@ public class SignInEmailVerifyFragment extends Fragment  implements View.OnClick
                     if (getActivity() instanceof SignInActivity){
                         ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_END_SIGN_UP);
                     }
+                    else if (getActivity() instanceof MainActivity){
+                        ((MainActivity) getActivity()).replaceFragment(null);
+                    }
                 }
                 else {
                     //show alert
