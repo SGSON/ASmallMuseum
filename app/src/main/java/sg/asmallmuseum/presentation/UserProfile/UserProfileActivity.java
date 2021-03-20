@@ -24,14 +24,16 @@ import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserLoadListener;
 import sg.asmallmuseum.presentation.General.MainMenuFragment;
 import sg.asmallmuseum.presentation.General.MainMenuViewModel;
 
-public class UserProfileActivity extends AppCompatActivity implements UserLoadListener, View.OnClickListener {
+public class UserProfileActivity extends AppCompatActivity implements UserLoadListener {
     protected static final int REQUEST_PASSWORD = 3601;
     protected static final int REQUEST_INFO = 3602;
     protected static final int REQUEST_END = 3603;
+    protected static final int REQUEST_PROFILE = 3604;
 
     private UserProfileFragment mUserProfileFragment;
     private MainMenuViewModel mMainMenuViewModel;
     private UserProfileViewModel viewModel;
+    private UserProfileViewHistoryFragment mUserHistoryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
 
         viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
         mUserProfileFragment = new UserProfileFragment();
+        mUserHistoryFragment = new UserProfileViewHistoryFragment();
 
         initFragment();
     }
@@ -65,7 +68,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
     private void initFragment(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.user_profile_container, mUserProfileFragment);
+        fragmentTransaction.replace(R.id.user_profile_container, mUserHistoryFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -75,6 +78,9 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (request){
+            case REQUEST_PROFILE:
+                fragmentTransaction.replace(R.id.user_profile_container, mUserProfileFragment);
+                break;
             case REQUEST_PASSWORD:
                 fragmentTransaction.replace(R.id.user_profile_container, new UserProfileUpdatePasswordFragment());
                 break;
@@ -108,29 +114,29 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
 
     }
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        if (id == R.id.back_button){
-            if (fragmentManager.getBackStackEntryCount() <= 1){
-                finish();
-            }
-            else{
-                fragmentManager.popBackStack();
-            }
-        }
-        else if (id == R.id.top_menu_button){
-            //error
-            Fragment mMainMenuFragment = new MainMenuFragment();
-            fragmentTransaction.replace(R.id.user_profile_container, mMainMenuFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
-    }
+//    @Override
+//    public void onClick(View view) {
+//        int id = view.getId();
+//
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//
+//        if (id == R.id.back_button){
+//            if (fragmentManager.getBackStackEntryCount() <= 1){
+//                finish();
+//            }
+//            else{
+//                fragmentManager.popBackStack();
+//            }
+//        }
+//        else if (id == R.id.top_menu_button){
+//            //error
+//            Fragment mMainMenuFragment = new MainMenuFragment();
+//            fragmentTransaction.replace(R.id.user_profile_container, mMainMenuFragment);
+//            fragmentTransaction.addToBackStack(null);
+//            fragmentTransaction.commit();
+//        }
+//    }
 
     @Override
     public void onBackPressed() {

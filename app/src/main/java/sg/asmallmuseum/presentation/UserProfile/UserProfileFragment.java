@@ -124,7 +124,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             }
         }
         else if (id == R.id.back_button){
-            getActivity().finish();
+            getParentFragmentManager().popBackStack();
         }
     }
 }
