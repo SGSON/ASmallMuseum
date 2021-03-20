@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
@@ -74,13 +75,14 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(MainMenuViewModel.class);
-        viewModel.getFirebaseUser().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
-            @Override
-            public void onChanged(FirebaseUser firebaseUser) {
-                setProfileContainer(firebaseUser);
-            }
-        });
+        setProfileContainer(FirebaseAuth.getInstance().getCurrentUser());
+//        viewModel = new ViewModelProvider(requireActivity()).get(MainMenuViewModel.class);
+//        viewModel.getFirebaseUser().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
+//            @Override
+//            public void onChanged(FirebaseUser firebaseUser) {
+//                setProfileContainer(firebaseUser);
+//            }
+//        });
     }
 
     private void setProfileContainer(FirebaseUser user){

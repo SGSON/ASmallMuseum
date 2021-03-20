@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog dialog;
     private MainMenuViewModel viewModel;
+    private List<Artwork> mList;
 
     public MainFragment() {
         // Required empty public constructor
@@ -73,7 +75,6 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
         //Set a listener to Artwork Manager
         manager = new ArtworkManager();
         manager.setArtworkLoadCompleteListener(this);
-
 
         //Load recent upload images
         //initiate with empty data set and then the view will be updated when loads complete.
@@ -117,7 +118,13 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
         recent_view.setLayoutManager(new LinearLayoutManager(getContext()));
         recent_view.setAdapter(adapter);
 
-        manager.getRecent();
+        if (mList == null){
+            manager.getRecent();
+        }
+        else {
+            updateList(mList);
+            dialog.dismiss();
+        }
     }
 
     /***Start an activity what user clicked***/
@@ -135,12 +142,12 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
      * Then, update the recycler view***/
     @Override
     public void onArtworkLoadComplete(List<Artwork> artworks) {
+        mList = artworks;
         updateList(artworks);
     }
 
     private void updateList(List<Artwork> artworks){
         adapter.updateList(artworks);
-        adapter.notifyDataSetChanged();
         dialog.dismiss();
     }
 
