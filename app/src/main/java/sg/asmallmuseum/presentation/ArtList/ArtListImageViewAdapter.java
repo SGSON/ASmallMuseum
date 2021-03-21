@@ -71,6 +71,11 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
+    @Override
     public int getItemCount() {
         return mArtList.size();
     }

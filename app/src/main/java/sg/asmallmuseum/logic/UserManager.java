@@ -71,6 +71,10 @@ public class UserManager implements UserDBListener {
 
     }*/
 
+    public void getUserPosting(String uEmail, String field){
+        db.getUserPosting(uEmail, field);
+    }
+
     public void updateUser(String uNick, String lastname, String firstname, String email, String birth){
         User user = new User(uNick, lastname, firstname, email, birth);
         db.updateUser(user);

@@ -1,5 +1,7 @@
 package sg.asmallmuseum.presentation.UserProfile;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 
 import androidx.lifecycle.Observer;
@@ -26,9 +31,10 @@ import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPostLoadCompleteListener;
 
-public class UserProfileViewHistoryFragment extends Fragment implements View.OnClickListener, ArtWorkLoadCompleteListener, UserPostLoadCompleteListener {
+public class UserProfileViewHistoryFragment extends Fragment implements View.OnClickListener, ArtWorkLoadCompleteListener, UserPostLoadCompleteListener, RecyclerViewOnClickListener {
 
     private View view;
     private UserProfileViewModel viewModel;
@@ -88,7 +94,8 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
 
     private void setRecyclerView(){
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_user_history_recycler_view);
-        adapter = new UserHistoryViewAdapter();
+        adapter = new UserHistoryViewAdapter(mArtworkManager);
+        adapter.setOnItemClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
     }
@@ -100,6 +107,19 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
 
         mNick.setText(user.getuNick());
         mEmail.setText(user.getuEmail());
+
+        Uri imageUri = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+        if (imageUri != null){
+            Glide.with(getContext()).load(imageUri).into(mImage);
+        }
+
+        mUserManager.getUserPosting(user.getuEmail(), "Posts");
+    }
+
+    private void updateNumPosting(int numPosting){
+        TextView mNumPost = (TextView) view.findViewById(R.id.fragment_user_history_post);
+        String text = Integer.toString(numPosting);
+        mNumPost.setText(text);
     }
 
     @Override
@@ -123,11 +143,22 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
 
     @Override
     public void onArtworkLoadComplete(List<Artwork> artworks) {
-
+        updateNumPosting(artworks.size());
+        adapter.updateList(artworks);
     }
 
     @Override
     public void onUserPostLoadComplete(List<String> posts) {
+        mArtworkManager.getMultipleArtInfoByPath(posts);
+    }
+
+    @Override
+    public void onItemClick(int position, Intent intent) {
+        startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(int position, List<String> mList) {
 
     }
 }

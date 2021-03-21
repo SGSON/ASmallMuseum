@@ -252,20 +252,20 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        String[] paths = {MediaStore.Images.Media.DATA};
+
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null){
             if (data.getClipData() != null){
                 ClipData clip = data.getClipData();
                 for (int i = 0 ; i < clip.getItemCount() ; i++){
                     Uri uri = clip.getItemAt(i).getUri();
-                    updateList(uri, paths);
+                    updateList(uri);
 
                 }
             }
             else{
                 if (data.getData() != null){
                     Uri uri = data.getData();
-                    updateList(uri, paths);
+                    updateList(uri);
                 }
             }
             adapter.updateList();
@@ -275,13 +275,15 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    private void updateList(Uri uri, String[] paths){
-        String wholeID = DocumentsContract.getDocumentId(uri);
-        String id = wholeID.split(":")[1];
-        String sel = MediaStore.Images.Media._ID + "=?";
+    private void updateList(Uri uri){
+//        String wholeID = DocumentsContract.getDocumentId(uri);
+//        String id = wholeID.split(":")[1];
+//        String sel = MediaStore.Images.Media._ID + "=?";
+        String[] paths = {MediaStore.Images.Media.DATA};
 
         String type = getContentResolver().getType(uri);
-        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, paths, sel, new String[]{id}, null);
+//        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, paths, sel, new String[]{id}, null);
+        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, paths, null, null, null);
         cursor.moveToFirst();
 
         int cursorIndex = cursor.getColumnIndexOrThrow(paths[0]);
