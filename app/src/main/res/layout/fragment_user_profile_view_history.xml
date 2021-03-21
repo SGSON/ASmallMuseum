@@ -68,7 +68,7 @@
                     android:layout_height="30dp"
                     android:id="@+id/fragment_user_history_profile_setting"
                     android:foreground="@drawable/image_settings"
-                    android:background="@null"
+                    android:background="@android:color/transparent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/fragment_user_history_user_email"
                     app:layout_constraintStart_toEndOf="@id/fragment_user_history_user_nick"

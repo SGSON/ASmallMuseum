@@ -2,18 +2,13 @@ package sg.asmallmuseum.presentation.UserProfile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -60,7 +55,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
 
     private void getUserInfo(String email){
         UserManager manager = new UserManager();
-        manager.setListener(this);
+        manager.setUserLoadListener(this);
 
         manager.getUserInfo(email, 0);
     }
@@ -113,30 +108,6 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
     public void getAllUser(List<String> list) {
 
     }
-
-//    @Override
-//    public void onClick(View view) {
-//        int id = view.getId();
-//
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//
-//        if (id == R.id.back_button){
-//            if (fragmentManager.getBackStackEntryCount() <= 1){
-//                finish();
-//            }
-//            else{
-//                fragmentManager.popBackStack();
-//            }
-//        }
-//        else if (id == R.id.top_menu_button){
-//            //error
-//            Fragment mMainMenuFragment = new MainMenuFragment();
-//            fragmentTransaction.replace(R.id.user_profile_container, mMainMenuFragment);
-//            fragmentTransaction.addToBackStack(null);
-//            fragmentTransaction.commit();
-//        }
-//    }
 
     @Override
     public void onBackPressed() {

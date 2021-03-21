@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
 
         if (mFirebaseUser != null){
             UserManager userManager = new UserManager();
-            userManager.setListener(this);
+            userManager.setUserLoadListener(this);
             userManager.getUserInfo(mFirebaseUser.getEmail(), 0);
         }
 

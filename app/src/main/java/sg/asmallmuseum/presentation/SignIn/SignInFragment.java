@@ -82,7 +82,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
         mAuth = FirebaseAuth.getInstance();
 
         userManager = new UserManager();
-        userManager.setListener(this);
+        userManager.setUserLoadListener(this);
 
         setButtons();
         setFacebook();

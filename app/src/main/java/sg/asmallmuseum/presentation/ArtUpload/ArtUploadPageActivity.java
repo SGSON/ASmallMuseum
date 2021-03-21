@@ -85,7 +85,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         manager = new ArtworkManager();
         manager.setUpLoadCompleteListener(this);
         userManager = new UserManager();
-        userManager.setListener(this);
+        userManager.setUserLoadListener(this);
 
         mPathList = new ArrayList<>();
         mFileName = new ArrayList<>();

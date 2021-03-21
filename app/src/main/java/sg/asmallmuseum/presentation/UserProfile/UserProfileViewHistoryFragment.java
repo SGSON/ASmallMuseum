@@ -14,19 +14,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
+import sg.asmallmuseum.logic.ArtworkManager;
+import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPostLoadCompleteListener;
 
-public class UserProfileViewHistoryFragment extends Fragment implements View.OnClickListener{
+public class UserProfileViewHistoryFragment extends Fragment implements View.OnClickListener, ArtWorkLoadCompleteListener, UserPostLoadCompleteListener {
 
     private View view;
     private UserProfileViewModel viewModel;
 
     private UserHistoryViewAdapter adapter;
+    private ArtworkManager mArtworkManager;
+    private UserManager mUserManager;
 
     public UserProfileViewHistoryFragment() {
         // Required empty public constructor
@@ -50,6 +59,11 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
         mSettings.setOnClickListener(this);
         mBack.setOnClickListener(this);
         mMenu.setOnClickListener(this);
+
+        mArtworkManager = new ArtworkManager();
+        mArtworkManager.setArtworkLoadCompleteListener(this);
+        mUserManager = new UserManager();
+        mUserManager.setUserPostLoadListener(this);
 
         setRecyclerView();
         return view;
@@ -105,5 +119,15 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
                 ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_PROFILE);
             }
         }
+    }
+
+    @Override
+    public void onArtworkLoadComplete(List<Artwork> artworks) {
+
+    }
+
+    @Override
+    public void onUserPostLoadComplete(List<String> posts) {
+
     }
 }

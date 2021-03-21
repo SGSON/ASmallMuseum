@@ -64,6 +64,26 @@ public class EmailUserDB implements UserDBInterface {
     }
 
     @Override
+    public void getUserPosting(String uEmail, String field) {
+        CollectionReference colRef = db.collection("Users").document("eMailUser").collection("Users").document(uEmail).collection(field);
+        colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    List<String> results = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Map<String, Object> map = document.getData();
+                        if (map.get("path") instanceof String){
+                            results.add((String)map.get("path"));
+                        }
+                    }
+                    userDbListener.onUserPostLoadComplete(results, 0);
+                }
+            }
+        });
+    }
+
+    @Override
     public void getTempUser(String email) {
 
         DocumentReference docRef = db.collection("Users").document("eMailUser").collection("TempUsers").document(email);

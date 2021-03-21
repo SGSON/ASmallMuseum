@@ -44,7 +44,7 @@ public class SignUpGetEmailFragment extends Fragment implements UserLoadListener
         view = inflater.inflate(R.layout.fragment_sign_up_get_email, container, false);
 
         manager = new UserManager();
-        manager.setListener(this);
+        manager.setUserLoadListener(this);
 
         Button mButton = (Button) view.findViewById(R.id.fragment_sign_up_get_email_button);
         mButton.setOnClickListener(this);
@@ -99,6 +99,6 @@ public class SignUpGetEmailFragment extends Fragment implements UserLoadListener
 
     private void setManager(UserManager manager){
         this.manager = manager;
-        this.manager.setListener(this);
+        this.manager.setUserLoadListener(this);
     }
 }

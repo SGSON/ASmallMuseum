@@ -177,6 +177,7 @@ public class ArtworkDB implements ArtworkDBInterface {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void getRecent(){
         DocumentReference ref = db.collection("Art").document("Recent");

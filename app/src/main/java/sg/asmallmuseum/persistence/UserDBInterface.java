@@ -15,4 +15,5 @@ public interface UserDBInterface {
     void deleteUser(String email);
     void setDBListener(UserDBListener userDbListener);
     void addUserPosting(String uEmail, String field, String id, Map<String, String> map);
+    void getUserPosting(String uEmail, String field);
 }
