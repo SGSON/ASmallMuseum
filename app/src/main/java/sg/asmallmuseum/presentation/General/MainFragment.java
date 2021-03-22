@@ -142,6 +142,7 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
      * Then, update the recycler view***/
     @Override
     public void onArtworkLoadComplete(List<Artwork> artworks) {
+        manager.sortByDate(artworks);
         mList = artworks;
         updateList(artworks);
     }

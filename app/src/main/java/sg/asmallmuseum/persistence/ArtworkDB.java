@@ -3,10 +3,12 @@ package sg.asmallmuseum.persistence;
 import android.net.Uri;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -23,6 +25,7 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.NumPosts;
 import sg.asmallmuseum.Domain.VisualArts;
 import sg.asmallmuseum.Domain.Museum;
 import sg.asmallmuseum.Domain.AppliedArts;
@@ -63,6 +66,7 @@ public class ArtworkDB implements ArtworkDBInterface {
                 ref.update("aFileLoc", refs);
 
                 updateRecentList(ref.getPath());
+                increaseNumPost(art.getaCategory(), art.getaType());
 
                 mListener.onInfoUploadComplete(true, paths, refs, ref.getPath(), art);
             }).addOnFailureListener(e -> {
@@ -99,7 +103,7 @@ public class ArtworkDB implements ArtworkDBInterface {
                         List<String> result = (List<String>)map.get("Locs");
 
                         if (result.size() >= MAX_LIST_SIZE)
-                            result.remove(result.size());
+                            result.remove(result.size()-1);
                         result.add(0, path);
 
                         map.put("Locs", result);
@@ -198,17 +202,34 @@ public class ArtworkDB implements ArtworkDBInterface {
 
     @Override
     public void getNumPost(String category, String type, int request_id){
-        CollectionReference colRef = db.collection("Art").document(category).collection(type);
-        colRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                if(task.getResult() != null){
-                    mListener.onNumPostDownloadComplete(task.getResult().size(), request_id);
-                }
-                else {
+//        CollectionReference colRef = db.collection("Art").document(category).collection(type);
+//        colRef.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()){
+//                if(task.getResult() != null){
+//                    mListener.onNumPostDownloadComplete(task.getResult().size(), request_id);
+//                }
+//                else {
+//                    mListener.onNumPostDownloadComplete(0, request_id);
+//                }
+//            }
+//        });
+
+        DocumentReference docRef = db.collection("Art").document(category).collection(type).document("NumPosts");
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                NumPosts posts = documentSnapshot.toObject(NumPosts.class);
+                if (posts != null)
+                    mListener.onNumPostDownloadComplete(posts.getnumPosts(), request_id);
+                else
                     mListener.onNumPostDownloadComplete(0, request_id);
-                }
             }
         });
+    }
+
+    private void increaseNumPost(String category, String type){
+        DocumentReference docRef = db.collection("Art").document(category).collection(type).document("NumPosts");
+        docRef.update("numPosts", FieldValue.increment(1));
     }
 
 

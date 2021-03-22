@@ -88,7 +88,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.art_list_swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        //isMuseum = intent.getStringExtra("Category").equals("Museums");
+        isMuseum = intent.getStringExtra("Category").equals("Museums");
 
         initRecyclerView(new ArrayList<Artwork>());
 
@@ -104,6 +104,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
             public void onChanged(String[] strings) {
                 mItems = strings;
                 manager.getNumPost(mItems[0], mItems[1], REQUEST_USER);
+                isMuseum = mItems[0].equals("Museums");
             }
         });
     }
@@ -130,9 +131,6 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         if (isMuseum){
             adapter = new ArtListMuseumViewAdapter(artworks);
         }
-//        else if (isTypeText){
-//            adapter = new ArtListTextViewAdapter(artworks, manager);
-//        }
         else {
             adapter = new ArtListImageViewAdapter(artworks, manager);
         }
@@ -160,6 +158,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
 
     @Override
     public void onArtworkLoadComplete(List<Artwork> artworks) {
+        manager.sortByPostNum(artworks);
         updateList(artworks);
     }
 

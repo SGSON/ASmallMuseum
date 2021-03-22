@@ -135,18 +135,38 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
     /***End***/
 
+    /***SORTING***/
+    public void sortByDate(List<Artwork> list){
+        list.sort(new Comparator<Artwork>() {
+            @Override
+            public int compare(Artwork artwork, Artwork t1) {
+                return -(artwork.getaDate()).compareTo(t1.getaDate());
+            }
+        });
+    }
+
+    public void sortByPostNum(List<Artwork> list){
+        list.sort(new Comparator<Artwork>() {
+            @Override
+            public int compare(Artwork artwork, Artwork t1) {
+                return -(artwork.getaPostNum() - t1.getaPostNum());
+            }
+        });
+    }
+
     @Override
     public void onFileDownloadComplete(List<Artwork> list, int request_code) {
-            list.sort(new Comparator<Artwork>() {
-                @Override
-                public int compare(Artwork artwork, Artwork t1) {
-                    if (artwork.getaPostNum() >= t1.getaPostNum()){
-                        return -1;
-                    }
-                    return 1;
-                }
-            });
-            downListener.onArtworkLoadComplete(list);
+//            list.sort(new Comparator<Artwork>() {
+//                @Override
+//                public int compare(Artwork artwork, Artwork t1) {
+//                    if (artwork.getaPostNum() >= t1.getaPostNum()){
+//                        return -1;
+//                    }
+//                    return 1;
+//                }
+//            });
+
+        downListener.onArtworkLoadComplete(list);
     }
 
     @Override

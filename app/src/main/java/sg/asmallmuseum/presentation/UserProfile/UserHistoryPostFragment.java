@@ -90,6 +90,7 @@ public class UserHistoryPostFragment extends Fragment implements ArtWorkLoadComp
 
     @Override
     public void onArtworkLoadComplete(List<Artwork> artworks) {
+        mArtworkManager.sortByDate(artworks);
         if (getParentFragment() instanceof UserProfileViewHistoryFragment){
             ((UserProfileViewHistoryFragment) getParentFragment()).setNumPosts(mType, artworks.size());
         }
