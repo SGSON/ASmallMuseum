@@ -17,6 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.TransitionOptions;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
@@ -25,6 +31,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
@@ -34,14 +41,10 @@ import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadComplete
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPostLoadCompleteListener;
 
-public class UserProfileViewHistoryFragment extends Fragment implements View.OnClickListener, ArtWorkLoadCompleteListener, UserPostLoadCompleteListener, RecyclerViewOnClickListener {
+public class UserProfileViewHistoryFragment extends Fragment implements View.OnClickListener {
 
     private View view;
     private UserProfileViewModel viewModel;
-
-    private UserHistoryViewAdapter adapter;
-    private ArtworkManager mArtworkManager;
-    private UserManager mUserManager;
 
     public UserProfileViewHistoryFragment() {
         // Required empty public constructor
@@ -66,12 +69,7 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
         mBack.setOnClickListener(this);
         mMenu.setOnClickListener(this);
 
-        mArtworkManager = new ArtworkManager();
-        mArtworkManager.setArtworkLoadCompleteListener(this);
-        mUserManager = new UserManager();
-        mUserManager.setUserPostLoadListener(this);
-
-        setRecyclerView();
+        setViewPager();
         return view;
     }
 
@@ -92,14 +90,6 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
         });
     }
 
-    private void setRecyclerView(){
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_user_history_recycler_view);
-        adapter = new UserHistoryViewAdapter(mArtworkManager);
-        adapter.setOnItemClickListener(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(adapter);
-    }
-
     private void setUser(User user){
         TextView mNick = (TextView) view.findViewById(R.id.fragment_user_history_user_nick);
         TextView mEmail = (TextView) view.findViewById(R.id.fragment_user_history_user_email);
@@ -110,16 +100,48 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
 
         Uri imageUri = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
         if (imageUri != null){
-            Glide.with(getContext()).load(imageUri).into(mImage);
+            Glide.with(getContext()).load(imageUri).apply(new RequestOptions().circleCrop()).into(mImage);
         }
-
-        mUserManager.getUserPosting(user.getuEmail(), "Posts");
+        setTabLayout("", 0);
     }
 
-    private void updateNumPosting(int numPosting){
-        TextView mNumPost = (TextView) view.findViewById(R.id.fragment_user_history_post);
-        String text = Integer.toString(numPosting);
-        mNumPost.setText(text);
+    private void setViewPager(){
+        ViewPager2 viewPager = (ViewPager2) view.findViewById(R.id.fragment_user_history_view_pager);
+        viewPager.setOffscreenPageLimit(2);
+        UserHistoryViewPagerAdapter viewAdapter = new UserHistoryViewPagerAdapter(this);
+        viewPager.setAdapter(viewAdapter);
+    }
+
+    public void setTabLayout(String type, int numPost){
+        TabLayout tab = (TabLayout) view.findViewById(R.id.fragment_user_history_tab_layout);
+        ViewPager2 viewPager = (ViewPager2) view.findViewById(R.id.fragment_user_history_view_pager);
+        TabLayoutMediator mediator = new TabLayoutMediator(tab, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                String text = "";
+                if (position == 0){
+                    text = "Posts";
+                }
+                else {
+                    text = "Reviews";
+                }
+                tab.setText(text);
+            }
+        });
+        mediator.attach();
+    }
+
+    public void setNumPosts(String type, int numPosts){
+        if (type.equals("Posts")){
+            TextView mNumPost = (TextView) view.findViewById(R.id.fragment_user_history_post);
+            String text = Integer.toString(numPosts);
+            mNumPost.setText(text);
+        }
+        else {
+            TextView mNumPost = (TextView) view.findViewById(R.id.fragment_user_history_review);
+            String text = Integer.toString(numPosts);
+            mNumPost.setText(text);
+        }
     }
 
     @Override
@@ -141,24 +163,5 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
         }
     }
 
-    @Override
-    public void onArtworkLoadComplete(List<Artwork> artworks) {
-        updateNumPosting(artworks.size());
-        adapter.updateList(artworks);
-    }
 
-    @Override
-    public void onUserPostLoadComplete(List<String> posts) {
-        mArtworkManager.getMultipleArtInfoByPath(posts);
-    }
-
-    @Override
-    public void onItemClick(int position, Intent intent) {
-        startActivity(intent);
-    }
-
-    @Override
-    public void onItemClick(int position, List<String> mList) {
-
-    }
 }

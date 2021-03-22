@@ -23,6 +23,7 @@ import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.List;
 
@@ -71,10 +72,6 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
     public void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-//        if (fragmentManager.getBackStackEntryCount() >= 1){
-//            fragmentManager.popBackStack();
-//        }
 
         fragmentTransaction.replace(R.id.fragment_main_container, mMainFragment);
         fragmentTransaction.addToBackStack(null);
