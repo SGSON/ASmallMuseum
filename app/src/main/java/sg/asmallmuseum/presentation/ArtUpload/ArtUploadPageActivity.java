@@ -306,7 +306,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //before the uploading, please check the type and genre has been selected
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-                        manager.upLoadArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), mUser.getuNick(), currentDate, map.get("desc"));
+                        manager.upLoadArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), mUser.getuNick(), currentDate, map.get("desc"), mUser.getuEmail());
                         dialog = new ProgressDialog(ArtUploadPageActivity.this, android.R.style.Theme_Material_Dialog_Alert);
                         dialog.setMessage("UPLOADING..");
                         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

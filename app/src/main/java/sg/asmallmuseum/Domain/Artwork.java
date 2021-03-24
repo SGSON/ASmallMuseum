@@ -15,12 +15,13 @@ public abstract class Artwork {
     private String aDesc;
     private List<String> aFileLoc;
     private int aRating;
+    private String aUserID;
 
     public Artwork(){
 
     }
 
-    public Artwork(String aCategory, String aType, String aTitle, String aAuthor, String aDate, String aDesc){
+    public Artwork(String aCategory, String aType, String aTitle, String aAuthor, String aDate, String aDesc, String aUserID){
         this.aCategory = aCategory;
         this.aType = aType;
         this.aTitle = aTitle;
@@ -28,6 +29,7 @@ public abstract class Artwork {
         this.aDate = aDate;
         this.aDesc = aDesc;
         this.aRating = 0;
+        this.aUserID = aUserID;
     }
 
     public DocumentReference getaID() {
@@ -110,4 +112,11 @@ public abstract class Artwork {
         this.aPostNum = aPostNum;
     }
 
+    public String getaUserID() {
+        return aUserID;
+    }
+
+    public void setaUserID(String aUserID) {
+        this.aUserID = aUserID;
+    }
 }

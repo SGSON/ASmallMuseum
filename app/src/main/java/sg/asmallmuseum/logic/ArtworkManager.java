@@ -61,20 +61,20 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
-    public void upLoadArt(List<Uri> paths, List<String> ext, String category, String type, String title, String author, String date, String desc) {
+    public void upLoadArt(List<Uri> paths, List<String> ext, String category, String type, String title, String author, String date, String desc, String email) {
         Artwork art = null;
         switch (type){
             case "Visual Arts":
-                art = new VisualArts(category, type, title, author, date, desc);
+                art = new VisualArts(category, type, title, author, date, desc, email);
                 break;
             case "Applied Arts":
-                art = new AppliedArts(category, type, title, author, date, desc);
+                art = new AppliedArts(category, type, title, author, date, desc, email);
                 break;
             case "Others":
-                art = new Others(category, type, title, author, date, desc);
+                art = new Others(category, type, title, author, date, desc, email);
                 break;
             default:
-                art = new FineArts(category, type, title, author, date, desc);
+                art = new FineArts(category, type, title, author, date, desc, email);
                 break;
         }
         map.put("Category", category);
