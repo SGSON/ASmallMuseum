@@ -35,6 +35,7 @@ public class ArtworkManager implements ArtWorkDBListener {
 
     private final int REQUEST_USER = 2010;
     private final int REQUEST_UPLOAD = 2011;
+    private final int REQUEST_RANDOM = 2012;
 
     public static final int RESULT_UPLOAD_OK = 2301;
     public static final int RESULT_UPLOAD_INFO_OK = 2302;
@@ -125,13 +126,18 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
 
     public void getNumPost(String category, String type, int request_id){
-        if (request_id == REQUEST_USER){
-            db.getNumPost(category, type, REQUEST_USER);
-        }
-        else {
-            db.getNumPost(category, type, REQUEST_UPLOAD);
-        }
+        db.getNumPost(category, type, request_id);
+//        if (request_id == REQUEST_USER){
+//            db.getNumPost(category, type, REQUEST_USER);
+//        }
+//        else {
+//            db.getNumPost(category, type, REQUEST_UPLOAD);
+//        }
 
+    }
+
+    public void getArtInfoByNumPost(String category, String type, int numPost, int request_code){
+        db.getArtInfoByPostNum(category, type, numPost, request_code);
     }
     /***End***/
 
@@ -166,7 +172,7 @@ public class ArtworkManager implements ArtWorkDBListener {
 //                }
 //            });
 
-        downListener.onArtworkLoadComplete(list);
+        downListener.onArtworkLoadComplete(list, request_code);
     }
 
     @Override
@@ -189,11 +195,11 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
 
     @Override
-    public void onNumPostDownloadComplete(int numPost, int request_number) {
-        if (request_number == REQUEST_USER){
+    public void onNumPostDownloadComplete(int numPost, int request_number, String category, String type) {
+        if (request_number == REQUEST_USER || request_number == REQUEST_RANDOM){
             //numListener.onNumPostLoadComplete(numPost);
             if (numListener != null){
-                numListener.onNumPostLoadComplete(numPost);
+                numListener.onNumPostLoadComplete(numPost, request_number, category, type);
             }
         }
         else if (request_number == REQUEST_UPLOAD){

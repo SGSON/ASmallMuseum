@@ -14,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +29,6 @@ import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadComplete
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.OnBottomReachedListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
-import sg.asmallmuseum.presentation.General.MainMenuViewModel;
 
 public class ArtListFragment extends Fragment implements RecyclerViewOnClickListener, SwipeRefreshLayout.OnRefreshListener,
         NumPostLoadCompleteListener, ArtWorkLoadCompleteListener, View.OnClickListener {
@@ -157,13 +154,13 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
     }
 
     @Override
-    public void onArtworkLoadComplete(List<Artwork> artworks) {
+    public void onArtworkLoadComplete(List<Artwork> artworks, int request_code) {
         manager.sortByPostNum(artworks);
         updateList(artworks);
     }
 
     @Override
-    public void onNumPostLoadComplete(int result) {
+    public void onNumPostLoadComplete(int result, int request_code, String category, String type) {
         totalPost = result;
         currentPost = result-10;
 

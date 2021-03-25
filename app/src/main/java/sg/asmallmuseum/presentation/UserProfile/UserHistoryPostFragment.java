@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -89,7 +88,7 @@ public class UserHistoryPostFragment extends Fragment implements ArtWorkLoadComp
     }
 
     @Override
-    public void onArtworkLoadComplete(List<Artwork> artworks) {
+    public void onArtworkLoadComplete(List<Artwork> artworks, int request_code) {
         mArtworkManager.sortByDate(artworks);
         if (getParentFragment() instanceof UserProfileViewHistoryFragment){
             ((UserProfileViewHistoryFragment) getParentFragment()).setNumPosts(mType, artworks.size());

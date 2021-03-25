@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -220,9 +221,28 @@ public class ArtworkDB implements ArtworkDBInterface {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 NumPosts posts = documentSnapshot.toObject(NumPosts.class);
                 if (posts != null)
-                    mListener.onNumPostDownloadComplete(posts.getnumPosts(), request_id);
+                    mListener.onNumPostDownloadComplete(posts.getnumPosts(), request_id, category, type);
                 else
-                    mListener.onNumPostDownloadComplete(0, request_id);
+                    mListener.onNumPostDownloadComplete(0, request_id, null, null);
+            }
+        });
+    }
+
+    @Override
+    public void getArtInfoByPostNum(String category, String type, int postNum, int request_code){
+        CollectionReference colRef = db.collection("Art").document(category).collection(type);
+        colRef.whereEqualTo("aPostNum", postNum).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    Artwork artwork = null;
+                    for (DocumentSnapshot snapshot : task.getResult()){
+                        artwork = getArtObject(snapshot, category);
+                    }
+                    List<Artwork> list = new ArrayList<>();
+                    list.add(artwork);
+                    mListener.onFileDownloadComplete(list, request_code);
+                }
             }
         });
     }

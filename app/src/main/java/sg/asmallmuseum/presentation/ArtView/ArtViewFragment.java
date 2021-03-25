@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -181,7 +180,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     }
 
     @Override
-    public void onArtworkLoadComplete(List<Artwork> artworks) {
+    public void onArtworkLoadComplete(List<Artwork> artworks, int request_code) {
         List<Artwork> mList = artworks;
         List<Uri> uriList = new ArrayList<>();
         Artwork artwork = artworks.get(0);
