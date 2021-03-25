@@ -107,6 +107,7 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
     @Override
     public void onRefresh() {
         manager.getRecent();
+        getRandomImage();
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -150,7 +151,12 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
         recent_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recent_view.setAdapter(mRandomAdapter);
 
-        getRandomImage();
+        if (mList == null){
+            getRandomImage();
+        }
+        else {
+            mRandomAdapter.updateList(mRandomList);
+        }
     }
 
     private void getRandomImage(){
