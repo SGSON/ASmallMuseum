@@ -78,6 +78,8 @@
     <string name="review">Reviews</string>
     <string name="test_0">0</string>
 
+    <string name="recent_text">Recent upload images</string>
+    <string name="recommend_text">Recommend images</string>
 
     <string-array name="arts_categories">
         <item>Select</item>

@@ -75,7 +75,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setProfileContainer(FirebaseAuth.getInstance().getCurrentUser());
+        //setProfileContainer(FirebaseAuth.getInstance().getCurrentUser());
 //        viewModel = new ViewModelProvider(requireActivity()).get(MainMenuViewModel.class);
 //        viewModel.getFirebaseUser().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
 //            @Override
@@ -83,6 +83,12 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
 //                setProfileContainer(firebaseUser);
 //            }
 //        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setProfileContainer(FirebaseAuth.getInstance().getCurrentUser());
     }
 
     private void setProfileContainer(FirebaseUser user){
