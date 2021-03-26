@@ -23,4 +23,5 @@ public interface ArtworkDBInterface {
     void getNumPost(String type, String genre, int request_id);
     void updatePostingNumber(Map<String, String> map, int numPost);
     void getArtInfoByPostNum(String category, String type, int postNum, int request_code);
+    void deleteArtwork(String category, String type, String id);
 }

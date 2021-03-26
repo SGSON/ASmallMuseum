@@ -4,16 +4,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.persistence.EmailUserDB;
 import sg.asmallmuseum.persistence.UserDBInterface;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserLoadListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPathDeleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPostLoadCompleteListener;
 
 public class UserManager implements UserDBListener {
     private UserDBInterface db;
     private UserLoadListener userLoadListener;
     private UserPostLoadCompleteListener userPostLoadListener;
+    private UserPathDeleteListener userPathDeleteListener;
 
     private static final int REQUEST_EXIST = 3301;
     private static final int REQUEST_USER = 3302;
@@ -27,6 +30,10 @@ public class UserManager implements UserDBListener {
 
     public void setUserPostLoadListener(UserPostLoadCompleteListener userPostLoadListener){
         this.userPostLoadListener = userPostLoadListener;
+    }
+
+    public void setUserPathDeleteListener(UserPathDeleteListener mListener){
+        this.userPathDeleteListener = mListener;
     }
 
     /***Set a Db***/
@@ -87,6 +94,10 @@ public class UserManager implements UserDBListener {
         db.addUserPosting(uEmail, field, paths[paths.length-1], map);
     }
 
+    public void deletePath(User user, Artwork artwork, String field){
+        db.deletePath(user.getuEmail(), field, artwork.getaID().getId());
+    }
+
     public void deleteUser(String email){
         db.deleteUser(email);
     }
@@ -104,6 +115,11 @@ public class UserManager implements UserDBListener {
     @Override
     public void onUserPostLoadComplete(List<String> posts, int request_code) {
         userPostLoadListener.onUserPostLoadComplete(posts);
+    }
+
+    @Override
+    public void onPathDeleteComplete(boolean result) {
+        userPathDeleteListener.onUserPathDeleteComplete(result);
     }
     /***this method is for other sign-up methods. It does not get a password.***/
     /*public User addNewUser(FirebaseAuth mAuth, String uNick, String lastName,

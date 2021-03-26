@@ -20,6 +20,7 @@ import sg.asmallmuseum.persistence.ArtworkDB;
 import sg.asmallmuseum.persistence.ArtworkDBInterface;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkDBListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtworkDeleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UploadCompleteListener;
 
@@ -29,6 +30,7 @@ public class ArtworkManager implements ArtWorkDBListener {
     private UploadCompleteListener upListener;
     private ArtWorkLoadCompleteListener downListener;
     private NumPostLoadCompleteListener numListener;
+    private ArtworkDeleteListener deleteListener;
 
     private final int REQUEST_SINGLE = 2;
     private final int REQUEST_MULTIPLE = 8;
@@ -59,6 +61,10 @@ public class ArtworkManager implements ArtWorkDBListener {
 
     public void setNumPostLoadCompleteListener(NumPostLoadCompleteListener mListener){
         this.numListener = mListener;
+    }
+
+    public void setDeleteArtworkListener(ArtworkDeleteListener mListener){
+        this.deleteListener = mListener;
     }
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
@@ -141,6 +147,12 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
     /***End***/
 
+    /***Delete***/
+    public void deleteArtwork(Artwork artwork){
+        db.deleteArtwork(artwork.getaCategory(), artwork.getaType(), artwork.getaID().getId());
+    }
+    //End
+
     /***SORTING***/
     public void sortByDate(List<Artwork> list){
         list.sort(new Comparator<Artwork>() {
@@ -205,6 +217,11 @@ public class ArtworkManager implements ArtWorkDBListener {
         else if (request_number == REQUEST_UPLOAD){
             db.updatePostingNumber(map, numPost);
         }
+    }
+
+    @Override
+    public void onDeleteComplete(boolean result) {
+        deleteListener.onArtworkDeleteComplete(result);
     }
 
     @Override

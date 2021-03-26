@@ -84,6 +84,22 @@ public class EmailUserDB implements UserDBInterface {
     }
 
     @Override
+    public void deletePath(String uEmail, String field, String id) {
+        DocumentReference docRef = db.collection("Users").document("eMailUser").collection("Users").document(uEmail).collection(field).document(id);
+        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                userDbListener.onPathDeleteComplete(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                userDbListener.onPathDeleteComplete(false);
+            }
+        });
+    }
+
+    @Override
     public void getTempUser(String email) {
 
         DocumentReference docRef = db.collection("Users").document("eMailUser").collection("TempUsers").document(email);

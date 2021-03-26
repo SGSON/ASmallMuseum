@@ -34,15 +34,20 @@ import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
+import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtworkDeleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPathDeleteListener;
 
-public class ArtViewFragment extends Fragment implements View.OnClickListener, ArtWorkLoadCompleteListener {
+public class ArtViewFragment extends Fragment implements View.OnClickListener, ArtWorkLoadCompleteListener,
+        ArtworkDeleteListener, UserPathDeleteListener {
     private View view;
     private ArtViewViewModel viewModel;
     private ViewPager2 viewPager;
 
     private boolean isExpanded;
-    private ArtworkManager manager;
+    private ArtworkManager artworkManager;
+    private UserManager userManager;
     private int numImages;
 
     public ArtViewFragment() {
@@ -60,8 +65,12 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         // Inflate the layout for this fragment.
         view = inflater.inflate(R.layout.fragment_art_view, container, false);
 
-        manager = new ArtworkManager();
-        manager.setArtworkLoadCompleteListener(this);
+        artworkManager = new ArtworkManager();
+        artworkManager.setArtworkLoadCompleteListener(this);
+        artworkManager.setDeleteArtworkListener(this);
+
+        userManager = new UserManager();
+        userManager.setUserPathDeleteListener(this);
 
         setButtons();
         getArtInfo();
@@ -176,7 +185,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
 
     private void getArtInfo(){
         Intent intent = getActivity().getIntent();
-        manager.getSingleArtInfoByPath(intent.getStringExtra("DocPath"));
+        artworkManager.getSingleArtInfoByPath(intent.getStringExtra("DocPath"));
     }
 
     @Override
@@ -186,7 +195,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         Artwork artwork = artworks.get(0);
 
         if (!artwork.getaCategory().equals("Museums")){
-            List<StorageReference> refs = manager.getArtImages(artwork.getaCategory(), artwork.getaFileLoc());
+            List<StorageReference> refs = artworkManager.getArtImages(artwork.getaCategory(), artwork.getaFileLoc());
             for (int i = 0 ; i < refs.size() ; i++) {
                 refs.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -206,5 +215,25 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         ((TextView) view.findViewById(R.id.fragment_art_author)).setText(artwork.getaAuthor());
         ((TextView) view.findViewById(R.id.fragment_art_desc)).setText(artwork.getaDesc());
         ((RatingBar) view.findViewById(R.id.fragment_art_rating)).setRating(artwork.getaRating());
+    }
+
+    @Override
+    public void onArtworkDeleteComplete(boolean result) {
+        if (result){
+
+        }
+        else {
+
+        }
+    }
+
+    @Override
+    public void onUserPathDeleteComplete(boolean result) {
+        if (result){
+
+        }
+        else {
+
+        }
     }
 }

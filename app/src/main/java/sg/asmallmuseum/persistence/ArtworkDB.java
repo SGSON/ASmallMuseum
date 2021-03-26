@@ -3,6 +3,7 @@ package sg.asmallmuseum.persistence;
 import android.net.Uri;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -297,6 +298,19 @@ public class ArtworkDB implements ArtworkDBInterface {
         return artwork;
     }
 
-
+    public void deleteArtwork(String category, String type, String id){
+        DocumentReference docRef = db.collection("Art").document(category).collection(type).document(id);
+        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                mListener.onDeleteComplete(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                mListener.onDeleteComplete(false);
+            }
+        });
+    }
 
 }

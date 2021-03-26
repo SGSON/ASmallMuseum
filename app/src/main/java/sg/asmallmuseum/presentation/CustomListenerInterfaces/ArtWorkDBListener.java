@@ -12,4 +12,5 @@ public interface ArtWorkDBListener {
     void onFileUploadComplete(boolean complete);
     void onInfoUploadComplete(boolean complete, List<Uri> paths, List<String> refs, String path, Artwork art);
     void onNumPostDownloadComplete(int numPost, int request_id, String category, String type);
+    void onDeleteComplete(boolean result);
 }
