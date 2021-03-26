@@ -303,6 +303,7 @@ public class ArtworkDB implements ArtworkDBInterface {
         docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                db.collection("Art").document(category).collection(type).document("NumPosts").update("numPosts", FieldValue.increment(-1));
                 mListener.onDeleteComplete(true);
             }
         }).addOnFailureListener(new OnFailureListener() {
