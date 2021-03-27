@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class UserHistoryViewPagerAdapter extends FragmentStateAdapter {
 
-    private final int MAX_NUM_PAGE = 2;
+    private final int MAX_NUM_PAGE = 3;
 
     public UserHistoryViewPagerAdapter(@NonNull Fragment fragment) {
         super(fragment);
@@ -21,8 +21,10 @@ public class UserHistoryViewPagerAdapter extends FragmentStateAdapter {
         Bundle bundle = new Bundle();
         if (position == 0) {
             bundle.putString("Type", "Posts");
-        } else {
+        } else if (position == 1){
             bundle.putString("Type", "Reviews");
+        } else {
+            bundle.putString("Type", "Like");
         }
         fragment.setArguments(bundle);
         return fragment;

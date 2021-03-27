@@ -76,6 +76,7 @@
 
     <string name="post">Posts</string>
     <string name="review">Reviews</string>
+    <string name="like">Like</string>
     <string name="test_0">0</string>
 
     <string name="recent_text">Latest images</string>

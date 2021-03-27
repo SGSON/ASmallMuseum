@@ -122,8 +122,11 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
                 if (position == 0){
                     text = "Posts";
                 }
-                else {
+                else if (position == 1){
                     text = "Reviews";
+                }
+                else if (position == 2){
+                    text = "Like";
                 }
                 tab.setText(text);
             }
@@ -137,8 +140,13 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
             String text = Integer.toString(numPosts);
             mNumPost.setText(text);
         }
-        else {
+        else if (type.equals("Reviews")){
             TextView mNumPost = (TextView) view.findViewById(R.id.fragment_user_history_review);
+            String text = Integer.toString(numPosts);
+            mNumPost.setText(text);
+        }
+        else if (type.equals("Like")){
+            TextView mNumPost = (TextView) view.findViewById(R.id.fragment_user_history_like);
             String text = Integer.toString(numPosts);
             mNumPost.setText(text);
         }
