@@ -16,6 +16,7 @@ public abstract class Artwork {
     private List<String> aFileLoc;
     private int aRating;
     private String aUserID;
+    private int aLike;
 
     public Artwork(){
 
@@ -30,6 +31,7 @@ public abstract class Artwork {
         this.aDesc = aDesc;
         this.aRating = 0;
         this.aUserID = aUserID;
+        this.aLike = 0;
     }
 
     public DocumentReference getaID() {
@@ -118,5 +120,13 @@ public abstract class Artwork {
 
     public void setaUserID(String aUserID) {
         this.aUserID = aUserID;
+    }
+
+    public int getaLike() {
+        return aLike;
+    }
+
+    public void setaLike(int aLike) {
+        this.aLike = aLike;
     }
 }

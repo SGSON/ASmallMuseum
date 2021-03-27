@@ -21,6 +21,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
@@ -49,6 +51,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     private ArtworkManager artworkManager;
     private UserManager userManager;
     private int numImages;
+    private Artwork artwork;
 
     public ArtViewFragment() {
         // Required empty public constructor
@@ -90,10 +93,12 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         Button mExpandTitle = (Button) view.findViewById(R.id.fragment_art_expand_button);
         Button mMore = (Button) view.findViewById(R.id.fragment_art_more_button);
         Button mExpand = (Button) view.findViewById(R.id.fragment_art_pager_expand_button);
+        Button mLike = (Button) view.findViewById(R.id.fragment_art_like_button);
 
         mExpandTitle.setOnClickListener(this);
         mExpand.setOnClickListener(this);
         mMore.setOnClickListener(this);
+        mLike.setOnClickListener(this);
 
         Button mBack = (Button) view.findViewById(R.id.back_button);
         Button mTopMenu = (Button) view.findViewById(R.id.top_menu_button);
@@ -151,6 +156,10 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
                 ((ArtViewActivity) getActivity()).replaceFragment(this);
             }
         }
+        else if (id == R.id.fragment_art_like_button){
+            userManager.updateUserPost(FirebaseAuth.getInstance().getCurrentUser().getEmail(), "Like", artwork.getaID().getPath());
+            artworkManager.updateArtwork(artwork, "aLike");
+        }
         else if (id == R.id.top_menu_button){
             if(getActivity() instanceof ArtViewActivity){
                 ((ArtViewActivity) getActivity()).openMenuFragment();
@@ -192,7 +201,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     public void onArtworkLoadComplete(List<Artwork> artworks, int request_code) {
         List<Artwork> mList = artworks;
         List<Uri> uriList = new ArrayList<>();
-        Artwork artwork = artworks.get(0);
+        artwork = artworks.get(0);
 
         if (!artwork.getaCategory().equals("Museums")){
             List<StorageReference> refs = artworkManager.getArtImages(artwork.getaCategory(), artwork.getaFileLoc());

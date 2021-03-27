@@ -314,4 +314,10 @@ public class ArtworkDB implements ArtworkDBInterface {
         });
     }
 
+    @Override
+    public void updateLike(String category, String type, String id) {
+        DocumentReference docRef = db.collection("Art").document(category).collection(type).document(id);
+        docRef.update("aLike", FieldValue.increment(1));
+    }
+
 }

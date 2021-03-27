@@ -153,6 +153,11 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
     //End
 
+    /***Update artwork information***/
+    public void updateArtwork(Artwork artwork, String field){
+        db.updateLike(artwork.getaCategory(), artwork.getaType(), artwork.getaID().getId());
+    }
+
     /***SORTING***/
     public void sortByDate(List<Artwork> list){
         list.sort(new Comparator<Artwork>() {
