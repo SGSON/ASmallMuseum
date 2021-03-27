@@ -151,7 +151,7 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
         recent_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recent_view.setAdapter(mRandomAdapter);
 
-        if (mList == null){
+        if (mRandomList == null){
             getRandomImage();
         }
         else {
@@ -224,7 +224,8 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
                 mRandomList.add(artworks.get(0));
                 mRandomAdapter.updateList(mRandomList);
             }
-        }else{
+        }
+        else{
             manager.sortByDate(artworks);
             mList = artworks;
             updateList(artworks);
