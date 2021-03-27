@@ -12,5 +12,7 @@
     <color name="main_theme_clicked">#d2675b</color>
     <color name="main_theme_sub">#ed4330</color>
 
+    <color name="like_color">#fb3958</color>
+
     <color name="boarder">#808080</color>
 </resources>

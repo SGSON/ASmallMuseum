@@ -100,6 +100,29 @@ public class EmailUserDB implements UserDBInterface {
     }
 
     @Override
+    public void exists(String email, String field, String artId) {
+        DocumentReference docRef = db.collection("Users").document("eMailUser").collection("Users")
+                .document(email).collection(field).document(artId);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.getData() != null){
+                    userDbListener.onPostExists(true);
+                }
+                else {
+                    userDbListener.onPostExists(false);
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                userDbListener.onPostExists(false);
+            }
+        });
+    }
+
+    @Override
     public void getTempUser(String email) {
 
         DocumentReference docRef = db.collection("Users").document("eMailUser").collection("TempUsers").document(email);

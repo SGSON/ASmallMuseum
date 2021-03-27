@@ -89,6 +89,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/fragment_art_like_button"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/image_like"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/fragment_art_author"
                 app:layout_constraintStart_toEndOf="@id/fragment_art_title"

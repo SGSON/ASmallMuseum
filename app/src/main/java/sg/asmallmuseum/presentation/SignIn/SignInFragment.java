@@ -165,7 +165,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
     }
 
     private void moveNextPage(FirebaseUser user){
-        userManager.hasExisted(user.getEmail());
+        userManager.exists(user.getEmail());
     }
 
     @Override

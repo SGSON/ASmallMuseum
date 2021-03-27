@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,16 +35,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
-import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtworkDeleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPathDeleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPostExistsListener;
 
 public class ArtViewFragment extends Fragment implements View.OnClickListener, ArtWorkLoadCompleteListener,
-        ArtworkDeleteListener, UserPathDeleteListener {
+        ArtworkDeleteListener, UserPathDeleteListener, UserPostExistsListener {
     private View view;
     private ArtViewViewModel viewModel;
     private ViewPager2 viewPager;
@@ -52,6 +54,8 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     private UserManager userManager;
     private int numImages;
     private Artwork artwork;
+
+    private boolean like;
 
     public ArtViewFragment() {
         // Required empty public constructor
@@ -74,6 +78,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
 
         userManager = new UserManager();
         userManager.setUserPathDeleteListener(this);
+        userManager.setUserPostExistsListener(this);
 
         setButtons();
         getArtInfo();
@@ -157,8 +162,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
             }
         }
         else if (id == R.id.fragment_art_like_button){
-            userManager.updateUserPost(FirebaseAuth.getInstance().getCurrentUser().getEmail(), "Like", artwork.getaID().getPath());
-            artworkManager.updateArtwork(artwork, "aLike");
+            eventLike();
         }
         else if (id == R.id.top_menu_button){
             if(getActivity() instanceof ArtViewActivity){
@@ -167,6 +171,28 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         }
         else if (id == R.id.back_button){
             getActivity().finish();
+        }
+    }
+
+    private void eventLike(){
+        if (FirebaseAuth.getInstance().getCurrentUser() != null){
+            String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            Button button = (Button) view.findViewById(R.id.fragment_art_like_button);
+
+            if (!like){
+                userManager.updateUserPost(email, "Like", artwork.getaID().getPath());
+                artworkManager.updateArtwork(artwork, "aLike", 1);
+                button.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.image_like_filled));
+            }
+            else {
+                userManager.deletePath(email, artwork, "Like");
+                artworkManager.updateArtwork(artwork, "aLike", -1);
+                button.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.image_like));
+            }
+            like = !like;
+        }
+        else {
+            Toast.makeText(getContext(), "Please Sign-In.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -213,6 +239,8 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
 
                         if (uriList.size() == refs.size()) {
                             setViewPager(uriList);
+
+                            userManager.existsIn("Like", FirebaseAuth.getInstance().getCurrentUser().getEmail(), artwork);
                         }
                     }
                 });
@@ -243,6 +271,19 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         }
         else {
 
+        }
+    }
+
+    @Override
+    public void onUserPostExists(boolean result) {
+        Button button = (Button) view.findViewById(R.id.fragment_art_like_button);
+        like = result;
+
+        if (result){
+            button.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.image_like_filled));
+        }
+        else {
+            button.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.image_like));
         }
     }
 }

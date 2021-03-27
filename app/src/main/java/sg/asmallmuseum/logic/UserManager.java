@@ -10,6 +10,7 @@ import sg.asmallmuseum.persistence.EmailUserDB;
 import sg.asmallmuseum.persistence.UserDBInterface;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserLoadListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPathDeleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPostExistsListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPostLoadCompleteListener;
 
 public class UserManager implements UserDBListener {
@@ -17,6 +18,7 @@ public class UserManager implements UserDBListener {
     private UserLoadListener userLoadListener;
     private UserPostLoadCompleteListener userPostLoadListener;
     private UserPathDeleteListener userPathDeleteListener;
+    private UserPostExistsListener userPostExistsListener;
 
     private static final int REQUEST_EXIST = 3301;
     private static final int REQUEST_USER = 3302;
@@ -34,6 +36,10 @@ public class UserManager implements UserDBListener {
 
     public void setUserPathDeleteListener(UserPathDeleteListener mListener){
         this.userPathDeleteListener = mListener;
+    }
+
+    public void setUserPostExistsListener(UserPostExistsListener mListener){
+        this.userPostExistsListener = mListener;
     }
 
     /***Set a Db***/
@@ -68,15 +74,14 @@ public class UserManager implements UserDBListener {
 
     }
 
-    public boolean hasExisted(String email){
+    public boolean exists(String email){
         getUserInfo(email, REQUEST_EXIST);
         return true;
     }
 
-    /*public void getAllUser(){
-        db.getAllUser();
-
-    }*/
+    public void existsIn(String field, String email, Artwork artwork){
+        db.exists(email, field, artwork.getaID().getId());
+    }
 
     public void getUserPosting(String uEmail, String field){
         db.getUserPosting(uEmail, field);
@@ -96,6 +101,10 @@ public class UserManager implements UserDBListener {
 
     public void deletePath(User user, Artwork artwork, String field){
         db.deletePath(user.getuEmail(), field, artwork.getaID().getId());
+    }
+
+    public void deletePath(String email, Artwork artwork, String field){
+        db.deletePath(email, field, artwork.getaID().getId());
     }
 
     public void deleteUser(String email){
@@ -120,6 +129,11 @@ public class UserManager implements UserDBListener {
     @Override
     public void onPathDeleteComplete(boolean result) {
         userPathDeleteListener.onUserPathDeleteComplete(result);
+    }
+
+    @Override
+    public void onPostExists(boolean result) {
+        userPostExistsListener.onUserPostExists(result);
     }
     /***this method is for other sign-up methods. It does not get a password.***/
     /*public User addNewUser(FirebaseAuth mAuth, String uNick, String lastName,

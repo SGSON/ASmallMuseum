@@ -154,8 +154,8 @@ public class ArtworkManager implements ArtWorkDBListener {
     //End
 
     /***Update artwork information***/
-    public void updateArtwork(Artwork artwork, String field){
-        db.updateLike(artwork.getaCategory(), artwork.getaType(), artwork.getaID().getId());
+    public void updateArtwork(Artwork artwork, String field, int value){
+        db.updateLike(artwork.getaCategory(), artwork.getaType(), artwork.getaID().getId(), value);
     }
 
     /***SORTING***/
