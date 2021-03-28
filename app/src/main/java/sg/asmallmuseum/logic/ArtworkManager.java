@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.VisualArts;
 import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.AppliedArts;
@@ -24,6 +25,9 @@ import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtworkDeleteListen
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UploadCompleteListener;
 
+import static sg.asmallmuseum.Domain.RequestCode.RESULT_UPLOAD_FAIL;
+import static sg.asmallmuseum.Domain.RequestCode.RESULT_UPLOAD_INFO_OK;
+
 public class ArtworkManager implements ArtWorkDBListener {
     private final ArtworkDBInterface db;
 
@@ -31,17 +35,6 @@ public class ArtworkManager implements ArtWorkDBListener {
     private ArtWorkLoadCompleteListener downListener;
     private NumPostLoadCompleteListener numListener;
     private ArtworkDeleteListener deleteListener;
-
-    private final int REQUEST_SINGLE = 2;
-    private final int REQUEST_MULTIPLE = 8;
-
-    private final int REQUEST_USER = 2010;
-    private final int REQUEST_UPLOAD = 2011;
-    private final int REQUEST_RANDOM = 2012;
-
-    public static final int RESULT_UPLOAD_OK = 2301;
-    public static final int RESULT_UPLOAD_INFO_OK = 2302;
-    public static final int RESULT_UPLOAD_FAIL = 2303;
 
     private final Map<String, String> map;
 
@@ -120,11 +113,11 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
 
     public void getSingleArtInfoByPath(String id){
-        db.getArtInfoByPath(id, REQUEST_SINGLE);
+        db.getArtInfoByPath(id, RequestCode.REQUEST_SINGLE);
     }
 
     public void getMultipleArtInfoByPath(List<String> paths){
-        db.getMultipleArtInfoByPath(paths, REQUEST_MULTIPLE);
+        db.getMultipleArtInfoByPath(paths, RequestCode.REQUEST_MULTIPLE);
     }
 
     public void getRecent(){
@@ -184,7 +177,7 @@ public class ArtworkManager implements ArtWorkDBListener {
 
     @Override
     public void onFileUploadComplete(boolean complete) {
-        upListener.onUploadComplete(complete, null, RESULT_UPLOAD_OK);
+        upListener.onUploadComplete(complete, null, RequestCode.RESULT_UPLOAD_OK);
     }
 
     @Override
@@ -192,7 +185,7 @@ public class ArtworkManager implements ArtWorkDBListener {
         if (complete){
             String[] pathList = path.split("/");
             map.put("id", pathList[pathList.length-1]);
-            db.getNumPost(map.get("Category"), map.get("Type"), REQUEST_UPLOAD);
+            db.getNumPost(map.get("Category"), map.get("Type"), RequestCode.REQUEST_UPLOAD);
             upListener.onUploadComplete(false, path, RESULT_UPLOAD_INFO_OK);
             uploadAttachedFile(paths, refs, path, art);
         }
@@ -203,13 +196,13 @@ public class ArtworkManager implements ArtWorkDBListener {
 
     @Override
     public void onNumPostDownloadComplete(int numPost, int request_number, String category, String type) {
-        if (request_number == REQUEST_USER || request_number == REQUEST_RANDOM){
+        if (request_number == RequestCode.REQUEST_USER || request_number == RequestCode.REQUEST_RANDOM){
             //numListener.onNumPostLoadComplete(numPost);
             if (numListener != null){
                 numListener.onNumPostLoadComplete(numPost, request_number, category, type);
             }
         }
-        else if (request_number == REQUEST_UPLOAD){
+        else if (request_number == RequestCode.REQUEST_UPLOAD){
             db.updatePostingNumber(map, numPost);
         }
     }

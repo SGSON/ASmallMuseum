@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
@@ -45,8 +47,6 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
     private String mCategory;
     private String mType;
     private String[] mItems;
-
-    private final int REQUEST_USER = 2010;
 
     private int totalPost;
     private int currentPost;
@@ -74,6 +74,8 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         dialog.show();
 
         Intent intent = getActivity().getIntent();
+        mCategory = intent.getStringExtra("Category");
+        mType = intent.getStringExtra("Type");
         setButtons();
 
         manager = new ArtworkManager();
@@ -85,7 +87,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.art_list_swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        isMuseum = intent.getStringExtra("Category").equals("Museums");
+        isMuseum = mCategory.equals("Museums");
 
         initRecyclerView(new ArrayList<Artwork>());
 
@@ -100,16 +102,18 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
             @Override
             public void onChanged(String[] strings) {
                 mItems = strings;
-                manager.getNumPost(mItems[0], mItems[1], REQUEST_USER);
-                isMuseum = mItems[0].equals("Museums");
+                mCategory = mItems[0];
+                mType = mItems[1];
+
+                manager.getNumPost(mCategory, mType, RequestCode.REQUEST_USER);
+                isMuseum = mCategory.equals("Museums");
             }
         });
     }
 
     @Override
     public void onRefresh() {
-        Intent intent = getActivity().getIntent();
-        manager.getNumPost(intent.getStringExtra("Category"), intent.getStringExtra("Type"), REQUEST_USER);
+        manager.getNumPost(mCategory, mType, RequestCode.REQUEST_USER);
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -117,14 +121,18 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         Button mTopMenu = (Button) view.findViewById(R.id.top_menu_button);
         Button mBackButton = (Button) view.findViewById(R.id.back_button);
 
+        TextView cate = (TextView) view.findViewById(R.id.fragment_art_list_category_text);
+        TextView type = (TextView) view.findViewById(R.id.fragment_art_list_type_text);
+
         mTopMenu.setOnClickListener(this);
         mBackButton.setOnClickListener(this);
+
+        cate.setText(mCategory);
+        type.setText(mType);
     }
 
     /***Load File from DB***/
     private void initRecyclerView(List<Artwork> artworks){
-        Intent intent = getActivity().getIntent();
-
         if (isMuseum){
             adapter = new ArtListMuseumViewAdapter(artworks);
         }
@@ -136,7 +144,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
             @Override
             public void onBottomReached() {
                 //manager.getArtInfoList(intent.getStringExtra("Category"), intent.getStringExtra("Type"), currentPost);
-                manager.getArtInfoList(mItems[0], mItems[1], currentPost);
+                manager.getArtInfoList(mCategory, mType, currentPost);
                 currentPost -= 10;
             }
         });
@@ -167,7 +175,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         Log.d("NUM", ""+result);
 //        Intent intent = getActivity().getIntent();
 //        manager.getArtInfoList(intent.getStringExtra("Category"), intent.getStringExtra("Type"), totalPost);
-        manager.getArtInfoList(mItems[0], mItems[1], totalPost);
+        manager.getArtInfoList(mCategory, mType, totalPost);
     }
 
     @Override

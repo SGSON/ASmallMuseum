@@ -1,13 +1,10 @@
 package sg.asmallmuseum.presentation.SignIn;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.R;
-import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.presentation.General.MainActivity;
 
 public class SignInEmailVerifyFragment extends Fragment  implements View.OnClickListener {
@@ -69,7 +63,7 @@ public class SignInEmailVerifyFragment extends Fragment  implements View.OnClick
             public void onSuccess(Void aVoid) {
                 if (mFirebaseUser.isEmailVerified()){
                     if (getActivity() instanceof SignInActivity){
-                        ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_END_SIGN_UP);
+                        ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_END_SIGN_UP);
                     }
                     else if (getActivity() instanceof MainActivity){
                         ((MainActivity) getActivity()).replaceFragment(null);

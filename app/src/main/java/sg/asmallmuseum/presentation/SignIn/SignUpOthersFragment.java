@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.Domain.Messages.CustomException;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.logic.ValidateUser;
@@ -66,7 +67,7 @@ public class SignUpOthersFragment extends Fragment {
                     ValidateUser.validUser(uNick,uLastName,uFirstName,uBirth);
                     mManager.addNewUser(uNick, uLastName, uFirstName, uEmail, uBirth, mType);
                     if (getActivity() instanceof SignInActivity){
-                        ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_END_SIGN_UP);
+                        ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_END_SIGN_UP);
                     }
                 } catch (CustomException e) {
                     e.printStackTrace();

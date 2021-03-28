@@ -41,9 +41,6 @@ public class ArtworkDB implements ArtworkDBInterface {
     private ArtWorkDBListener mListener;
     private final int MAX_LIST_SIZE = 10;
 
-    private final int REQUEST_USER = 2010;
-    private final int REQUEST_UPLOAD = 2011;
-
     public ArtworkDB(){
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();

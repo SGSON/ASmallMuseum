@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.R;
 
 public class UserProfileUpdatePasswordFragment extends Fragment implements View.OnClickListener{
@@ -114,7 +115,7 @@ public class UserProfileUpdatePasswordFragment extends Fragment implements View.
 //        fragmentTransaction.commit();
 
         if (getActivity() instanceof UserProfileActivity){
-            ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_END);
+            ((UserProfileActivity) getActivity()).replaceFragment(RequestCode.REQUEST_END);
         }
     }
 

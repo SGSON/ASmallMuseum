@@ -17,6 +17,7 @@ import java.util.List;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.Domain.Messages.CustomException;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
@@ -70,7 +71,7 @@ public class SignUpGetEmailFragment extends Fragment implements UserLoadListener
             EditText mEdit = (EditText) view.findViewById(R.id.fragment_sign_up_get_email);
             viewModel.setEmail(mEdit.getText().toString());
             if (getActivity() instanceof SignInActivity){
-                ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_EMAIL_SIGN_UP);
+                ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_EMAIL_SIGN_UP);
             }
         }
         else {
