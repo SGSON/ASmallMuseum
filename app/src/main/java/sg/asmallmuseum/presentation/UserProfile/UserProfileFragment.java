@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 
@@ -107,7 +108,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         int id = view.getId();
         if (id == R.id.fragment_user_profile_update_password_button){
             if (getActivity() instanceof UserProfileActivity){
-                ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_PASSWORD);
+                ((UserProfileActivity) getActivity()).replaceFragment(RequestCode.REQUEST_PASSWORD);
             }
         }
         else if (id == R.id.fragment_user_profile_home_button){
@@ -115,7 +116,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         }
         else if (id == R.id.fragment_user_profile_update_user_information_button){
             if (getActivity() instanceof UserProfileActivity){
-                ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_INFO);
+                ((UserProfileActivity) getActivity()).replaceFragment(RequestCode.REQUEST_INFO);
             }
         }
         else if (id == R.id.top_menu_button){

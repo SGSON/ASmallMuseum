@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.persistence.EmailUserDB;
 import sg.asmallmuseum.persistence.UserDBInterface;
@@ -19,12 +20,6 @@ public class UserManager implements UserDBListener {
     private UserPostLoadCompleteListener userPostLoadListener;
     private UserPathDeleteListener userPathDeleteListener;
     private UserPostExistsListener userPostExistsListener;
-
-    private static final int REQUEST_EXIST = 3301;
-    private static final int REQUEST_USER = 3302;
-    private static final int REQUEST_USER_LIST = 3303;
-    private static final int RESULT_POST_OK = 3304;
-    private static final int RESULT_POST_FAIL = 3305;
 
     public void setUserLoadListener(UserLoadListener userLoadListener){
         this.userLoadListener = userLoadListener;
@@ -75,7 +70,7 @@ public class UserManager implements UserDBListener {
     }
 
     public boolean exists(String email){
-        getUserInfo(email, REQUEST_EXIST);
+        getUserInfo(email, RequestCode.REQUEST_EXIST);
         return true;
     }
 

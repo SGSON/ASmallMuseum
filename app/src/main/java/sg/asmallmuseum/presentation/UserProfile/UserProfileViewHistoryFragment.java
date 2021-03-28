@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
@@ -166,7 +167,7 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
         }
         else if (id == R.id.fragment_user_history_profile_setting){
             if (getActivity() instanceof UserProfileActivity){
-                ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_PROFILE);
+                ((UserProfileActivity) getActivity()).replaceFragment(RequestCode.REQUEST_PROFILE);
             }
         }
     }

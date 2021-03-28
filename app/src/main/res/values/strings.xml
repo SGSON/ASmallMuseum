@@ -81,6 +81,7 @@
 
     <string name="recent_text">Latest images</string>
     <string name="recommend_text">Recommend images</string>
+    <string name="right_arrow">></string>
 
     <string-array name="arts_categories">
         <item>Select</item>

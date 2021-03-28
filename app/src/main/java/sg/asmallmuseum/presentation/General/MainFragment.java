@@ -34,11 +34,12 @@ import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadComplete
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.OnBottomReachedListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
+import static sg.asmallmuseum.Domain.RequestCode.REQUEST_RANDOM;
+
 public class MainFragment extends Fragment implements RecyclerViewOnClickListener, SwipeRefreshLayout.OnRefreshListener,
         ArtWorkLoadCompleteListener, View.OnClickListener, NumPostLoadCompleteListener {
 
     private final int MAX_LIST_SIZE = 10;
-    private final int REQUEST_RANDOM = 2012;
 
     private View view;
     private ArtworkManager manager;

@@ -42,6 +42,7 @@ import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.Messages.UserEmailError;
 import sg.asmallmuseum.Domain.Messages.UserPasswordError;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
@@ -60,8 +61,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
     private FirebaseUser user;
     private CallbackManager callbackManager;
 
-    private final int REQUEST_GOOGLE_SIGN_IN = 5601;
-    private final int REQUEST_FACEBOOK_SIGN_IN = 5602;
+
 
     public SignInFragment() {
         // Required empty public constructor
@@ -106,7 +106,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
         }
         else if (id == R.id.fragment_sign_in_sign_up){
             if (getActivity() instanceof SignInActivity){
-                ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_GET_EMAIL);
+                ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_GET_EMAIL);
             }
         }
 
@@ -118,7 +118,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
         }
         else if (id == R.id.top_menu_button){
             if (getActivity() instanceof SignInActivity){
-                ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_MENU);
+                ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_MENU);
             }
         }
     }
@@ -153,13 +153,13 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
     public void userInfo(User user) {
         if (getActivity() instanceof SignInActivity) {
             if (user == null) {
-                ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_OTHERS);
+                ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_OTHERS);
             }
             else if (user != null && !mAuth.getCurrentUser().isEmailVerified()){
-                ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_EMAIL_VERIFY);
+                ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_EMAIL_VERIFY);
             }
             else {
-                ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_END);
+                ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_END);
             }
         }
     }
@@ -172,7 +172,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_GOOGLE_SIGN_IN){
+        if (requestCode == RequestCode.REQUEST_OTHER_SIGN_IN){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -236,7 +236,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, REQUEST_GOOGLE_SIGN_IN);
+        startActivityForResult(signInIntent, RequestCode.REQUEST_OTHER_SIGN_IN);
     }
 
     private void firebaseAuthWithGoogle(String idToken) {

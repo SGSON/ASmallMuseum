@@ -10,6 +10,7 @@ import sg.asmallmuseum.Domain.Messages.ArtTypeError;
 import sg.asmallmuseum.Domain.Messages.ArtTitleError;
 import sg.asmallmuseum.Domain.Messages.ArtCategoryError;
 import sg.asmallmuseum.Domain.Messages.CustomException;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
@@ -72,7 +73,6 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     private User mUser;
     private UserManager userManager;
     private ProgressDialog dialog;
-    private final int REQUEST_CODE = 3020;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +141,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), RequestCode.REQUEST_CODE);
         }
     }
 
@@ -237,7 +237,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onUploadComplete(boolean status, String path, int result_code) {
         //Toast.makeText(this, "Upload finished", Toast.LENGTH_SHORT).show();
-        if(result_code == ArtworkManager.RESULT_UPLOAD_INFO_OK){
+        if(result_code == RequestCode.RESULT_UPLOAD_INFO_OK){
             userManager.updateUserPost(firebaseUser.getEmail(), "Posts", path);
         }
         else{
@@ -253,7 +253,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null){
+        if (requestCode == RequestCode.REQUEST_CODE && resultCode == RESULT_OK && data != null){
             if (data.getClipData() != null){
                 ClipData clip = data.getClipData();
                 for (int i = 0 ; i < clip.getItemCount() ; i++){
