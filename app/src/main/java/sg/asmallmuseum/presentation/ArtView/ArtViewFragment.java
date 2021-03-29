@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
@@ -180,13 +181,13 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
             Button button = (Button) view.findViewById(R.id.fragment_art_like_button);
 
             if (!like){
-                userManager.updateUserPost(email, "Like", artwork.getaID().getPath());
-                artworkManager.updateArtwork(artwork, "aLike", 1);
+                userManager.updateUserPost(email, Values.ART_LIKE, artwork.getaID().getPath());
+                artworkManager.updateArtwork(artwork, Values.ART_VAL_LIKE, 1);
                 button.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.image_like_filled));
             }
             else {
-                userManager.deletePath(email, artwork, "Like");
-                artworkManager.updateArtwork(artwork, "aLike", -1);
+                userManager.deletePath(email, artwork, Values.ART_LIKE);
+                artworkManager.updateArtwork(artwork, Values.ART_VAL_LIKE, -1);
                 button.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.image_like));
             }
             like = !like;
@@ -220,7 +221,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
 
     private void getArtInfo(){
         Intent intent = getActivity().getIntent();
-        artworkManager.getSingleArtInfoByPath(intent.getStringExtra("DocPath"));
+        artworkManager.getSingleArtInfoByPath(intent.getStringExtra(Values.DOCUMENT_PATH));
     }
 
     @Override
@@ -229,7 +230,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         List<Uri> uriList = new ArrayList<>();
         artwork = artworks.get(0);
 
-        if (!artwork.getaCategory().equals("Museums")){
+        if (!artwork.getaCategory().equals(Values.ART_MUSEUM)){
             List<StorageReference> refs = artworkManager.getArtImages(artwork.getaCategory(), artwork.getaFileLoc());
             for (int i = 0 ; i < refs.size() ; i++) {
                 refs.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -240,7 +241,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
                         if (uriList.size() == refs.size()) {
                             setViewPager(uriList);
 
-                            userManager.existsIn("Like", FirebaseAuth.getInstance().getCurrentUser().getEmail(), artwork);
+                            userManager.existsIn(Values.ART_LIKE, FirebaseAuth.getInstance().getCurrentUser().getEmail(), artwork);
                         }
                     }
                 });

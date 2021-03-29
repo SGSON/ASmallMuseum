@@ -30,6 +30,7 @@ import sg.asmallmuseum.Domain.Messages.UserNameError;
 import sg.asmallmuseum.Domain.Messages.UserPasswordError;
 import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.logic.ValidateUser;
@@ -159,7 +160,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         String uLastName = lastName.getText().toString();
 
 
-        User user = new User(uNick, uLastName, uFirstName, uEmailID, uBirth, "eMail");
+        User user = new User(uNick, uLastName, uFirstName, uEmailID, uBirth, Values.USER_TYPE_EMAIL);
         try {
             ValidateUser.validEmailUser(user, uPassword, checkPassword);
             createAccount(user, user.getuEmail(), uPassword);

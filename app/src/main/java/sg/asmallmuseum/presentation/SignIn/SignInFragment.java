@@ -44,6 +44,7 @@ import sg.asmallmuseum.Domain.Messages.UserEmailError;
 import sg.asmallmuseum.Domain.Messages.UserPasswordError;
 import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.logic.ValidateUser;
@@ -247,7 +248,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             user = mAuth.getCurrentUser();
-                            viewModel.setType("Google");
+                            viewModel.setType(Values.USER_TYPE_GOOGLE);
                             moveNextPage(user);
                             //userManager.getUserInfo(user.getEmail());
                             Log.d("Google login", "signInWithCredential:success");
@@ -297,7 +298,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             user = mAuth.getCurrentUser();
-                            viewModel.setType("Facebook");
+                            viewModel.setType(Values.USER_TYPE_FACEBOOK);
                             moveNextPage(user);
                         } else {
                             // If sign in fails, display a message to the user.

@@ -18,6 +18,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.ArtView.ArtViewActivity;
@@ -55,7 +56,7 @@ public class UserHistoryViewAdapter extends RecyclerView.Adapter<UserHistoryView
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ArtViewActivity.class);
-                intent.putExtra("DocPath", mList.get(position).getaID().getPath());
+                intent.putExtra(Values.DOCUMENT_PATH, mList.get(position).getaID().getPath());
                 mListener.onItemClick(position, intent);
             }
         });

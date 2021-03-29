@@ -12,6 +12,7 @@ import java.util.Map;
 
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.RequestCode;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.Domain.VisualArts;
 import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.AppliedArts;
@@ -64,21 +65,21 @@ public class ArtworkManager implements ArtWorkDBListener {
     public void upLoadArt(List<Uri> paths, List<String> ext, String category, String type, String title, String author, String date, String desc, String email) {
         Artwork art = null;
         switch (type){
-            case "Visual Arts":
+            case Values.ART_VISUAL:
                 art = new VisualArts(category, type, title, author, date, desc, email);
                 break;
-            case "Applied Arts":
+            case Values.ART_APPLIED:
                 art = new AppliedArts(category, type, title, author, date, desc, email);
                 break;
-            case "Others":
+            case Values.ART_OTHERS:
                 art = new Others(category, type, title, author, date, desc, email);
                 break;
             default:
                 art = new FineArts(category, type, title, author, date, desc, email);
                 break;
         }
-        map.put("Category", category);
-        map.put("Type", type);
+        map.put(Values.ART_CATEGORY, category);
+        map.put(Values.ART_TYPE, type);
 
         db.uploadArtInfo(art, paths, ext);
     }
@@ -184,8 +185,8 @@ public class ArtworkManager implements ArtWorkDBListener {
     public void onInfoUploadComplete(boolean complete, List<Uri> paths, List<String> refs, String path, Artwork art) {
         if (complete){
             String[] pathList = path.split("/");
-            map.put("id", pathList[pathList.length-1]);
-            db.getNumPost(map.get("Category"), map.get("Type"), RequestCode.REQUEST_UPLOAD);
+            map.put(Values.ART_ID, pathList[pathList.length-1]);
+            db.getNumPost(map.get(Values.ART_CATEGORY), map.get(Values.ART_TYPE), RequestCode.REQUEST_UPLOAD);
             upListener.onUploadComplete(false, path, RESULT_UPLOAD_INFO_OK);
             uploadAttachedFile(paths, refs, path, art);
         }
