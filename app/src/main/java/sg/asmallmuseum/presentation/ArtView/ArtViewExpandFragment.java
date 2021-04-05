@@ -64,7 +64,7 @@ public class ArtViewExpandFragment extends Fragment implements View.OnClickListe
 
     private void setViewPager(List<Uri> mList, int currPage){
         ArtViewPagerAdapter adapter = new ArtViewPagerAdapter(this);
-        adapter.setData(mList);
+        adapter.setData(mList, true);
         ViewPager2 viewPager = (ViewPager2) view.findViewById(R.id.fragment_large_view_pager);
 
         viewPager.setAdapter(adapter);

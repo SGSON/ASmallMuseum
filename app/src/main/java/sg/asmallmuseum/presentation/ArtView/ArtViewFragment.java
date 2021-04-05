@@ -133,7 +133,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
 
         viewPager = (ViewPager2) view.findViewById(R.id.fragment_art_image_pager);
         ArtViewPagerAdapter adapter = new ArtViewPagerAdapter(this);
-        adapter.setData(mList);
+        adapter.setData(mList, false);
         viewPager.setAdapter(adapter);
     }
 
