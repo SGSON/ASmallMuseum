@@ -27,6 +27,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.presentation.ArtList.ArtListActivity;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.MainMenuOnClickListener;
@@ -67,7 +68,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         mClose.setOnClickListener(this);
 
         map = new HashMap<>();
-        map.put("Category", "Fine Arts");
+        map.put(Values.ART_CATEGORY, Values.ART_FINE);
 
         return view;
     }
@@ -139,16 +140,16 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
     private List<String> getItemList(String item){
         List<String> list;
         switch (item){
-            case "Visual Arts":
+            case Values.ART_VISUAL:
                 list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_visual)));
                 break;
-            case "Applied Arts":
+            case Values.ART_APPLIED:
                 list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_applied)));
                 break;
-            case "Others":
+            case Values.ART_OTHERS:
                 list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_others)));
                 break;
-            case "Museums":
+            case Values.ART_MUSEUM:
                 list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.museums)));
                 break;
             default:
@@ -160,18 +161,18 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
 
     private void setMenuItem(String item){
         List<String> mList = getItemList(item);
-        map.put("Category", item);
+        map.put(Values.ART_CATEGORY, item);
         mTypeAdapter.updateList(mList);
     }
 
     private void initNextActivity(String item){
         if (getActivity() instanceof ArtListActivity){
-            ((ArtListActivity) getActivity()).openNewFragment(map.get("Category"), item);
+            ((ArtListActivity) getActivity()).openNewFragment(map.get(Values.ART_CATEGORY), item);
         }
-        else if (map.containsKey("Category")){
+        else if (map.containsKey(Values.ART_CATEGORY)){
             Intent intent = new Intent(getActivity(), ArtListActivity.class);
-            intent.putExtra("Category", map.get("Category"));
-            intent.putExtra("Type", item);
+            intent.putExtra(Values.ART_CATEGORY, map.get(Values.ART_CATEGORY));
+            intent.putExtra(Values.ART_TYPE, item);
 
             startActivity(intent);
             //closeFragment();

@@ -7,6 +7,7 @@ import java.util.Map;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.persistence.EmailUserDB;
 import sg.asmallmuseum.persistence.UserDBInterface;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserLoadListener;
@@ -90,7 +91,7 @@ public class UserManager implements UserDBListener {
     public void updateUserPost(String uEmail, String field, String path){
         String[] paths = path.split("/");
         Map<String, String> map = new HashMap<>();
-        map.put("path", path);
+        map.put(Values.PATH, path);
         db.addUserPosting(uEmail, field, paths[paths.length-1], map);
     }
 

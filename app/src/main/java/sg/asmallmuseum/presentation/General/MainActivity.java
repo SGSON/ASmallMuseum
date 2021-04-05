@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserLoadListener;
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
 
     @Override
     public void userInfo(User user) {
-        if (user.getuType().equals("eMail") && !mFirebaseUser.isEmailVerified()){
+        if (user.getuType().equals(Values.USER_TYPE_EMAIL) && !mFirebaseUser.isEmailVerified()){
             getSupportFragmentManager().popBackStack();
             openVerifyFragment();
         }

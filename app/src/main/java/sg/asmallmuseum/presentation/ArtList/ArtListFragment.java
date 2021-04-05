@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.RequestCode;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
@@ -74,8 +75,8 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         dialog.show();
 
         Intent intent = getActivity().getIntent();
-        mCategory = intent.getStringExtra("Category");
-        mType = intent.getStringExtra("Type");
+        mCategory = intent.getStringExtra(Values.ART_CATEGORY);
+        mType = intent.getStringExtra(Values.ART_TYPE);
         setButtons();
 
         manager = new ArtworkManager();
@@ -87,7 +88,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.art_list_swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        isMuseum = mCategory.equals("Museums");
+        isMuseum = mCategory.equals(Values.ART_MUSEUM);
 
         initRecyclerView(new ArrayList<Artwork>());
 
@@ -106,7 +107,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
                 mType = mItems[1];
 
                 manager.getNumPost(mCategory, mType, RequestCode.REQUEST_USER);
-                isMuseum = mCategory.equals("Museums");
+                isMuseum = mCategory.equals(Values.ART_MUSEUM);
             }
         });
     }

@@ -12,6 +12,7 @@ import sg.asmallmuseum.Domain.Messages.ArtCategoryError;
 import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
@@ -151,12 +152,12 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         if (id == R.id.upload_category_spinner){
             String selected = adapterView.getItemAtPosition(i).toString();
             Log.d("Selected", selected);
-            map.put("category", selected);
+            map.put(Values.ART_CATEGORY, selected);
             setTypeSpinner(selected);
         }
         else if (id == R.id.upload_type_spinner){
             String selected = adapterView.getItemAtPosition(i).toString();
-            map.put("type", selected);
+            map.put(Values.ART_TYPE, selected);
         }
 
     }
@@ -175,16 +176,16 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     private void setTypeSpinner(String category){
         int id;
         switch (category){
-            case "Fine Arts":
+            case Values.ART_FINE:
                 id = R.array.type_fine;
                 break;
-            case "Visual Arts":
+            case Values.ART_VISUAL:
                 id =R.array.type_visual;
                 break;
-            case "Applied Arts":
+            case Values.ART_APPLIED:
                 id = R.array.type_applied;
                 break;
-            case "Others":
+            case Values.ART_OTHERS:
                 id = R.array.type_others;
                 break;
             default:
@@ -199,33 +200,33 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         String title = mTitle.getText().toString();
         String desc = mDesc.getText().toString();
 
-        map.put("title", title);
-        map.put("desc", desc);
+        map.put(Values.ART_TITLE, title);
+        map.put(Values.ART_DESC, desc);
         //String genre = mGenre.getSelectedItem();
     }
 
     /***Upload a art***/
     private void uploadArt()  {
         try{
-            manager.validateArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), mUser.getuEmail(), "2020-12-13", map.get("desc"));
+            manager.validateArt(mPathList, mExtensions, map.get(Values.ART_CATEGORY), map.get(Values.ART_TYPE), map.get(Values.ART_TITLE), mUser.getuEmail(), "2020-12-13", map.get(Values.ART_DESC));
             showAlertDialog().show();
         }
         catch (CustomException e){
             if (e instanceof ArtTitleError){
                 mTitle.setError(e.getErrorMsg());
             }
-            else if (e instanceof ArtDescError){
-                mDesc.setError(e.getErrorMsg());
+            else if (e instanceof ArtCategoryError){
+                TextView textView = (TextView) mCategory.getSelectedView();
+                textView.setError(e.getErrorMsg());
+                textView.setTextColor(Color.RED);
             }
             else if (e instanceof ArtTypeError){
                 TextView textView = (TextView) mType.getSelectedView();
                 textView.setError(e.getErrorMsg());
                 textView.setTextColor(Color.RED);
             }
-            else if (e instanceof ArtCategoryError){
-                TextView textView = (TextView) mType.getSelectedView();
-                textView.setError(e.getErrorMsg());
-                textView.setTextColor(Color.RED);
+            else if (e instanceof ArtDescError){
+                mDesc.setError(e.getErrorMsg());
             }
             else if (e instanceof ArtAttachedError){
                 Toast.makeText(this, e.getErrorMsg(), Toast.LENGTH_SHORT).show();
@@ -238,7 +239,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     public void onUploadComplete(boolean status, String path, int result_code) {
         //Toast.makeText(this, "Upload finished", Toast.LENGTH_SHORT).show();
         if(result_code == RequestCode.RESULT_UPLOAD_INFO_OK){
-            userManager.updateUserPost(firebaseUser.getEmail(), "Posts", path);
+            userManager.updateUserPost(firebaseUser.getEmail(), Values.ART_POSTS, path);
         }
         else{
             dialog.dismiss();
@@ -306,7 +307,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //before the uploading, please check the type and genre has been selected
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-                        manager.upLoadArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), mUser.getuNick(), currentDate, map.get("desc"), mUser.getuEmail());
+                        manager.upLoadArt(mPathList, mExtensions, map.get(Values.ART_CATEGORY), map.get(Values.ART_TYPE), map.get(Values.ART_TITLE), mUser.getuNick(), currentDate, map.get(Values.ART_DESC), mUser.getuEmail());
                         dialog = new ProgressDialog(ArtUploadPageActivity.this, android.R.style.Theme_Material_Dialog_Alert);
                         dialog.setMessage("UPLOADING..");
                         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

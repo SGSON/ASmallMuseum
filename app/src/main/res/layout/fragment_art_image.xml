@@ -3,10 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.ArtView.ArtViewImageFragment"
     android:elevation="12dp">
 
-    <ImageView
+<!--    Apache License Version 2.0
+        Chris Banes
+        https://github.com/Baseflow/PhotoView   -->
+    <com.github.chrisbanes.photoview.PhotoView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/fragment_image" />

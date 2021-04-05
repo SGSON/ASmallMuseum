@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.ArtList.ArtListImageViewAdapter;
@@ -185,16 +186,16 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
     private List<String> getItemList(String item){
         List<String> list;
         switch (item){
-            case "Visual Arts":
+            case Values.ART_VISUAL:
                 list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_visual)));
                 break;
-            case "Applied Arts":
+            case Values.ART_APPLIED:
                 list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_applied)));
                 break;
-            case "Others":
+            case Values.ART_OTHERS:
                 list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.type_others)));
                 break;
-            case "Museums":
+            case Values.ART_MUSEUM:
                 list = new ArrayList<String>(Arrays.asList(getActivity().getResources().getStringArray(R.array.museums)));
                 break;
             default:
