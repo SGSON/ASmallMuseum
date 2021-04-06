@@ -69,11 +69,11 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        dialog = new ProgressDialog(getContext(), android.R.style.Theme_Material_Dialog_Alert);
-        dialog.setMessage("LOADING..");
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+//        dialog = new ProgressDialog(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+//        dialog.setMessage("LOADING..");
+//        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        dialog.setCanceledOnTouchOutside(false);
+//        dialog.show();
 
         Button mMenu = (Button) view.findViewById(R.id.top_menu_button);
         mMenu.setOnClickListener(this);
@@ -134,7 +134,7 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
         }
         else {
             updateList(mList);
-            dialog.dismiss();
+//            dialog.dismiss();
         }
     }
 
@@ -237,7 +237,7 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
 
     private void updateList(List<Artwork> artworks){
         adapter.updateList(artworks);
-        dialog.dismiss();
+//        dialog.dismiss();
     }
 
     @Override

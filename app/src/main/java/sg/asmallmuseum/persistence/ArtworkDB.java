@@ -65,7 +65,7 @@ public class ArtworkDB implements ArtworkDBInterface {
                 ref.update(Values.ART_VAL_ID, ref);
                 ref.update(Values.ART_VAL_FILE_LOC, refs);
 
-                updateRecentList(ref.getPath());
+                updateRecentList(ref.getPath(), ref.getId(), art.getaDate());
                 increaseNumPost(art.getaCategory(), art.getaType());
 
                 mListener.onInfoUploadComplete(true, paths, refs, ref.getPath(), art);
@@ -91,27 +91,31 @@ public class ArtworkDB implements ArtworkDBInterface {
         }
     }
 
-    private void updateRecentList(String path){
-        DocumentReference ref = db.collection(Values.ART).document(Values.ART_RECENT);
-        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                    DocumentSnapshot snapshot = task.getResult();
-                    if(snapshot != null){
-                        Map<String, Object> map = snapshot.getData();
-                        List<String> result = (List<String>)map.get(Values.ART_RECENT_LOC);
-
-                        if (result.size() >= MAX_LIST_SIZE)
-                            result.remove(result.size()-1);
-                        result.add(0, path);
-
-                        map.put(Values.ART_RECENT_LOC, result);
-                        ref.set(map);
-                    }
-                }
-            }
-        });
+    private void updateRecentList(String path, String id, String date){
+        DocumentReference ref = db.collection(Values.ART).document(Values.ART_RECENT).collection(Values.ART_RECENT).document(id);
+        Map<String, String> map = new HashMap<>();
+        map.put(Values.PATH, path);
+        map.put(Values.DATE, date);
+        ref.set(map);
+//        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()){
+//                    DocumentSnapshot snapshot = task.getResult();
+//                    if(snapshot != null){
+//                        Map<String, Object> map = snapshot.getData();
+//                        List<String> result = (List<String>)map.get(Values.ART_RECENT_LOC);
+//
+//                        if (result.size() >= MAX_LIST_SIZE)
+//                            result.remove(result.size()-1);
+//                        result.add(0, path);
+//
+//                        map.put(Values.ART_RECENT_LOC, result);
+//                        ref.set(map);
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -134,7 +138,9 @@ public class ArtworkDB implements ArtworkDBInterface {
             if (task.isSuccessful()){
                 for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
                     Artwork artwork = getArtObject(collection, category);
-                    list.add(artwork);
+                    if (artwork != null){
+                        list.add(artwork);
+                    }
                 }
                 mListener.onFileDownloadComplete(list, 0);
             }
@@ -158,8 +164,11 @@ public class ArtworkDB implements ArtworkDBInterface {
             List<Artwork> artworks = new ArrayList<>();
             Artwork art = getArtObject(documentSnapshot, info[1]);
                     //documentSnapshot.toObject(Book.class);
-            artworks.add(art);
-            mListener.onFileDownloadComplete(artworks, requestCode);
+            if (art != null){
+                artworks.add(art);
+                mListener.onFileDownloadComplete(artworks, requestCode);
+            }
+
         });
     }
 
@@ -172,32 +181,51 @@ public class ArtworkDB implements ArtworkDBInterface {
 
             DocumentReference ref = db.collection(info[0]).document(info[1]).collection(info[2]).document(info[3]);
             ref.get().addOnSuccessListener(documentSnapshot -> {
-                Artwork art = documentSnapshot.toObject(VisualArts.class);
-                artworks.add(art);
+                if (documentSnapshot.getData() != null){
+                    Artwork art = documentSnapshot.toObject(VisualArts.class);
+                    artworks.add(art);
+                }
                 if (artworks.size() == paths.size())
                     mListener.onFileDownloadComplete(artworks, requestCode);
             });
-
+            //if there is nothing in recent
+            if (artworks.size() == 0){
+                mListener.onFileDownloadComplete(artworks, requestCode);
+            }
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void getRecent(){
-        DocumentReference ref = db.collection(Values.ART).document(Values.ART_RECENT);
-        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        CollectionReference ref = db.collection(Values.ART).document(Values.ART_RECENT).collection(Values.ART_RECENT);
+        ref.orderBy(Values.DATE, Query.Direction.DESCENDING).limit(MAX_LIST_SIZE).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
-                    DocumentSnapshot snapshot = task.getResult();
-                    if(snapshot != null){
-                        Map<String, Object> map = snapshot.getData();
-                        List<String> result = (List<String>) map.get(Values.ART_RECENT_LOC);
-                        mListener.onRecentFileDownloadComplete(result);
+                    List<String> paths = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Map<String, Object> map = document.getData();
+                        if ((map.containsKey(Values.PATH)) && (map.get(Values.PATH) instanceof String)){
+                            paths.add((String) map.get(Values.PATH));
+                        }
                     }
+                    getMultipleArtInfoByPath(paths, 0);
                 }
             }
         });
+//        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()){
+//                    DocumentSnapshot snapshot = task.getResult();
+//                    if(snapshot != null){
+//                        Map<String, Object> map = snapshot.getData();
+//                        List<String> result = (List<String>) map.get(Values.ART_RECENT_LOC);
+//                        mListener.onRecentFileDownloadComplete(result);
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -238,9 +266,12 @@ public class ArtworkDB implements ArtworkDBInterface {
                     for (DocumentSnapshot snapshot : task.getResult()){
                         artwork = getArtObject(snapshot, category);
                     }
-                    List<Artwork> list = new ArrayList<>();
-                    list.add(artwork);
-                    mListener.onFileDownloadComplete(list, request_code);
+
+                    if (artwork != null){
+                        List<Artwork> list = new ArrayList<>();
+                        list.add(artwork);
+                        mListener.onFileDownloadComplete(list, request_code);
+                    }
                 }
             }
         });
@@ -276,22 +307,24 @@ public class ArtworkDB implements ArtworkDBInterface {
 
     private Artwork getArtObject(DocumentSnapshot collection, String category){
         Artwork artwork = null;
-        switch (category){
-            case Values.ART_VISUAL:
-                artwork = collection.toObject(VisualArts.class);
-                break;
-            case Values.ART_APPLIED:
-                artwork = collection.toObject(AppliedArts.class);
-                break;
-            case Values.ART_OTHERS:
-                artwork = collection.toObject(Others.class);
-                break;
-            case Values.ART_MUSEUM:
-                artwork = collection.toObject(Museum.class);
-                break;
-            default:
-                artwork = collection.toObject(FineArts.class);
-                break;
+        if (collection.getData() != null){
+            switch (category){
+                case Values.ART_VISUAL:
+                    artwork = collection.toObject(VisualArts.class);
+                    break;
+                case Values.ART_APPLIED:
+                    artwork = collection.toObject(AppliedArts.class);
+                    break;
+                case Values.ART_OTHERS:
+                    artwork = collection.toObject(Others.class);
+                    break;
+                case Values.ART_MUSEUM:
+                    artwork = collection.toObject(Museum.class);
+                    break;
+                default:
+                    artwork = collection.toObject(FineArts.class);
+                    break;
+            }
         }
         return artwork;
     }

@@ -277,13 +277,9 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     }
 
     private void updateList(Uri uri){
-//        String wholeID = DocumentsContract.getDocumentId(uri);
-//        String id = wholeID.split(":")[1];
-//        String sel = MediaStore.Images.Media._ID + "=?";
         String[] paths = {MediaStore.Images.Media.DATA};
 
         String type = getContentResolver().getType(uri);
-//        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, paths, sel, new String[]{id}, null);
         Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, paths, null, null, null);
         cursor.moveToFirst();
 
