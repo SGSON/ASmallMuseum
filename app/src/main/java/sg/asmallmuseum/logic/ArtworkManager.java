@@ -167,8 +167,22 @@ public class ArtworkManager implements ArtWorkDBListener {
         });
     }
 
+    private void removeInvalidArt(List<Artwork> list){
+        if(list.contains(null)){
+            int size = list.size();
+            for (int i = 0 ; i < size ; i++){
+                if (list.get(i) == null){
+                    list.remove(i);
+                    size--;
+                    i--;
+                }
+            }
+        }
+    }
+
     @Override
     public void onFileDownloadComplete(List<Artwork> list, int request_code) {
+        removeInvalidArt(list);
         downListener.onArtworkLoadComplete(list, request_code);
     }
 

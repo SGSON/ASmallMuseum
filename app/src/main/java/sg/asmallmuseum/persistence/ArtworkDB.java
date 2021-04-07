@@ -162,6 +162,10 @@ public class ArtworkDB implements ArtworkDBInterface {
                     Artwork art = documentSnapshot.toObject(VisualArts.class);
                     artworks.add(art);
                 }
+                else {
+                    artworks.add(null);
+                }
+
                 if (artworks.size() == paths.size())
                     mListener.onFileDownloadComplete(artworks, requestCode);
             });
@@ -209,7 +213,7 @@ public class ArtworkDB implements ArtworkDBInterface {
         colRef.whereEqualTo(Values.ART_VAL_POST_NUM, postNum).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful() && task.getResult() != null){
                     Artwork artwork = null;
                     for (DocumentSnapshot snapshot : task.getResult()){
                         artwork = getArtObject(snapshot, category);
