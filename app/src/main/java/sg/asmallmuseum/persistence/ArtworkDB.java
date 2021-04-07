@@ -64,7 +64,7 @@ public class ArtworkDB implements ArtworkDBInterface {
                 ref.update(Values.ART_VAL_ID, ref);
                 ref.update(Values.ART_VAL_FILE_LOC, refs);
 
-                updateRecentList(ref.getPath(), ref.getId(), art.getaDate());
+                updateRecentList(ref.getPath(), ref.getId(), art.getaTime());
                 increaseNumPost(art.getaCategory(), art.getaType());
 
                 mListener.onInfoUploadComplete(true, paths, refs, ref.getPath(), art);
@@ -87,11 +87,11 @@ public class ArtworkDB implements ArtworkDBInterface {
         }
     }
 
-    private void updateRecentList(String path, String id, String date){
+    private void updateRecentList(String path, String id, String time){
         DocumentReference ref = db.collection(Values.ART).document(Values.ART_RECENT).collection(Values.ART_RECENT).document(id);
         Map<String, String> map = new HashMap<>();
         map.put(Values.PATH, path);
-        map.put(Values.DATE, date);
+        map.put(Values.TIME, time);
         ref.set(map);
     }
 
@@ -175,7 +175,7 @@ public class ArtworkDB implements ArtworkDBInterface {
     @Override
     public void getRecent(){
         CollectionReference ref = db.collection(Values.ART).document(Values.ART_RECENT).collection(Values.ART_RECENT);
-        ref.orderBy(Values.DATE, Query.Direction.DESCENDING).limit(MAX_LIST_SIZE).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        ref.orderBy(Values.TIME, Query.Direction.DESCENDING).limit(MAX_LIST_SIZE).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
