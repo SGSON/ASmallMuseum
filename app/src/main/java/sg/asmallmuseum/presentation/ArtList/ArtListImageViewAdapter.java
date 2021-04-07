@@ -52,12 +52,10 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
 
         List<StorageReference> ref = manager.getArtImages(mArtList.get(position).getaCategory(), mArtList.get(position).getaFileLoc());
         holder.setCard(mArtList.get(position), ref.get(0));
-        //Glide.with(holder.itemView).load(ref).into(holder.mImage);
 
         if (position == mArtList.size()-1){
             mBottomReachedListener.onBottomReached();
         }
-
 
         if (mListener != null){
             holder.itemView.setOnClickListener(new View.OnClickListener() {

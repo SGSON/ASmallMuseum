@@ -48,7 +48,6 @@ public class UserManager implements UserDBListener {
     public void addNewUser(String uNick, String lastname, String firstname, String email, String birth, String method) {
 
         User user = new User(uNick, lastname, firstname, email, birth, method);
-
         db.addUser(user);
 
     }
@@ -131,24 +130,5 @@ public class UserManager implements UserDBListener {
     public void onPostExists(boolean result) {
         userPostExistsListener.onUserPostExists(result);
     }
-    /***this method is for other sign-up methods. It does not get a password.***/
-    /*public User addNewUser(FirebaseAuth mAuth, String uNick, String lastName,
-                           String firstName, String eMail, @Nullable String birth) throws CustomException{
-        //Create user object.
-        User user = new User(uNick, lastName, firstName, eMail, birth);
-
-        //check validation
-        ValidateUser validateUser = new ValidateUser();
-        validateUser.validUser(user);
-
-        //send user to firebase db.
-        //database.addUser(mAuth, user);
-        return user;
-    }*/
-
-
-
-
-
 
 }

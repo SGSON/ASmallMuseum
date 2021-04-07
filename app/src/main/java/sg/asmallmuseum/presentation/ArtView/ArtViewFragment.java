@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
@@ -258,10 +259,15 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     }
 
     @Override
-    public void onArtworkDeleteComplete(boolean result) {
+    public void onArtworkDeleteComplete(boolean result, int request_code) {
         if (result){
-            Toast.makeText(getContext(), "Delete Complete!", Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+            if (request_code == RequestCode.RESULT_ART_DELETE_OK){
+                Toast.makeText(getContext(), "Delete Complete!", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
+            }
+            else if (request_code == RequestCode.RESULT_PATH_DELETE_OK){
+                artworkManager.deleteArtwork(artwork);
+            }
         }
         else {
             Toast.makeText(getContext(), "Fail to Delete", Toast.LENGTH_SHORT).show();
@@ -271,7 +277,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     @Override
     public void onUserPathDeleteComplete(boolean result) {
         if (result){
-            artworkManager.deleteArtwork(artwork);
+            artworkManager.deleteArtworkRecentPath(artwork);
         }
         else {
             Toast.makeText(getContext(), "Fail to Delete", Toast.LENGTH_SHORT).show();

@@ -34,4 +34,8 @@ public class RequestCode {
     public static final int REQUEST_PROFILE = 3604;
 
     public static final int REQUEST_END = 8701;
+
+    public static final int RESULT_PATH_DELETE_OK = 12501;
+    public static final int RESULT_ART_DELETE_OK = 12502;
+    public static final int RESULT_DELETE_FAIL = 12503;
 }
