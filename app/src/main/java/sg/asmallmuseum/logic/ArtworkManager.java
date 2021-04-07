@@ -62,20 +62,20 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
 
     /***Manager to upload a image and image info to the Firestore and the storage***/
-    public void upLoadArt(List<Uri> paths, List<String> ext, String category, String type, String title, String author, String date, String desc, String email) {
+    public void upLoadArt(List<Uri> paths, List<String> ext, String category, String type, String title, String author, String date, String time, String desc, String email) {
         Artwork art = null;
         switch (type){
             case Values.ART_VISUAL:
-                art = new VisualArts(category, type, title, author, date, desc, email);
+                art = new VisualArts(category, type, title, author, date, time, desc, email);
                 break;
             case Values.ART_APPLIED:
-                art = new AppliedArts(category, type, title, author, date, desc, email);
+                art = new AppliedArts(category, type, title, author, date, time, desc, email);
                 break;
             case Values.ART_OTHERS:
-                art = new Others(category, type, title, author, date, desc, email);
+                art = new Others(category, type, title, author, date, time, desc, email);
                 break;
             default:
-                art = new FineArts(category, type, title, author, date, desc, email);
+                art = new FineArts(category, type, title, author, date, time, desc, email);
                 break;
         }
         map.put(Values.ART_CATEGORY, category);
@@ -153,7 +153,12 @@ public class ArtworkManager implements ArtWorkDBListener {
         list.sort(new Comparator<Artwork>() {
             @Override
             public int compare(Artwork artwork, Artwork t1) {
-                return -(artwork.getaDate()).compareTo(t1.getaDate());
+                if (artwork.getaTime() != null && t1.getaTime() != null){
+                    return -(artwork.getaTime()).compareTo(t1.getaTime());
+                }
+                else {
+                    return -(artwork.getaDate()).compareTo(t1.getaDate());
+                }
             }
         });
     }

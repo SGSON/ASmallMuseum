@@ -17,12 +17,13 @@ public abstract class Artwork {
     private int aRating;
     private String aUserID;
     private int aLike;
+    private String aTime;
 
     public Artwork(){
 
     }
 
-    public Artwork(String aCategory, String aType, String aTitle, String aAuthor, String aDate, String aDesc, String aUserID){
+    public Artwork(String aCategory, String aType, String aTitle, String aAuthor, String aDate, String aTime, String aDesc, String aUserID){
         this.aCategory = aCategory;
         this.aType = aType;
         this.aTitle = aTitle;
@@ -32,6 +33,7 @@ public abstract class Artwork {
         this.aRating = 0;
         this.aUserID = aUserID;
         this.aLike = 0;
+        this.aTime = aTime;
     }
 
     public DocumentReference getaID() {
@@ -128,5 +130,13 @@ public abstract class Artwork {
 
     public void setaLike(int aLike) {
         this.aLike = aLike;
+    }
+
+    public String getaTime() {
+        return aTime;
+    }
+
+    public void setaTime(String aTime) {
+        this.aTime = aTime;
     }
 }

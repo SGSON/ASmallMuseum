@@ -30,7 +30,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -303,7 +302,8 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //before the uploading, please check the type and genre has been selected
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-                        manager.upLoadArt(mPathList, mExtensions, map.get(Values.ART_CATEGORY), map.get(Values.ART_TYPE), map.get(Values.ART_TITLE), mUser.getuNick(), currentDate, map.get(Values.ART_DESC), mUser.getuEmail());
+                        String currentTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault()).format(new Date());
+                        manager.upLoadArt(mPathList, mExtensions, map.get(Values.ART_CATEGORY), map.get(Values.ART_TYPE), map.get(Values.ART_TITLE), mUser.getuNick(), currentDate, currentTime, map.get(Values.ART_DESC), mUser.getuEmail());
                         dialog = new ProgressDialog(ArtUploadPageActivity.this, android.R.style.Theme_Material_Dialog_Alert);
                         dialog.setMessage("UPLOADING..");
                         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
