@@ -133,7 +133,7 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
     /***End***/
 
-    /***Delete***/
+    /***Delete Artwork***/
     public void deleteArtwork(Artwork artwork){
         db.deleteArtwork(artwork.getaCategory(), artwork.getaType(), artwork.getaID().getId());
     }
@@ -148,7 +148,7 @@ public class ArtworkManager implements ArtWorkDBListener {
         db.updateLike(artwork.getaCategory(), artwork.getaType(), artwork.getaID().getId(), value);
     }
 
-    /***SORTING***/
+    /***SORTING and Other Utils***/
     public void sortByDate(List<Artwork> list){
         list.sort(new Comparator<Artwork>() {
             @Override
@@ -180,6 +180,7 @@ public class ArtworkManager implements ArtWorkDBListener {
         }
     }
 
+    /***Complete Listeners from the ArtworkDB***/
     @Override
     public void onFileDownloadComplete(List<Artwork> list, int request_code) {
         removeInvalidArt(list);
