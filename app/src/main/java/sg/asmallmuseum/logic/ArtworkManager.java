@@ -189,6 +189,7 @@ public class ArtworkManager implements ArtWorkDBListener {
     @Override
     public void onFileDownloadComplete(List<Artwork> list, int request_code) {
         removeInvalidArt(list);
+        sortByDate(list);
         downListener.onArtworkLoadComplete(list, request_code);
     }
 
