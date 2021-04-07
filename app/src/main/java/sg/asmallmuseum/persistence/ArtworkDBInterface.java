@@ -25,4 +25,5 @@ public interface ArtworkDBInterface {
     void getArtInfoByPostNum(String category, String type, int postNum, int request_code);
     void deleteArtwork(String category, String type, String id);
     void updateLike(String category, String type, String id, int value);
+    void deleteRecentPath(String id);
 }

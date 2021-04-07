@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -35,6 +36,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
@@ -45,7 +47,7 @@ import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPathDeleteListe
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPostExistsListener;
 
 public class ArtViewFragment extends Fragment implements View.OnClickListener, ArtWorkLoadCompleteListener,
-        ArtworkDeleteListener, UserPathDeleteListener, UserPostExistsListener {
+        ArtworkDeleteListener, UserPathDeleteListener, UserPostExistsListener, PopupMenu.OnMenuItemClickListener {
     private View view;
     private ArtViewViewModel viewModel;
     private ViewPager2 viewPager;
@@ -117,6 +119,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         PopupMenu popup = new PopupMenu(getContext(), view.findViewById(R.id.fragment_art_more_button));
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_more_enable, popup.getMenu());
+        popup.setOnMenuItemClickListener(this);
         popup.show();
     }
 
@@ -256,22 +259,28 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     }
 
     @Override
-    public void onArtworkDeleteComplete(boolean result) {
+    public void onArtworkDeleteComplete(boolean result, int request_code) {
         if (result){
-
+            if (request_code == RequestCode.RESULT_ART_DELETE_OK){
+                Toast.makeText(getContext(), "Delete Complete!", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
+            }
+            else if (request_code == RequestCode.RESULT_PATH_DELETE_OK){
+                artworkManager.deleteArtwork(artwork);
+            }
         }
         else {
-
+            Toast.makeText(getContext(), "Fail to Delete", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onUserPathDeleteComplete(boolean result) {
         if (result){
-
+            artworkManager.deleteArtworkRecentPath(artwork);
         }
         else {
-
+            Toast.makeText(getContext(), "Fail to Delete", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -286,5 +295,15 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         else {
             button.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.image_like));
         }
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        if (id == R.id.menu_more_delete){
+            userManager.deletePath(email, artwork, Values.USER_POST);
+        }
+        return false;
     }
 }

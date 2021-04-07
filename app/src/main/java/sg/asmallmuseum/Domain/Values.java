@@ -45,5 +45,5 @@ public class Values {
 
     public static final String DOCUMENT_PATH = "DocPath";
     public static final String PATH = "Path";
-
+    public static final String DATE = "Date";
 }

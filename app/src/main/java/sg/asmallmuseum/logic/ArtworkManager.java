@@ -93,7 +93,6 @@ public class ArtworkManager implements ArtWorkDBListener {
         StorageReference storageRef = null;
         try{
             db.uploadAttachedImage(paths, refs, id, art);
-            //Log.d("ASD: ", "sd"+storageRef.toString());
         }
         catch (FileNotFoundException e){
             e.printStackTrace();
@@ -127,13 +126,6 @@ public class ArtworkManager implements ArtWorkDBListener {
 
     public void getNumPost(String category, String type, int request_id){
         db.getNumPost(category, type, request_id);
-//        if (request_id == REQUEST_USER){
-//            db.getNumPost(category, type, REQUEST_USER);
-//        }
-//        else {
-//            db.getNumPost(category, type, REQUEST_UPLOAD);
-//        }
-
     }
 
     public void getArtInfoByNumPost(String category, String type, int numPost, int request_code){
@@ -144,6 +136,10 @@ public class ArtworkManager implements ArtWorkDBListener {
     /***Delete***/
     public void deleteArtwork(Artwork artwork){
         db.deleteArtwork(artwork.getaCategory(), artwork.getaType(), artwork.getaID().getId());
+    }
+
+    public void deleteArtworkRecentPath(Artwork artwork){
+        db.deleteRecentPath(artwork.getaID().getId());
     }
     //End
 
@@ -171,8 +167,22 @@ public class ArtworkManager implements ArtWorkDBListener {
         });
     }
 
+    private void removeInvalidArt(List<Artwork> list){
+        if(list.contains(null)){
+            int size = list.size();
+            for (int i = 0 ; i < size ; i++){
+                if (list.get(i) == null){
+                    list.remove(i);
+                    size--;
+                    i--;
+                }
+            }
+        }
+    }
+
     @Override
     public void onFileDownloadComplete(List<Artwork> list, int request_code) {
+        removeInvalidArt(list);
         downListener.onArtworkLoadComplete(list, request_code);
     }
 
@@ -209,8 +219,8 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
 
     @Override
-    public void onDeleteComplete(boolean result) {
-        deleteListener.onArtworkDeleteComplete(result);
+    public void onDeleteComplete(boolean result, int result_code) {
+        deleteListener.onArtworkDeleteComplete(result, result_code);
     }
 
     @Override
