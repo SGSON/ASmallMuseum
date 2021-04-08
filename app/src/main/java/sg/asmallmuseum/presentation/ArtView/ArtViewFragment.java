@@ -41,6 +41,7 @@ import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.ArtUpload.ArtUploadPageActivity;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtworkDeleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPathDeleteListener;
@@ -305,10 +306,12 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
             userManager.deletePath(email, artwork, Values.USER_POST);
         }
         else if (id == R.id.menu_more_edit){
-
+            Intent intent = new Intent(getContext(), ArtUploadPageActivity.class);
+            intent.putExtra("Art", artwork);
+            startActivity(intent);
         }
         else if (id == R.id.menu_more_report){
-            
+
         }
         return false;
     }

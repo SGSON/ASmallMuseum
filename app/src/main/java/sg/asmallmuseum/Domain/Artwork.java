@@ -2,9 +2,10 @@ package sg.asmallmuseum.Domain;
 
 import com.google.firebase.firestore.DocumentReference;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class Artwork {
+public abstract class Artwork implements Serializable {
     private DocumentReference aID;
     private int aPostNum;
     private String aCategory;
