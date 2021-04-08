@@ -304,6 +304,12 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         if (id == R.id.menu_more_delete){
             userManager.deletePath(email, artwork, Values.USER_POST);
         }
+        else if (id == R.id.menu_more_edit){
+
+        }
+        else if (id == R.id.menu_more_report){
+            
+        }
         return false;
     }
 }

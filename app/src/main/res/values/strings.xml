@@ -83,6 +83,13 @@
     <string name="recommend_text">Recommend images</string>
     <string name="right_arrow">></string>
 
+    <!--    Support     -->
+    <string name="support_welcome">Thank you for joining us!</string>
+    <string name="contact_text">If you have any questions or suggestions, \nplease send an email us below:</string>
+    <string name="contact_mail">sonsdevelop@gmail.com</string>
+    <string name="test_version">Version: 0.0.1</string>
+    <string name="test_web_address">asmuseum.com</string>
+
     <string-array name="arts_categories">
         <item>Select</item>
         <item>Fine Arts</item>

@@ -102,7 +102,8 @@ public class MainMenuProfileFragment extends Fragment implements View.OnClickLis
             startActivity(intent);
         }
         else if (id == R.id.fragment_main_menu_profile_support_button){
-
+            Intent intent = new Intent(getContext(), SupportActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.fragment_main_menu_profile_sign_out_button){
             FirebaseAuth.getInstance().signOut();
