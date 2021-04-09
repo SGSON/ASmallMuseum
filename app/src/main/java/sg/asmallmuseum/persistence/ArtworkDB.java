@@ -307,6 +307,14 @@ public class ArtworkDB implements ArtworkDBInterface {
         });
     }
 
+    public void deleteImages(List<String> list){
+        int size = list.size();
+        for (int i = 0 ; i < size ; i++){
+            StorageReference ref = storage.getReference().child(list.get(i));
+            ref.delete();
+        }
+    }
+
     @Override
     public void updateLike(String category, String type, String id, int value) {
         DocumentReference docRef = db.collection(Values.ART).document(category).collection(type).document(id);

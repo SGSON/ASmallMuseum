@@ -38,4 +38,5 @@ public class RequestCode {
     public static final int RESULT_PATH_DELETE_OK = 12501;
     public static final int RESULT_ART_DELETE_OK = 12502;
     public static final int RESULT_DELETE_FAIL = 12503;
+    public static final int RESULT_IMAGE_DELETE_OK = 12504;
 }

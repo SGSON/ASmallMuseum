@@ -41,6 +41,7 @@ import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
+import sg.asmallmuseum.presentation.ArtUpload.ArtUploadPageActivity;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtworkDeleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPathDeleteListener;
@@ -145,7 +146,6 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         ArtViewRecyclerViewAdapter adapter = new ArtViewRecyclerViewAdapter();
         reviewLayout.setLayoutManager(new LinearLayoutManager(getActivity()));
         reviewLayout.setAdapter(adapter);
-
     }
 
     @Override
@@ -161,7 +161,6 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         else if (id == R.id.fragment_art_pager_expand_button){
             if (getActivity() instanceof ArtViewActivity){
                 viewModel.setmCurrentPage(viewPager.getCurrentItem());
-                Log.d("Curr", ""+viewPager.getCurrentItem());
                 ((ArtViewActivity) getActivity()).replaceFragment(this);
             }
         }
@@ -262,6 +261,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     public void onArtworkDeleteComplete(boolean result, int request_code) {
         if (result){
             if (request_code == RequestCode.RESULT_ART_DELETE_OK){
+                artworkManager.deleteArtworkImages(artwork);
                 Toast.makeText(getContext(), "Delete Complete!", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             }
@@ -303,6 +303,14 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         if (id == R.id.menu_more_delete){
             userManager.deletePath(email, artwork, Values.USER_POST);
+        }
+//        else if (id == R.id.menu_more_edit){
+//            Intent intent = new Intent(getContext(), ArtUploadPageActivity.class);
+//            intent.putExtra("Art", artwork);
+//            startActivity(intent);
+//        }
+        else if (id == R.id.menu_more_report){
+
         }
         return false;
     }

@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Messages.ArtAttachedError;
 import sg.asmallmuseum.Domain.Messages.ArtDescError;
 import sg.asmallmuseum.Domain.Messages.ArtTypeError;
@@ -41,11 +42,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -113,6 +117,12 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
 
         setCategorySpinner();
         setTypeSpinner("");
+
+//        Intent intent = getIntent();
+//        if (intent.hasExtra("Art") && intent.getSerializableExtra("Art") instanceof Artwork){
+//            setArtData((Artwork)intent.getSerializableExtra("Art"));
+//        }
+
     }
 
     @Override
@@ -123,6 +133,57 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
             firebaseUser = user;
             userManager.getUserInfo(firebaseUser.getEmail(), 0);
         }
+    }
+
+    private void setArtData(Artwork artwork){
+        mTitle.setText(artwork.getaTitle());
+        mCategory.setSelection(getCategoryIndex(artwork.getaCategory()));
+        mType.setSelection(getTypeIndex(artwork.getaCategory(), artwork.getaType()));
+        mDesc.setText(artwork.getaDesc());
+
+        List<StorageReference> refs = manager.getArtImages(artwork.getaCategory(), artwork.getaFileLoc());
+        refs.get(0).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+
+            }
+        });
+    }
+
+    private int getCategoryIndex(String category){
+        int result = 0;
+
+        List<String> categories = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.arts_categories)));
+        result = categories.indexOf(category);
+
+        return result;
+    }
+
+    private int getTypeIndex(String category, String type){
+        int id = getTypeId(category);
+        List<String> types = new ArrayList<>(Arrays.asList(getResources().getStringArray(id)));
+        return types.indexOf(type);
+    }
+
+    private int getTypeId(String category){
+        int id;
+        switch (category){
+            case Values.ART_FINE:
+                id = R.array.type_fine;
+                break;
+            case Values.ART_VISUAL:
+                id =R.array.type_visual;
+                break;
+            case Values.ART_APPLIED:
+                id = R.array.type_applied;
+                break;
+            case Values.ART_OTHERS:
+                id = R.array.type_others;
+                break;
+            default:
+                id = R.array.spinner_select;
+        }
+        return id;
     }
 
     @SuppressLint("IntentReset")
@@ -173,23 +234,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     }
 
     private void setTypeSpinner(String category){
-        int id;
-        switch (category){
-            case Values.ART_FINE:
-                id = R.array.type_fine;
-                break;
-            case Values.ART_VISUAL:
-                id =R.array.type_visual;
-                break;
-            case Values.ART_APPLIED:
-                id = R.array.type_applied;
-                break;
-            case Values.ART_OTHERS:
-                id = R.array.type_others;
-                break;
-            default:
-                id = R.array.spinner_select;
-        }
+        int id = getTypeId(category);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, id, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mType.setAdapter(adapter);
@@ -268,7 +313,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                     updateList(uri);
                 }
             }
-            adapter.updateList();
+            adapter.updateList(mPathList, mFileName);
         }
         else {
             Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT).show();

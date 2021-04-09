@@ -141,6 +141,10 @@ public class ArtworkManager implements ArtWorkDBListener {
     public void deleteArtworkRecentPath(Artwork artwork){
         db.deleteRecentPath(artwork.getaID().getId());
     }
+
+    public void deleteArtworkImages(Artwork artwork){
+        db.deleteImages(artwork.getaFileLoc());
+    }
     //End
 
     /***Update artwork information***/
