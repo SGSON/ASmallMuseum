@@ -7,10 +7,12 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import sg.asmallmuseum.Domain.Artwork;
 
 public class ArtViewViewModel extends ViewModel {
     private final MutableLiveData<List<Uri>> mUriList = new MutableLiveData<>();
     private final MutableLiveData<Integer> mCurrentPage = new MutableLiveData<>();
+    private final MutableLiveData<Artwork> mArtwork = new MutableLiveData<>();
 
     public void setUriList(List<Uri> mList){
         this.mUriList.setValue(mList);
@@ -26,5 +28,13 @@ public class ArtViewViewModel extends ViewModel {
 
     public MutableLiveData<Integer> getmCurrentPage() {
         return mCurrentPage;
+    }
+
+    public LiveData<Artwork> getArtwork(){
+        return mArtwork;
+    }
+
+    public void setArtwork(Artwork artwork){
+        mArtwork.setValue(artwork);
     }
 }
