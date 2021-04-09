@@ -162,7 +162,6 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         else if (id == R.id.fragment_art_pager_expand_button){
             if (getActivity() instanceof ArtViewActivity){
                 viewModel.setmCurrentPage(viewPager.getCurrentItem());
-                Log.d("Curr", ""+viewPager.getCurrentItem());
                 ((ArtViewActivity) getActivity()).replaceFragment(this);
             }
         }
@@ -305,11 +304,11 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         if (id == R.id.menu_more_delete){
             userManager.deletePath(email, artwork, Values.USER_POST);
         }
-        else if (id == R.id.menu_more_edit){
-            Intent intent = new Intent(getContext(), ArtUploadPageActivity.class);
-            intent.putExtra("Art", artwork);
-            startActivity(intent);
-        }
+//        else if (id == R.id.menu_more_edit){
+//            Intent intent = new Intent(getContext(), ArtUploadPageActivity.class);
+//            intent.putExtra("Art", artwork);
+//            startActivity(intent);
+//        }
         else if (id == R.id.menu_more_report){
 
         }

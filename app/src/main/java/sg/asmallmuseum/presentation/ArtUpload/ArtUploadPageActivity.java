@@ -118,10 +118,10 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         setCategorySpinner();
         setTypeSpinner("");
 
-        Intent intent = getIntent();
-        if (intent.hasExtra("Art") && intent.getSerializableExtra("Art") instanceof Artwork){
-            setArtData((Artwork)intent.getSerializableExtra("Art"));
-        }
+//        Intent intent = getIntent();
+//        if (intent.hasExtra("Art") && intent.getSerializableExtra("Art") instanceof Artwork){
+//            setArtData((Artwork)intent.getSerializableExtra("Art"));
+//        }
 
     }
 
