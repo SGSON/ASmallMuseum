@@ -146,7 +146,6 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         ArtViewRecyclerViewAdapter adapter = new ArtViewRecyclerViewAdapter();
         reviewLayout.setLayoutManager(new LinearLayoutManager(getActivity()));
         reviewLayout.setAdapter(adapter);
-
     }
 
     @Override
@@ -262,6 +261,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     public void onArtworkDeleteComplete(boolean result, int request_code) {
         if (result){
             if (request_code == RequestCode.RESULT_ART_DELETE_OK){
+                artworkManager.deleteArtworkImages(artwork);
                 Toast.makeText(getContext(), "Delete Complete!", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             }

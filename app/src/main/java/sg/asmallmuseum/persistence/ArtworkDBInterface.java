@@ -26,4 +26,5 @@ public interface ArtworkDBInterface {
     void deleteArtwork(String category, String type, String id);
     void updateLike(String category, String type, String id, int value);
     void deleteRecentPath(String id);
+    void deleteImages(List<String> list);
 }
