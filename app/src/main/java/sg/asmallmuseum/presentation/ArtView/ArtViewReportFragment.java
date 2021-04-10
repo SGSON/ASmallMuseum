@@ -1,14 +1,10 @@
 package sg.asmallmuseum.presentation.ArtView;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,17 +43,6 @@ public class ArtViewReportFragment extends DialogFragment implements View.OnClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-//    @NonNull
-//    @Override
-//    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-//        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-//        LayoutInflater inflater = requireActivity().getLayoutInflater();
-//
-//        dialog.setView(R.)
-//
-//        return dialog.show();
-//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
