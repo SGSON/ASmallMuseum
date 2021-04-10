@@ -47,4 +47,6 @@ public class Values {
     public static final String PATH = "Path";
     public static final String DATE = "Date";
     public static final String TIME = "Time";
+
+    public static final String REPORT = "Report";
 }

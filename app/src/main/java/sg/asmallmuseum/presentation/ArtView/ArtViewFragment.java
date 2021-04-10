@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -119,7 +121,15 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     private void showPopup(){
         PopupMenu popup = new PopupMenu(getContext(), view.findViewById(R.id.fragment_art_more_button));
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_more_enable, popup.getMenu());
+
+        Menu menu = popup.getMenu();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (artwork.getaUserID().equals(user.getEmail())){
+            inflater.inflate(R.menu.menu_more_enable, menu);
+        }
+        else {
+            inflater.inflate(R.menu.menu_more_disable, menu);
+        }
         popup.setOnMenuItemClickListener(this);
         popup.show();
     }
@@ -310,7 +320,9 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
 //            startActivity(intent);
 //        }
         else if (id == R.id.menu_more_report){
-
+            viewModel.setArtwork(artwork);
+            ArtViewReportFragment reportFragment = new ArtViewReportFragment();
+            reportFragment.show(getParentFragmentManager(), "dialog");
         }
         return false;
     }

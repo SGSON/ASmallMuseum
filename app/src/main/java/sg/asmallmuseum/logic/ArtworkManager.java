@@ -98,6 +98,10 @@ public class ArtworkManager implements ArtWorkDBListener {
             e.printStackTrace();
         }
     }
+
+    public void uploadReport(Map<String, String> map, Artwork artwork, String uid){
+        db.uploadReport(map, artwork.getaID().getId(), uid);
+    }
     //End
     /***End***/
 
