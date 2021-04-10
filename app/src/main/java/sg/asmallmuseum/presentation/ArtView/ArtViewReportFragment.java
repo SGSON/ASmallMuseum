@@ -1,11 +1,13 @@
 package sg.asmallmuseum.presentation.ArtView;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -13,11 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import androidx.lifecycle.Observer;
@@ -27,7 +33,7 @@ import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UploadCompleteListener;
 
-public class ArtViewReportFragment extends Fragment implements View.OnClickListener, UploadCompleteListener {
+public class ArtViewReportFragment extends DialogFragment implements View.OnClickListener, UploadCompleteListener {
 
     private View view;
     private Artwork mArtwork;
@@ -42,6 +48,17 @@ public class ArtViewReportFragment extends Fragment implements View.OnClickListe
         super.onCreate(savedInstanceState);
     }
 
+//    @NonNull
+//    @Override
+//    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+//        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+//        LayoutInflater inflater = requireActivity().getLayoutInflater();
+//
+//        dialog.setView(R.)
+//
+//        return dialog.show();
+//    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,6 +69,9 @@ public class ArtViewReportFragment extends Fragment implements View.OnClickListe
 
         artworkManager = new ArtworkManager();
         artworkManager.setUpLoadCompleteListener(this);
+
+//        Bundle bundle = getArguments();
+//        mArtwork = (Artwork) bundle.getSerializable("Artwork");
         return view;
     }
 
@@ -75,13 +95,15 @@ public class ArtViewReportFragment extends Fragment implements View.OnClickListe
         String mDesc = mDescView.getText().toString();
 
         Map<String, String> map = new HashMap<>();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         map.put("Title", mTitle);
         map.put("Desc", mDesc);
         map.put("ArtPath", mArtwork.getaID().getPath());
+        map.put("User", user.getEmail());
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        artworkManager.uploadReport(map, mArtwork, user.getIdToken(false).toString());
+        String currentTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault()).format(new Date());
+        artworkManager.uploadReport(map, mArtwork, currentTime);
     }
 
     @Override
@@ -96,19 +118,12 @@ public class ArtViewReportFragment extends Fragment implements View.OnClickListe
     @Override
     public void onUploadComplete(boolean status, String path, int result_code) {
         //show alert dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         if (status){
-            builder.setMessage("Thank you for reporting.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            //remove dialog.
-                        }
-                    });
+            Toast.makeText(getActivity(), "Thank you for reporting.", Toast.LENGTH_SHORT).show();
+            dismiss();
         }
         else {
-            builder.setMessage("Upload failed.");
+            Toast.makeText(getActivity(), "Reporting failed.", Toast.LENGTH_SHORT).show();
         }
-        builder.create();
     }
 }

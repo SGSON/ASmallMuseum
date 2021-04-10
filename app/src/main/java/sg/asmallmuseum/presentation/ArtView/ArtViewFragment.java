@@ -310,7 +310,9 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
 //            startActivity(intent);
 //        }
         else if (id == R.id.menu_more_report){
-
+            viewModel.setArtwork(artwork);
+            ArtViewReportFragment reportFragment = new ArtViewReportFragment();
+            reportFragment.show(getParentFragmentManager(), "dialog");
         }
         return false;
     }

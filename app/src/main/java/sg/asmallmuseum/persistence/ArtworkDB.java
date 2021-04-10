@@ -1,6 +1,7 @@
 package sg.asmallmuseum.persistence;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -318,9 +319,11 @@ public class ArtworkDB implements ArtworkDBInterface {
     }
 
     @Override
-    public void uploadReport(Map<String, String> map, String id, String uid) {
+    public void uploadReport(Map<String, String> map, String id, String email) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child(Values.REPORT).child(id).child(uid).setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+        Log.d("id", id);
+        Log.d("uid", email);
+        databaseReference.child(Values.REPORT).child(id).child(email).setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 mListener.onFileUploadComplete(true);
