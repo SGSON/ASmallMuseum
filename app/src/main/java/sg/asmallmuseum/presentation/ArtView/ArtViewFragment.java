@@ -217,7 +217,8 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
             like = !like;
         }
         else {
-            Toast.makeText(getContext(), "Please Sign-In.", Toast.LENGTH_SHORT).show();
+            showAlert("Only verified user can use it. Please Sign-In");
+            //Toast.makeText(getContext(), "Please Sign-In.", Toast.LENGTH_SHORT).show();
         }
     }
 
