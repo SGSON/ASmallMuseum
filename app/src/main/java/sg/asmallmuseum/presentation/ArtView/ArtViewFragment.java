@@ -1,5 +1,7 @@
 package sg.asmallmuseum.presentation.ArtView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,12 +50,16 @@ import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadComplete
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtworkDeleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPathDeleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPostExistsListener;
+import sg.asmallmuseum.presentation.SignIn.SignInActivity;
 
 public class ArtViewFragment extends Fragment implements View.OnClickListener, ArtWorkLoadCompleteListener,
         ArtworkDeleteListener, UserPathDeleteListener, UserPostExistsListener, PopupMenu.OnMenuItemClickListener {
     private View view;
     private ArtViewViewModel viewModel;
     private ViewPager2 viewPager;
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
 
     private boolean isExpanded;
     private ArtworkManager artworkManager;
@@ -100,6 +106,13 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         viewModel = new ViewModelProvider(requireActivity()).get(ArtViewViewModel.class);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+    }
+
     private void setButtons(){
         Button mExpandTitle = (Button) view.findViewById(R.id.fragment_art_expand_button);
         Button mMore = (Button) view.findViewById(R.id.fragment_art_more_button);
@@ -123,8 +136,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         MenuInflater inflater = popup.getMenuInflater();
 
         Menu menu = popup.getMenu();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (artwork.getaUserID().equals(user.getEmail())){
+        if (mUser != null && artwork.getaUserID().equals(mUser.getEmail())){
             inflater.inflate(R.menu.menu_more_enable, menu);
         }
         else {
@@ -188,8 +200,8 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     }
 
     private void eventLike(){
-        if (FirebaseAuth.getInstance().getCurrentUser() != null){
-            String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        if (mUser != null){
+            String email = mUser.getEmail();
             Button button = (Button) view.findViewById(R.id.fragment_art_like_button);
 
             if (!like){
@@ -253,7 +265,9 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
                         if (uriList.size() == refs.size()) {
                             setViewPager(uriList);
 
-                            userManager.existsIn(Values.ART_LIKE, FirebaseAuth.getInstance().getCurrentUser().getEmail(), artwork);
+                            if (mUser != null){
+                                userManager.existsIn(Values.ART_LIKE, mUser.getEmail(), artwork);
+                            }
                         }
                     }
                 });
@@ -310,9 +324,11 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         int id = menuItem.getItemId();
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
         if (id == R.id.menu_more_delete){
-            userManager.deletePath(email, artwork, Values.USER_POST);
+            if (mUser != null){
+                userManager.deletePath(mUser.getEmail(), artwork, Values.USER_POST);
+            }
         }
 //        else if (id == R.id.menu_more_edit){
 //            Intent intent = new Intent(getContext(), ArtUploadPageActivity.class);
@@ -320,10 +336,32 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
 //            startActivity(intent);
 //        }
         else if (id == R.id.menu_more_report){
-            viewModel.setArtwork(artwork);
-            ArtViewReportFragment reportFragment = new ArtViewReportFragment();
-            reportFragment.show(getParentFragmentManager(), "dialog");
+            if (mUser != null){
+                viewModel.setArtwork(artwork);
+                ArtViewReportFragment reportFragment = new ArtViewReportFragment();
+                reportFragment.show(getParentFragmentManager(), "dialog");
+            }
+            else {
+                showAlert("Please Sign-in");
+            }
         }
         return false;
+    }
+
+    private void showAlert(String msg){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setMessage(msg).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(getContext(), SignInActivity.class);
+                startActivity(intent);
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        dialog.show();
     }
 }
