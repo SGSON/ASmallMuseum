@@ -115,7 +115,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
             googleSignIn();
         }
         else if (id == R.id.back_button){
-            getParentFragmentManager().popBackStack();
+            getActivity().finish();
         }
         else if (id == R.id.top_menu_button){
             if (getActivity() instanceof SignInActivity){

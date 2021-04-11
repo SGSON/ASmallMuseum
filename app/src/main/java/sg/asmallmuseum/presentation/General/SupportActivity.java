@@ -15,7 +15,10 @@ public class SupportActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_support);
 
         Button menu = (Button) findViewById(R.id.top_menu_button);
+        Button back = (Button) findViewById(R.id.back_button);
+
         menu.setVisibility(View.INVISIBLE);
+        back.setOnClickListener(this);
     }
 
 
