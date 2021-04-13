@@ -137,6 +137,7 @@ public class EmailUserDB implements UserDBInterface {
      @Override
      public void getAllUser(List<String> list){
         List<String> userList = new ArrayList<>();
+
         db.collection("Users").document("eMailUser").collection("Users")
               .get()
               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

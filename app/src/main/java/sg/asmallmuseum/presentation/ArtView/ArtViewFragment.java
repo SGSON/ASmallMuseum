@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +28,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.R;
@@ -41,7 +38,6 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     private View view;
     private ArtViewViewModel viewModel;
     private ViewPager2 viewPager;
-
     private boolean isExpanded;
     private ArtworkManager manager;
     private int numImages;
@@ -49,6 +45,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     public ArtViewFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,12 +58,15 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         // Inflate the layout for this fragment.
         view = inflater.inflate(R.layout.fragment_art_view, container, false);
 
+        viewModel = new ViewModelProvider(requireActivity()).get(ArtViewViewModel.class);
+
         manager = new ArtworkManager();
         manager.setArtworkLoadCompleteListener(this);
 
+
         setButtons();
         getArtInfo();
-        setReviewRecyclerView();
+        //setReviewRecyclerView();
         isExpanded = true;
 
         return view;
@@ -75,8 +75,9 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(ArtViewViewModel.class);
+
     }
+
 
     private void setButtons(){
         Button mExpandTitle = (Button) view.findViewById(R.id.fragment_art_expand_button);
@@ -119,10 +120,10 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     }
 
     private void setReviewRecyclerView(){
-        RecyclerView reviewLayout = (RecyclerView) view.findViewById(R.id.fragment_art_scroll_view);
+       /* RecyclerView reviewLayout = (RecyclerView) view.findViewById(R.id.fragment_art_scroll_view);
         ArtViewRecyclerViewAdapter adapter = new ArtViewRecyclerViewAdapter();
         reviewLayout.setLayoutManager(new LinearLayoutManager(getActivity()));
-        reviewLayout.setAdapter(adapter);
+        reviewLayout.setAdapter(adapter);*/
 
     }
 
@@ -153,6 +154,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         }
     }
 
+
     private void resizeDescLayout(){
         ConstraintLayout descLayout = (ConstraintLayout) view.findViewById(R.id.fragment_art_desc_view);
         //ConstraintLayout titleLayout = (ConstraintLayout)view.findViewById(R.id.fragment_art_title_layout);
@@ -178,7 +180,13 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     private void getArtInfo(){
         Intent intent = getActivity().getIntent();
         manager.getSingleArtInfoByPath(intent.getStringExtra("DocPath"));
+        String path = intent.getStringExtra("DocPath");
+        viewModel.setmPath(path);
     }
+
+
+
+
 
     @Override
     public void onArtworkLoadComplete(List<Artwork> artworks) {
@@ -208,4 +216,6 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         ((TextView) view.findViewById(R.id.fragment_art_desc)).setText(artwork.getaDesc());
         ((RatingBar) view.findViewById(R.id.fragment_art_rating)).setRating(artwork.getaRating());
     }
+
+
 }

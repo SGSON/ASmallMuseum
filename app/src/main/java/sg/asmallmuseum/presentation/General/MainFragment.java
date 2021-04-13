@@ -130,7 +130,9 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
     /***Start an activity what user clicked***/
     @Override
     public void onItemClick(int position, Intent intent) {
+        Log.d("onItem", "onItemClick: "+position + " /"+ intent);
         startActivity(intent);
+
     }
 
     @Override

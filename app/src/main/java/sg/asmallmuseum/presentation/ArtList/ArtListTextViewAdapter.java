@@ -3,6 +3,7 @@ package sg.asmallmuseum.presentation.ArtList;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class ArtListTextViewAdapter extends RecyclerView.Adapter<ArtListTextView
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), ArtViewActivity.class);
                     intent.putExtra("DocPath", mArtList.get(position).getaID().getPath());
+                    Log.d("onItem", "onItemClick: 22");
                     mListener.onItemClick(position, intent);
                 }
             });
