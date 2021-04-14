@@ -20,6 +20,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.Domain.Comment;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
@@ -63,7 +64,6 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
 
         List<StorageReference> ref = manager.getArtImages(mArtList.get(position).getaCategory(), mArtList.get(position).getaFileLoc());
         holder.setCard(mArtList.get(position), ref.get(0));
-        //Glide.with(holder.itemView).load(ref).into(holder.mImage);
 
         if (position == mArtList.size()-1){
             mBottomReachedListener.onBottomReached();
@@ -74,8 +74,7 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), ArtViewActivity.class);
-                    intent.putExtra("DocPath", mArtList.get(position).getaID().getPath());
-
+                    intent.putExtra(Values.DOCUMENT_PATH, mArtList.get(position).getaID().getPath());
                     mListener.onItemClick(position, intent);
                 }
             });
@@ -96,8 +95,6 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
         this.mArtList = artworks;
         notifyDataSetChanged();
     }
-
-
 
 
     static class ArtListImageViewHolder extends RecyclerView.ViewHolder{

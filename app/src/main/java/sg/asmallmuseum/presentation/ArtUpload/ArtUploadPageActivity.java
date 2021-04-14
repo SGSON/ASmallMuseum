@@ -4,13 +4,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Messages.ArtAttachedError;
 import sg.asmallmuseum.Domain.Messages.ArtDescError;
 import sg.asmallmuseum.Domain.Messages.ArtTypeError;
 import sg.asmallmuseum.Domain.Messages.ArtTitleError;
 import sg.asmallmuseum.Domain.Messages.ArtCategoryError;
 import sg.asmallmuseum.Domain.Messages.CustomException;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
@@ -28,7 +31,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -40,11 +42,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +77,6 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     private User mUser;
     private UserManager userManager;
     private ProgressDialog dialog;
-    private final int REQUEST_CODE = 3020;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +117,12 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
 
         setCategorySpinner();
         setTypeSpinner("");
+
+//        Intent intent = getIntent();
+//        if (intent.hasExtra("Art") && intent.getSerializableExtra("Art") instanceof Artwork){
+//            setArtData((Artwork)intent.getSerializableExtra("Art"));
+//        }
+
     }
 
     @Override
@@ -123,6 +133,57 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
             firebaseUser = user;
             userManager.getUserInfo(firebaseUser.getEmail(), 0);
         }
+    }
+
+    private void setArtData(Artwork artwork){
+        mTitle.setText(artwork.getaTitle());
+        mCategory.setSelection(getCategoryIndex(artwork.getaCategory()));
+        mType.setSelection(getTypeIndex(artwork.getaCategory(), artwork.getaType()));
+        mDesc.setText(artwork.getaDesc());
+
+        List<StorageReference> refs = manager.getArtImages(artwork.getaCategory(), artwork.getaFileLoc());
+        refs.get(0).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+
+            }
+        });
+    }
+
+    private int getCategoryIndex(String category){
+        int result = 0;
+
+        List<String> categories = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.arts_categories)));
+        result = categories.indexOf(category);
+
+        return result;
+    }
+
+    private int getTypeIndex(String category, String type){
+        int id = getTypeId(category);
+        List<String> types = new ArrayList<>(Arrays.asList(getResources().getStringArray(id)));
+        return types.indexOf(type);
+    }
+
+    private int getTypeId(String category){
+        int id;
+        switch (category){
+            case Values.ART_FINE:
+                id = R.array.type_fine;
+                break;
+            case Values.ART_VISUAL:
+                id =R.array.type_visual;
+                break;
+            case Values.ART_APPLIED:
+                id = R.array.type_applied;
+                break;
+            case Values.ART_OTHERS:
+                id = R.array.type_others;
+                break;
+            default:
+                id = R.array.spinner_select;
+        }
+        return id;
     }
 
     @SuppressLint("IntentReset")
@@ -141,7 +202,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), RequestCode.REQUEST_CODE);
         }
     }
 
@@ -151,12 +212,12 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         if (id == R.id.upload_category_spinner){
             String selected = adapterView.getItemAtPosition(i).toString();
             Log.d("Selected", selected);
-            map.put("category", selected);
+            map.put(Values.ART_CATEGORY, selected);
             setTypeSpinner(selected);
         }
         else if (id == R.id.upload_type_spinner){
             String selected = adapterView.getItemAtPosition(i).toString();
-            map.put("type", selected);
+            map.put(Values.ART_TYPE, selected);
         }
 
     }
@@ -173,23 +234,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     }
 
     private void setTypeSpinner(String category){
-        int id;
-        switch (category){
-            case "Fine Arts":
-                id = R.array.type_fine;
-                break;
-            case "Visual Arts":
-                id =R.array.type_visual;
-                break;
-            case "Applied Arts":
-                id = R.array.type_applied;
-                break;
-            case "Others":
-                id = R.array.type_others;
-                break;
-            default:
-                id = R.array.spinner_select;
-        }
+        int id = getTypeId(category);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, id, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mType.setAdapter(adapter);
@@ -199,33 +244,33 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         String title = mTitle.getText().toString();
         String desc = mDesc.getText().toString();
 
-        map.put("title", title);
-        map.put("desc", desc);
+        map.put(Values.ART_TITLE, title);
+        map.put(Values.ART_DESC, desc);
         //String genre = mGenre.getSelectedItem();
     }
 
     /***Upload a art***/
     private void uploadArt()  {
         try{
-            manager.validateArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), mUser.getuEmail(), "2020-12-13", map.get("desc"));
+            manager.validateArt(mPathList, mExtensions, map.get(Values.ART_CATEGORY), map.get(Values.ART_TYPE), map.get(Values.ART_TITLE), mUser.getuEmail(), "2020-12-13", map.get(Values.ART_DESC));
             showAlertDialog().show();
         }
         catch (CustomException e){
             if (e instanceof ArtTitleError){
                 mTitle.setError(e.getErrorMsg());
             }
-            else if (e instanceof ArtDescError){
-                mDesc.setError(e.getErrorMsg());
+            else if (e instanceof ArtCategoryError){
+                TextView textView = (TextView) mCategory.getSelectedView();
+                textView.setError(e.getErrorMsg());
+                textView.setTextColor(Color.RED);
             }
             else if (e instanceof ArtTypeError){
                 TextView textView = (TextView) mType.getSelectedView();
                 textView.setError(e.getErrorMsg());
                 textView.setTextColor(Color.RED);
             }
-            else if (e instanceof ArtCategoryError){
-                TextView textView = (TextView) mType.getSelectedView();
-                textView.setError(e.getErrorMsg());
-                textView.setTextColor(Color.RED);
+            else if (e instanceof ArtDescError){
+                mDesc.setError(e.getErrorMsg());
             }
             else if (e instanceof ArtAttachedError){
                 Toast.makeText(this, e.getErrorMsg(), Toast.LENGTH_SHORT).show();
@@ -237,8 +282,8 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onUploadComplete(boolean status, String path, int result_code) {
         //Toast.makeText(this, "Upload finished", Toast.LENGTH_SHORT).show();
-        if(result_code == ArtworkManager.RESULT_UPLOAD_INFO_OK){
-            userManager.updateUserPost(firebaseUser.getEmail(), "Posts", path);
+        if(result_code == RequestCode.RESULT_UPLOAD_INFO_OK){
+            userManager.updateUserPost(firebaseUser.getEmail(), Values.ART_POSTS, path);
         }
         else{
             dialog.dismiss();
@@ -253,7 +298,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null){
+        if (requestCode == RequestCode.REQUEST_CODE && resultCode == RESULT_OK && data != null){
             if (data.getClipData() != null){
                 ClipData clip = data.getClipData();
                 for (int i = 0 ; i < clip.getItemCount() ; i++){
@@ -268,7 +313,7 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                     updateList(uri);
                 }
             }
-            adapter.updateList();
+            adapter.updateList(mPathList, mFileName);
         }
         else {
             Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT).show();
@@ -276,13 +321,9 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     }
 
     private void updateList(Uri uri){
-//        String wholeID = DocumentsContract.getDocumentId(uri);
-//        String id = wholeID.split(":")[1];
-//        String sel = MediaStore.Images.Media._ID + "=?";
         String[] paths = {MediaStore.Images.Media.DATA};
 
         String type = getContentResolver().getType(uri);
-//        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, paths, sel, new String[]{id}, null);
         Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, paths, null, null, null);
         cursor.moveToFirst();
 
@@ -306,7 +347,8 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //before the uploading, please check the type and genre has been selected
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-                        manager.upLoadArt(mPathList, mExtensions, map.get("category"), map.get("type"), map.get("title"), mUser.getuNick(), currentDate, map.get("desc"));
+                        String currentTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault()).format(new Date());
+                        manager.upLoadArt(mPathList, mExtensions, map.get(Values.ART_CATEGORY), map.get(Values.ART_TYPE), map.get(Values.ART_TITLE), mUser.getuNick(), currentDate, currentTime, map.get(Values.ART_DESC), mUser.getuEmail());
                         dialog = new ProgressDialog(ArtUploadPageActivity.this, android.R.style.Theme_Material_Dialog_Alert);
                         dialog.setMessage("UPLOADING..");
                         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

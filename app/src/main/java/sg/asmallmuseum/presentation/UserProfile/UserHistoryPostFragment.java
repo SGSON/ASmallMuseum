@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -20,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
@@ -34,7 +34,7 @@ public class UserHistoryPostFragment extends Fragment implements ArtWorkLoadComp
     private UserHistoryViewAdapter adapter;
     private ArtworkManager mArtworkManager;
     private UserManager mUserManager;
-    private String mType;
+    private String mField;
 
 
     public UserHistoryPostFragment() {
@@ -76,8 +76,8 @@ public class UserHistoryPostFragment extends Fragment implements ArtWorkLoadComp
 
     private void getData(User user){
         Bundle args = getArguments();
-        mType = args.getString("Type");
-        mUserManager.getUserPosting(user.getuEmail(), mType);
+        mField = args.getString(Values.USER_POST_FIELD);
+        mUserManager.getUserPosting(user.getuEmail(), mField);
     }
 
     private void setRecyclerView(){
@@ -89,10 +89,10 @@ public class UserHistoryPostFragment extends Fragment implements ArtWorkLoadComp
     }
 
     @Override
-    public void onArtworkLoadComplete(List<Artwork> artworks) {
+    public void onArtworkLoadComplete(List<Artwork> artworks, int request_code) {
         mArtworkManager.sortByDate(artworks);
         if (getParentFragment() instanceof UserProfileViewHistoryFragment){
-            ((UserProfileViewHistoryFragment) getParentFragment()).setNumPosts(mType, artworks.size());
+            ((UserProfileViewHistoryFragment) getParentFragment()).setNumPosts(mField, artworks.size());
         }
         adapter.updateList(artworks);
     }

@@ -82,8 +82,20 @@
                 android:gravity="center|start"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/fragment_art_author"
-                app:layout_constraintEnd_toStartOf="@id/fragment_art_more_button"
+                app:layout_constraintEnd_toStartOf="@id/fragment_art_like_button"
                 app:layout_constraintStart_toEndOf="@id/fragment_art_expand_button" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/fragment_art_like_button"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/image_like"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/fragment_art_author"
+                app:layout_constraintStart_toEndOf="@id/fragment_art_title"
+                app:layout_constraintEnd_toStartOf="@id/fragment_art_more_button"/>
+
             <Button
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -93,7 +105,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/fragment_art_author"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/fragment_art_title"/>
+                app:layout_constraintStart_toEndOf="@id/fragment_art_like_button"/>
+
             <TextView
                 android:id="@+id/fragment_art_author"
                 android:layout_width="0dp"

@@ -1,11 +1,9 @@
 package sg.asmallmuseum.Domain;
 
-import com.google.firebase.storage.StorageReference;
-
 public class FineArts extends Artwork {
 
-    public FineArts(String aCategory, String aType, String aTitle, String aAuthor, String aDate, String aDesc) {
-        super(aCategory, aType, aTitle, aAuthor, aDate, aDesc);
+    public FineArts(String aCategory, String aType, String aTitle, String aAuthor, String aDate, String aTime, String aDesc, String aUserID) {
+        super(aCategory, aType, aTitle, aAuthor, aDate, aTime, aDesc, aUserID);
     }
 
     public FineArts() {

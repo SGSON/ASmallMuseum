@@ -40,9 +40,12 @@ public class ArtUploadAdapter extends RecyclerView.Adapter<ArtUploadAdapter.Uplo
         return mList.size();
     }
 
-    public void updateList(){
-        notifyItemInserted(mList.size()-1);
-        notifyItemRangeChanged(0, mList.size());
+    public void updateList(List<Uri> paths, List<String> names){
+        this.mList = paths;
+        this.mNameList = names;
+        notifyDataSetChanged();
+//        notifyItemInserted(mList.size()-1);
+//        notifyItemRangeChanged(0, mList.size());
     }
 
     class UploadViewHolder extends RecyclerView.ViewHolder{

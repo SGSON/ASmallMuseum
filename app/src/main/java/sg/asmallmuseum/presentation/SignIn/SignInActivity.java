@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.presentation.General.MainMenuFragment;
@@ -19,15 +20,6 @@ import java.util.List;
 
 public class SignInActivity extends AppCompatActivity implements UserLoadListener {
 
-    protected static final int REQUEST_CODE_INIT = 5500;
-    protected static final int REQUEST_CODE_EMAIL_SIGN_UP = 5501;
-    protected static final int REQUEST_CODE_OTHERS = 5502;
-    protected static final int REQUEST_CODE_GET_EMAIL = 5503;
-    protected static final int REQUEST_CODE_END_SIGN_UP = 5504;
-    protected static final int REQUEST_CODE_MENU = 5505;
-    protected static final int REQUEST_CODE_EMAIL_VERIFY = 5506;
-    protected static final int REQUEST_CODE_END = 5507;
-
     private MainMenuViewModel mainMenuViewModel;
 
     @Override
@@ -38,7 +30,7 @@ public class SignInActivity extends AppCompatActivity implements UserLoadListene
         SignInViewModel viewModel = new ViewModelProvider(this).get(SignInViewModel.class);
         mainMenuViewModel = new ViewModelProvider(this).get(MainMenuViewModel.class);
 
-        replaceFragment(REQUEST_CODE_INIT);
+        replaceFragment(RequestCode.REQUEST_INIT);
     }
 
     @Override
@@ -47,7 +39,7 @@ public class SignInActivity extends AppCompatActivity implements UserLoadListene
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
         mainMenuViewModel.setFirebaseUser(mUser);
         if (mUser != null){
-            replaceFragment(REQUEST_CODE_END);
+            replaceFragment(RequestCode.REQUEST_END);
         }
     }
 
@@ -56,28 +48,28 @@ public class SignInActivity extends AppCompatActivity implements UserLoadListene
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (request_code){
-            case REQUEST_CODE_INIT:
+            case RequestCode.REQUEST_INIT:
                 fragmentTransaction.replace(R.id.sign_in_container, new SignInFragment());
                 break;
-            case REQUEST_CODE_EMAIL_SIGN_UP:
+            case RequestCode.REQUEST_EMAIL_SIGN_UP:
                 fragmentTransaction.replace(R.id.sign_in_container, new SignUpFragment());
                 break;
-            case REQUEST_CODE_OTHERS:
+            case RequestCode.REQUEST_OTHERS:
                 fragmentTransaction.replace(R.id.sign_in_container, new SignUpOthersFragment());
                 break;
-            case REQUEST_CODE_GET_EMAIL:
+            case RequestCode.REQUEST_GET_EMAIL:
                 fragmentTransaction.replace(R.id.sign_in_container, new SignUpGetEmailFragment());
                 break;
-            case REQUEST_CODE_MENU:
+            case RequestCode.REQUEST_MENU:
                 fragmentTransaction.replace(R.id.sign_in_container, new MainMenuFragment());
                 break;
-            case REQUEST_CODE_EMAIL_VERIFY:
+            case RequestCode.REQUEST_EMAIL_VERIFY:
                 fragmentTransaction.replace(R.id.sign_in_container, new SignInEmailVerifyFragment());
                 break;
-            case REQUEST_CODE_END_SIGN_UP:
+            case RequestCode.REQUEST_END_SIGN_UP:
                 fragmentTransaction.replace(R.id.sign_in_container, new SignInWelcomeFragment());
                 break;
-            case REQUEST_CODE_END:
+            case RequestCode.REQUEST_END:
                 finish();
                 break;
         }

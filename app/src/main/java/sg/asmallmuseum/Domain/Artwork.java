@@ -2,9 +2,10 @@ package sg.asmallmuseum.Domain;
 
 import com.google.firebase.firestore.DocumentReference;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class Artwork {
+public abstract class Artwork implements Serializable {
     private DocumentReference aID;
     private int aPostNum;
     private String aCategory;
@@ -15,12 +16,15 @@ public abstract class Artwork {
     private String aDesc;
     private List<String> aFileLoc;
     private int aRating;
+    private String aUserID;
+    private int aLike;
+    private String aTime;
 
     public Artwork(){
 
     }
 
-    public Artwork(String aCategory, String aType, String aTitle, String aAuthor, String aDate, String aDesc){
+    public Artwork(String aCategory, String aType, String aTitle, String aAuthor, String aDate, String aTime, String aDesc, String aUserID){
         this.aCategory = aCategory;
         this.aType = aType;
         this.aTitle = aTitle;
@@ -28,6 +32,9 @@ public abstract class Artwork {
         this.aDate = aDate;
         this.aDesc = aDesc;
         this.aRating = 0;
+        this.aUserID = aUserID;
+        this.aLike = 0;
+        this.aTime = aTime;
     }
 
     public DocumentReference getaID() {
@@ -110,4 +117,27 @@ public abstract class Artwork {
         this.aPostNum = aPostNum;
     }
 
+    public String getaUserID() {
+        return aUserID;
+    }
+
+    public void setaUserID(String aUserID) {
+        this.aUserID = aUserID;
+    }
+
+    public int getaLike() {
+        return aLike;
+    }
+
+    public void setaLike(int aLike) {
+        this.aLike = aLike;
+    }
+
+    public String getaTime() {
+        return aTime;
+    }
+
+    public void setaTime(String aTime) {
+        this.aTime = aTime;
+    }
 }

@@ -11,11 +11,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,7 +28,9 @@ import sg.asmallmuseum.Domain.Messages.UserBirthError;
 import sg.asmallmuseum.Domain.Messages.UserEmailError;
 import sg.asmallmuseum.Domain.Messages.UserNameError;
 import sg.asmallmuseum.Domain.Messages.UserPasswordError;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
 import sg.asmallmuseum.logic.ValidateUser;
@@ -161,7 +160,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         String uLastName = lastName.getText().toString();
 
 
-        User user = new User(uNick, uLastName, uFirstName, uEmailID, uBirth, "eMail");
+        User user = new User(uNick, uLastName, uFirstName, uEmailID, uBirth, Values.USER_TYPE_EMAIL);
         try {
             ValidateUser.validEmailUser(user, uPassword, checkPassword);
             createAccount(user, user.getuEmail(), uPassword);
@@ -218,7 +217,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
 
                             viewModel.setUser(mUser);
                             if(getActivity() instanceof SignInActivity){
-                                ((SignInActivity) getActivity()).replaceFragment(SignInActivity.REQUEST_CODE_EMAIL_VERIFY);
+                                ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_EMAIL_VERIFY);
                             }
                         }
                     }

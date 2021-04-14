@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.logic.UserDBListener;
 
 public class EmailUserDB implements UserDBInterface {
@@ -41,19 +42,19 @@ public class EmailUserDB implements UserDBInterface {
     @Override
     public void addUser(User user) {
 
-        db.collection("Users").document("eMailUser").collection("Users").document(user.getuEmail()).set(user);
+        db.collection(Values.USER).document(Values.USER_EMAIL).collection(Values.USER).document(user.getuEmail()).set(user);
 
     }
 
     public void addTempUser(User user) {
 
-        db.collection("Users").document("eMailUser").collection("TempUsers").document(user.getuEmail()).set(user);
+        db.collection(Values.USER).document(Values.USER_EMAIL).collection("TempUsers").document(user.getuEmail()).set(user);
 
     }
 
     @Override
     public void addUserPosting(String uEmail, String field, String id, Map<String, String> map){
-        DocumentReference docRef = db.collection("Users").document("eMailUser").collection("Users")
+        DocumentReference docRef = db.collection(Values.USER).document(Values.USER_EMAIL).collection(Values.USER)
                 .document(uEmail).collection(field).document(id);
         docRef.set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -65,7 +66,7 @@ public class EmailUserDB implements UserDBInterface {
 
     @Override
     public void getUserPosting(String uEmail, String field) {
-        CollectionReference colRef = db.collection("Users").document("eMailUser").collection("Users").document(uEmail).collection(field);
+        CollectionReference colRef = db.collection(Values.USER).document(Values.USER_EMAIL).collection(Values.USER).document(uEmail).collection(field);
         colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -73,8 +74,8 @@ public class EmailUserDB implements UserDBInterface {
                     List<String> results = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()){
                         Map<String, Object> map = document.getData();
-                        if (map.get("path") instanceof String){
-                            results.add((String)map.get("path"));
+                        if (map.get(Values.PATH) instanceof String){
+                            results.add((String)map.get(Values.PATH));
                         }
                     }
                     userDbListener.onUserPostLoadComplete(results, 0);
@@ -84,9 +85,48 @@ public class EmailUserDB implements UserDBInterface {
     }
 
     @Override
+    public void deletePath(String uEmail, String field, String id) {
+        DocumentReference docRef = db.collection(Values.USER).document(Values.USER_EMAIL).collection(Values.USER).document(uEmail).collection(field).document(id);
+        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                userDbListener.onPathDeleteComplete(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                userDbListener.onPathDeleteComplete(false);
+            }
+        });
+    }
+
+    @Override
+    public void exists(String email, String field, String artId) {
+        DocumentReference docRef = db.collection(Values.USER).document(Values.USER_EMAIL).collection(Values.USER)
+                .document(email).collection(field).document(artId);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.getData() != null){
+                    userDbListener.onPostExists(true);
+                }
+                else {
+                    userDbListener.onPostExists(false);
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                userDbListener.onPostExists(false);
+            }
+        });
+    }
+
+    @Override
     public void getTempUser(String email) {
 
-        DocumentReference docRef = db.collection("Users").document("eMailUser").collection("TempUsers").document(email);
+        DocumentReference docRef = db.collection(Values.USER).document(Values.USER_EMAIL).collection("TempUsers").document(email);
 
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -119,7 +159,7 @@ public class EmailUserDB implements UserDBInterface {
 //        else
 //            pass
 
-        DocumentReference docRef = db.collection("Users").document("eMailUser").collection("Users").document(email);
+        DocumentReference docRef = db.collection(Values.USER).document(Values.USER_EMAIL).collection(Values.USER).document(email);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -137,8 +177,7 @@ public class EmailUserDB implements UserDBInterface {
      @Override
      public void getAllUser(List<String> list){
         List<String> userList = new ArrayList<>();
-
-        db.collection("Users").document("eMailUser").collection("Users")
+         db.collection(Values.USER).document(Values.USER_EMAIL).collection(Values.USER)
               .get()
               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                   @Override
@@ -158,14 +197,14 @@ public class EmailUserDB implements UserDBInterface {
 
     @Override
     public void updateUser(User user) {
-        DocumentReference documentReference = db.collection("Users").document("eMailUser").collection("Users").document(user.getuEmail());
-        documentReference.update("uFirstName", user.getuFirstName(), "uLastName", user.getuLastName(),
-                                    "uBirth", user.getuBirth(), "uNick", user.getuNick());
+        DocumentReference documentReference = db.collection(Values.USER).document(Values.USER_EMAIL).collection(Values.USER).document(user.getuEmail());
+        documentReference.update(Values.USER_VAL_FIRST, user.getuFirstName(), Values.USER_VAL_LAST, user.getuLastName(),
+                                    Values.USER_VAL_BIRTH, user.getuBirth(), Values.USER_VAL_NICK, user.getuNick());
     }
 
     @Override
     public void deleteUser(String email) {
-        db.collection("Users").document("eMailUser").collection("Users").document(email)
+        db.collection(Values.USER).document(Values.USER_EMAIL).collection(Values.USER).document(email)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

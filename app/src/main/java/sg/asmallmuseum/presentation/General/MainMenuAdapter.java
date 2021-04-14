@@ -15,6 +15,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.presentation.ArtList.ArtListActivity;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.MainMenuOnClickListener;
@@ -137,19 +138,19 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MainMe
         public void setMenuListCard(String name){
             mText.setText(name);
             switch (name){
-                case "Fine Arts":
+                case Values.ART_FINE:
                     mImage.setImageResource(R.drawable.image_paint);
                     break;
-                case "Visual Arts":
+                case Values.ART_VISUAL:
                     mImage.setImageResource(R.drawable.image_picture);
                     break;
-                case "Applied Arts":
+                case Values.ART_APPLIED:
                     mImage.setImageResource(R.drawable.image_applied);
                     break;
-                case "Others":
+                case Values.ART_OTHERS:
                     mImage.setImageResource(R.drawable.image_etc);
                     break;
-                case "Museums":
+                case Values.ART_MUSEUM:
                     mImage.setImageResource(R.drawable.image_museum);
                     break;
             }

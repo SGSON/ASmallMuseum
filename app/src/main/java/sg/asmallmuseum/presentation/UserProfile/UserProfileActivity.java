@@ -12,6 +12,7 @@ import java.util.List;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
@@ -20,11 +21,6 @@ import sg.asmallmuseum.presentation.General.MainMenuFragment;
 import sg.asmallmuseum.presentation.General.MainMenuViewModel;
 
 public class UserProfileActivity extends AppCompatActivity implements UserLoadListener {
-    protected static final int REQUEST_PASSWORD = 3601;
-    protected static final int REQUEST_INFO = 3602;
-    protected static final int REQUEST_END = 3603;
-    protected static final int REQUEST_PROFILE = 3604;
-
     private UserProfileFragment mUserProfileFragment;
     private MainMenuViewModel mMainMenuViewModel;
     private UserProfileViewModel viewModel;
@@ -73,16 +69,16 @@ public class UserProfileActivity extends AppCompatActivity implements UserLoadLi
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (request){
-            case REQUEST_PROFILE:
+            case RequestCode.REQUEST_PROFILE:
                 fragmentTransaction.replace(R.id.user_profile_container, mUserProfileFragment);
                 break;
-            case REQUEST_PASSWORD:
+            case RequestCode.REQUEST_PASSWORD:
                 fragmentTransaction.replace(R.id.user_profile_container, new UserProfileUpdatePasswordFragment());
                 break;
-            case REQUEST_INFO:
+            case RequestCode.REQUEST_INFO:
                 fragmentTransaction.replace(R.id.user_profile_container, new UserProfileUpdateInfoFragment());
                 break;
-            case REQUEST_END:
+            case RequestCode.REQUEST_END:
                 fragmentManager.popBackStack();
                 break;
         }

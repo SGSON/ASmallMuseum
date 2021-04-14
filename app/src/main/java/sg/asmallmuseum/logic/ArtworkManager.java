@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.RequestCode;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.Domain.VisualArts;
 import sg.asmallmuseum.Domain.Messages.CustomException;
 import sg.asmallmuseum.Domain.AppliedArts;
@@ -20,8 +22,12 @@ import sg.asmallmuseum.persistence.ArtworkDB;
 import sg.asmallmuseum.persistence.ArtworkDBInterface;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkDBListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtworkDeleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UploadCompleteListener;
+
+import static sg.asmallmuseum.Domain.RequestCode.RESULT_UPLOAD_FAIL;
+import static sg.asmallmuseum.Domain.RequestCode.RESULT_UPLOAD_INFO_OK;
 
 public class ArtworkManager implements ArtWorkDBListener {
     private final ArtworkDBInterface db;
@@ -29,16 +35,7 @@ public class ArtworkManager implements ArtWorkDBListener {
     private UploadCompleteListener upListener;
     private ArtWorkLoadCompleteListener downListener;
     private NumPostLoadCompleteListener numListener;
-
-    private final int REQUEST_SINGLE = 2;
-    private final int REQUEST_MULTIPLE = 8;
-
-    private final int REQUEST_USER = 2010;
-    private final int REQUEST_UPLOAD = 2011;
-
-    public static final int RESULT_UPLOAD_OK = 2301;
-    public static final int RESULT_UPLOAD_INFO_OK = 2302;
-    public static final int RESULT_UPLOAD_FAIL = 2303;
+    private ArtworkDeleteListener deleteListener;
 
     private final Map<String, String> map;
 
@@ -60,25 +57,29 @@ public class ArtworkManager implements ArtWorkDBListener {
         this.numListener = mListener;
     }
 
+    public void setDeleteArtworkListener(ArtworkDeleteListener mListener){
+        this.deleteListener = mListener;
+    }
+
     /***Manager to upload a image and image info to the Firestore and the storage***/
-    public void upLoadArt(List<Uri> paths, List<String> ext, String category, String type, String title, String author, String date, String desc) {
+    public void upLoadArt(List<Uri> paths, List<String> ext, String category, String type, String title, String author, String date, String time, String desc, String email) {
         Artwork art = null;
         switch (type){
-            case "Visual Arts":
-                art = new VisualArts(category, type, title, author, date, desc);
+            case Values.ART_VISUAL:
+                art = new VisualArts(category, type, title, author, date, time, desc, email);
                 break;
-            case "Applied Arts":
-                art = new AppliedArts(category, type, title, author, date, desc);
+            case Values.ART_APPLIED:
+                art = new AppliedArts(category, type, title, author, date, time, desc, email);
                 break;
-            case "Others":
-                art = new Others(category, type, title, author, date, desc);
+            case Values.ART_OTHERS:
+                art = new Others(category, type, title, author, date, time, desc, email);
                 break;
             default:
-                art = new FineArts(category, type, title, author, date, desc);
+                art = new FineArts(category, type, title, author, date, time, desc, email);
                 break;
         }
-        map.put("Category", category);
-        map.put("Type", type);
+        map.put(Values.ART_CATEGORY, category);
+        map.put(Values.ART_TYPE, type);
 
         db.uploadArtInfo(art, paths, ext);
     }
@@ -92,11 +93,14 @@ public class ArtworkManager implements ArtWorkDBListener {
         StorageReference storageRef = null;
         try{
             db.uploadAttachedImage(paths, refs, id, art);
-            //Log.d("ASD: ", "sd"+storageRef.toString());
         }
         catch (FileNotFoundException e){
             e.printStackTrace();
         }
+    }
+
+    public void uploadReport(Map<String, String> map, Artwork artwork, String uid){
+        db.uploadReport(map, artwork.getaID().getId(), uid);
     }
     //End
     /***End***/
@@ -113,11 +117,11 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
 
     public void getSingleArtInfoByPath(String id){
-        db.getArtInfoByPath(id, REQUEST_SINGLE);
+        db.getArtInfoByPath(id, RequestCode.REQUEST_SINGLE);
     }
 
     public void getMultipleArtInfoByPath(List<String> paths){
-        db.getMultipleArtInfoByPath(paths, REQUEST_MULTIPLE);
+        db.getMultipleArtInfoByPath(paths, RequestCode.REQUEST_MULTIPLE);
     }
 
     public void getRecent(){
@@ -125,22 +129,44 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
 
     public void getNumPost(String category, String type, int request_id){
-        if (request_id == REQUEST_USER){
-            db.getNumPost(category, type, REQUEST_USER);
-        }
-        else {
-            db.getNumPost(category, type, REQUEST_UPLOAD);
-        }
+        db.getNumPost(category, type, request_id);
+    }
 
+    public void getArtInfoByNumPost(String category, String type, int numPost, int request_code){
+        db.getArtInfoByPostNum(category, type, numPost, request_code);
     }
     /***End***/
 
-    /***SORTING***/
+    /***Delete Artwork***/
+    public void deleteArtwork(Artwork artwork){
+        db.deleteArtwork(artwork.getaCategory(), artwork.getaType(), artwork.getaID().getId());
+    }
+
+    public void deleteArtworkRecentPath(Artwork artwork){
+        db.deleteRecentPath(artwork.getaID().getId());
+    }
+
+    public void deleteArtworkImages(Artwork artwork){
+        db.deleteImages(artwork.getaFileLoc());
+    }
+    //End
+
+    /***Update artwork information***/
+    public void updateArtwork(Artwork artwork, String field, int value){
+        db.updateLike(artwork.getaCategory(), artwork.getaType(), artwork.getaID().getId(), value);
+    }
+
+    /***SORTING and Other Utils***/
     public void sortByDate(List<Artwork> list){
         list.sort(new Comparator<Artwork>() {
             @Override
             public int compare(Artwork artwork, Artwork t1) {
-                return -(artwork.getaDate()).compareTo(t1.getaDate());
+                if (artwork.getaTime() != null && t1.getaTime() != null){
+                    return -(artwork.getaTime()).compareTo(t1.getaTime());
+                }
+                else {
+                    return -(artwork.getaDate()).compareTo(t1.getaDate());
+                }
             }
         });
     }
@@ -154,32 +180,38 @@ public class ArtworkManager implements ArtWorkDBListener {
         });
     }
 
+    private void removeInvalidArt(List<Artwork> list){
+        if(list.contains(null)){
+            int size = list.size();
+            for (int i = 0 ; i < size ; i++){
+                if (list.get(i) == null){
+                    list.remove(i);
+                    size--;
+                    i--;
+                }
+            }
+        }
+    }
+
+    /***Complete Listeners from the ArtworkDB***/
     @Override
     public void onFileDownloadComplete(List<Artwork> list, int request_code) {
-//            list.sort(new Comparator<Artwork>() {
-//                @Override
-//                public int compare(Artwork artwork, Artwork t1) {
-//                    if (artwork.getaPostNum() >= t1.getaPostNum()){
-//                        return -1;
-//                    }
-//                    return 1;
-//                }
-//            });
-
-        downListener.onArtworkLoadComplete(list);
+        removeInvalidArt(list);
+        sortByDate(list);
+        downListener.onArtworkLoadComplete(list, request_code);
     }
 
     @Override
     public void onFileUploadComplete(boolean complete) {
-        upListener.onUploadComplete(complete, null, RESULT_UPLOAD_OK);
+        upListener.onUploadComplete(complete, null, RequestCode.RESULT_UPLOAD_OK);
     }
 
     @Override
     public void onInfoUploadComplete(boolean complete, List<Uri> paths, List<String> refs, String path, Artwork art) {
         if (complete){
             String[] pathList = path.split("/");
-            map.put("id", pathList[pathList.length-1]);
-            db.getNumPost(map.get("Category"), map.get("Type"), REQUEST_UPLOAD);
+            map.put(Values.ART_ID, pathList[pathList.length-1]);
+            db.getNumPost(map.get(Values.ART_CATEGORY), map.get(Values.ART_TYPE), RequestCode.REQUEST_UPLOAD);
             upListener.onUploadComplete(false, path, RESULT_UPLOAD_INFO_OK);
             uploadAttachedFile(paths, refs, path, art);
         }
@@ -189,16 +221,21 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
 
     @Override
-    public void onNumPostDownloadComplete(int numPost, int request_number) {
-        if (request_number == REQUEST_USER){
+    public void onNumPostDownloadComplete(int numPost, int request_number, String category, String type) {
+        if (request_number == RequestCode.REQUEST_USER || request_number == RequestCode.REQUEST_RANDOM){
             //numListener.onNumPostLoadComplete(numPost);
             if (numListener != null){
-                numListener.onNumPostLoadComplete(numPost);
+                numListener.onNumPostLoadComplete(numPost, request_number, category, type);
             }
         }
-        else if (request_number == REQUEST_UPLOAD){
+        else if (request_number == RequestCode.REQUEST_UPLOAD){
             db.updatePostingNumber(map, numPost);
         }
+    }
+
+    @Override
+    public void onDeleteComplete(boolean result, int result_code) {
+        deleteListener.onArtworkDeleteComplete(result, result_code);
     }
 
     @Override

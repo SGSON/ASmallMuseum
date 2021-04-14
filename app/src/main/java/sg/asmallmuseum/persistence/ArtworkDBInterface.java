@@ -22,4 +22,10 @@ public interface ArtworkDBInterface {
     void getMultipleArtInfoByPath(List<String> paths, int requestCode);
     void getNumPost(String type, String genre, int request_id);
     void updatePostingNumber(Map<String, String> map, int numPost);
+    void getArtInfoByPostNum(String category, String type, int postNum, int request_code);
+    void deleteArtwork(String category, String type, String id);
+    void updateLike(String category, String type, String id, int value);
+    void deleteRecentPath(String id);
+    void deleteImages(List<String> list);
+    void uploadReport(Map<String, String> map, String id, String email);
 }

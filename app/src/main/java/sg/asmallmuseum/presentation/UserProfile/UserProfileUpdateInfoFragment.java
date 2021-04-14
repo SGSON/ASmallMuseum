@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import sg.asmallmuseum.Domain.Messages.CustomException;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.UserManager;
@@ -154,7 +155,7 @@ public class UserProfileUpdateInfoFragment extends Fragment implements View.OnCl
 //        fragmentTransaction.commit();
 
         if (getActivity() instanceof UserProfileActivity){
-            ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_END);
+            ((UserProfileActivity) getActivity()).replaceFragment(RequestCode.REQUEST_END);
         }
     }
 

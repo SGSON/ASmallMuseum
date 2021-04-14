@@ -33,7 +33,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
@@ -120,10 +122,13 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 String text = "";
                 if (position == 0){
-                    text = "Posts";
+                    text = Values.USER_POST;
                 }
-                else {
-                    text = "Reviews";
+                else if (position == 1){
+                    text = Values.USER_REVIEW;
+                }
+                else if (position == 2){
+                    text = Values.USER_LIKE;
                 }
                 tab.setText(text);
             }
@@ -132,13 +137,18 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
     }
 
     public void setNumPosts(String type, int numPosts){
-        if (type.equals("Posts")){
+        if (type.equals(Values.USER_POST)){
             TextView mNumPost = (TextView) view.findViewById(R.id.fragment_user_history_post);
             String text = Integer.toString(numPosts);
             mNumPost.setText(text);
         }
-        else {
+        else if (type.equals(Values.USER_REVIEW)){
             TextView mNumPost = (TextView) view.findViewById(R.id.fragment_user_history_review);
+            String text = Integer.toString(numPosts);
+            mNumPost.setText(text);
+        }
+        else if (type.equals(Values.USER_LIKE)){
+            TextView mNumPost = (TextView) view.findViewById(R.id.fragment_user_history_like);
             String text = Integer.toString(numPosts);
             mNumPost.setText(text);
         }
@@ -158,7 +168,7 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
         }
         else if (id == R.id.fragment_user_history_profile_setting){
             if (getActivity() instanceof UserProfileActivity){
-                ((UserProfileActivity) getActivity()).replaceFragment(UserProfileActivity.REQUEST_PROFILE);
+                ((UserProfileActivity) getActivity()).replaceFragment(RequestCode.REQUEST_PROFILE);
             }
         }
     }

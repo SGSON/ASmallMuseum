@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.presentation.General.MainMenuFragment;
 import sg.asmallmuseum.presentation.General.MainMenuViewModel;
@@ -30,10 +31,10 @@ public class ArtListActivity extends AppCompatActivity  {
         menuViewModel = new ViewModelProvider(this).get(MainMenuViewModel.class);
         viewModel = new ViewModelProvider(this).get(ArtListViewModel.class);
 
-        String[] list = {getIntent().getStringExtra("Category"), getIntent().getStringExtra("Type")};
+        String[] list = {getIntent().getStringExtra(Values.ART_CATEGORY), getIntent().getStringExtra(Values.ART_TYPE)};
 
-        viewModel.setCategory(getIntent().getStringExtra("Category"));
-        viewModel.setType(getIntent().getStringExtra("Type"));
+        viewModel.setCategory(getIntent().getStringExtra(Values.ART_CATEGORY));
+        viewModel.setType(getIntent().getStringExtra(Values.ART_TYPE));
         viewModel.setItems(list);
 
         initFragment();

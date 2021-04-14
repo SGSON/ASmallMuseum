@@ -1,10 +1,14 @@
 package sg.asmallmuseum.persistence;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -12,6 +16,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -26,6 +31,8 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.NumPosts;
+import sg.asmallmuseum.Domain.RequestCode;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.Domain.VisualArts;
 import sg.asmallmuseum.Domain.Museum;
 import sg.asmallmuseum.Domain.AppliedArts;
@@ -38,9 +45,6 @@ public class ArtworkDB implements ArtworkDBInterface {
     private final FirebaseStorage storage;
     private ArtWorkDBListener mListener;
     private final int MAX_LIST_SIZE = 10;
-
-    private final int REQUEST_USER = 2010;
-    private final int REQUEST_UPLOAD = 2011;
 
     public ArtworkDB(){
         db = FirebaseFirestore.getInstance();
@@ -55,22 +59,19 @@ public class ArtworkDB implements ArtworkDBInterface {
     @Override
     public void uploadArtInfo(Artwork art, List<Uri> paths, List<String> ext) {
 
-        DocumentReference ref = db.collection("Art").document(art.getaCategory()).collection(art.getaType()).document();
-        DocumentReference recentRef = db.collection("Art").document("Recent");
+        DocumentReference ref = db.collection(Values.ART).document(art.getaCategory()).collection(art.getaType()).document();
         Map<String, String> map = new HashMap<>();
         ref.set(art)
             .addOnSuccessListener(aVoid -> {
-                //Log.d(TAG, "SUCCESS!");
                 List<String> refs = setReferences(ext, ref.getId(), art);
-                ref.update("aID", ref);
-                ref.update("aFileLoc", refs);
+                ref.update(Values.ART_VAL_ID, ref);
+                ref.update(Values.ART_VAL_FILE_LOC, refs);
 
-                updateRecentList(ref.getPath());
+                updateRecentList(ref.getPath(), ref.getId(), art.getaTime());
                 increaseNumPost(art.getaCategory(), art.getaType());
 
                 mListener.onInfoUploadComplete(true, paths, refs, ref.getPath(), art);
             }).addOnFailureListener(e -> {
-                //Log.w(TAG, "FAILED");
                 mListener.onInfoUploadComplete(false, null, null, null, null);
             });
     }
@@ -82,42 +83,25 @@ public class ArtworkDB implements ArtworkDBInterface {
             UploadTask uploadTask = ref.putFile(paths.get(i));
 
             uploadTask.addOnSuccessListener(taskSnapshot -> {
-                //Log.d(TAG2, "SUCCESS!");
                 mListener.onFileUploadComplete(true);
             }).addOnFailureListener(e -> {
-                //Log.w(TAG2, "FAILED!");
                 mListener.onFileUploadComplete(false);
             });
         }
     }
 
-    private void updateRecentList(String path){
-        DocumentReference ref = db.collection("Art").document("Recent");
-        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                    DocumentSnapshot snapshot = task.getResult();
-                    if(snapshot != null){
-                        Map<String, Object> map = snapshot.getData();
-                        List<String> result = (List<String>)map.get("Locs");
-
-                        if (result.size() >= MAX_LIST_SIZE)
-                            result.remove(result.size()-1);
-                        result.add(0, path);
-
-                        map.put("Locs", result);
-                        ref.set(map);
-                    }
-                }
-            }
-        });
+    private void updateRecentList(String path, String id, String time){
+        DocumentReference ref = db.collection(Values.ART).document(Values.ART_RECENT).collection(Values.ART_RECENT).document(id);
+        Map<String, String> map = new HashMap<>();
+        map.put(Values.PATH, path);
+        map.put(Values.TIME, time);
+        ref.set(map);
     }
 
     @Override
     public void updatePostingNumber(Map<String, String> map, int numPost){
-        DocumentReference ref = db.collection("Art").document(map.get("Category")).collection(map.get("Type")).document(map.get("id"));
-        ref.update("aPostNum", numPost);
+        DocumentReference ref = db.collection(Values.ART).document(map.get(Values.ART_CATEGORY)).collection(map.get(Values.ART_TYPE)).document(map.get(Values.ART_ID));
+        ref.update(Values.ART_VAL_POST_NUM, numPost);
     }
 
     /***Get a image and a info***/
@@ -129,12 +113,14 @@ public class ArtworkDB implements ArtworkDBInterface {
             numPost = currPost;
         }
 
-        CollectionReference colRef = db.collection("Art").document(category).collection(type);
-        colRef.whereLessThanOrEqualTo("aPostNum", currPost).orderBy("aPostNum", Query.Direction.DESCENDING).limit(numPost).get().addOnCompleteListener(task -> {
+        CollectionReference colRef = db.collection(Values.ART).document(category).collection(type);
+        colRef.whereLessThanOrEqualTo(Values.ART_VAL_POST_NUM, currPost).orderBy(Values.ART_VAL_POST_NUM, Query.Direction.DESCENDING).limit(numPost).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
                     Artwork artwork = getArtObject(collection, category);
-                    list.add(artwork);
+                    if (artwork != null){
+                        list.add(artwork);
+                    }
                 }
                 mListener.onFileDownloadComplete(list, 0);
             }
@@ -157,9 +143,12 @@ public class ArtworkDB implements ArtworkDBInterface {
         ref.get().addOnSuccessListener(documentSnapshot -> {
             List<Artwork> artworks = new ArrayList<>();
             Artwork art = getArtObject(documentSnapshot, info[1]);
-                    //documentSnapshot.toObject(Book.class);
-            artworks.add(art);
-            mListener.onFileDownloadComplete(artworks, requestCode);
+
+            if (art != null){
+                artworks.add(art);
+                mListener.onFileDownloadComplete(artworks, requestCode);
+            }
+
         });
     }
 
@@ -172,29 +161,35 @@ public class ArtworkDB implements ArtworkDBInterface {
 
             DocumentReference ref = db.collection(info[0]).document(info[1]).collection(info[2]).document(info[3]);
             ref.get().addOnSuccessListener(documentSnapshot -> {
-                Artwork art = documentSnapshot.toObject(VisualArts.class);
-                artworks.add(art);
+                if (documentSnapshot.getData() != null){
+                    Artwork art = documentSnapshot.toObject(VisualArts.class);
+                    artworks.add(art);
+                }
+                else {
+                    artworks.add(null);
+                }
+
                 if (artworks.size() == paths.size())
                     mListener.onFileDownloadComplete(artworks, requestCode);
             });
-
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void getRecent(){
-        DocumentReference ref = db.collection("Art").document("Recent");
-        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        CollectionReference ref = db.collection(Values.ART).document(Values.ART_RECENT).collection(Values.ART_RECENT);
+        ref.orderBy(Values.TIME, Query.Direction.DESCENDING).limit(MAX_LIST_SIZE).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
-                    DocumentSnapshot snapshot = task.getResult();
-                    if(snapshot != null){
-                        Map<String, Object> map = snapshot.getData();
-                        List<String> result = (List<String>) map.get("Locs");
-                        mListener.onRecentFileDownloadComplete(result);
+                    List<String> paths = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Map<String, Object> map = document.getData();
+                        if ((map.containsKey(Values.PATH)) && (map.get(Values.PATH) instanceof String)){
+                            paths.add((String) map.get(Values.PATH));
+                        }
                     }
+                    getMultipleArtInfoByPath(paths, 0);
                 }
             }
         });
@@ -202,34 +197,44 @@ public class ArtworkDB implements ArtworkDBInterface {
 
     @Override
     public void getNumPost(String category, String type, int request_id){
-//        CollectionReference colRef = db.collection("Art").document(category).collection(type);
-//        colRef.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()){
-//                if(task.getResult() != null){
-//                    mListener.onNumPostDownloadComplete(task.getResult().size(), request_id);
-//                }
-//                else {
-//                    mListener.onNumPostDownloadComplete(0, request_id);
-//                }
-//            }
-//        });
-
-        DocumentReference docRef = db.collection("Art").document(category).collection(type).document("NumPosts");
+        DocumentReference docRef = db.collection(Values.ART).document(category).collection(type).document(Values.ART_NUM_POSTS);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 NumPosts posts = documentSnapshot.toObject(NumPosts.class);
                 if (posts != null)
-                    mListener.onNumPostDownloadComplete(posts.getnumPosts(), request_id);
+                    mListener.onNumPostDownloadComplete(posts.getnumPosts(), request_id, category, type);
                 else
-                    mListener.onNumPostDownloadComplete(0, request_id);
+                    mListener.onNumPostDownloadComplete(0, request_id, null, null);
+            }
+        });
+    }
+
+    @Override
+    public void getArtInfoByPostNum(String category, String type, int postNum, int request_code){
+        CollectionReference colRef = db.collection(Values.ART).document(category).collection(type);
+        colRef.whereEqualTo(Values.ART_VAL_POST_NUM, postNum).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && task.getResult() != null){
+                    Artwork artwork = null;
+                    for (DocumentSnapshot snapshot : task.getResult()){
+                        artwork = getArtObject(snapshot, category);
+                    }
+
+                    if (artwork != null){
+                        List<Artwork> list = new ArrayList<>();
+                        list.add(artwork);
+                        mListener.onFileDownloadComplete(list, request_code);
+                    }
+                }
             }
         });
     }
 
     private void increaseNumPost(String category, String type){
-        DocumentReference docRef = db.collection("Art").document(category).collection(type).document("NumPosts");
-        docRef.update("numPosts", FieldValue.increment(1));
+        DocumentReference docRef = db.collection(Values.ART).document(category).collection(type).document(Values.ART_NUM_POSTS);
+        docRef.update(Values.ART_NUM_POSTS_VAL, FieldValue.increment(1));
     }
 
 
@@ -257,26 +262,84 @@ public class ArtworkDB implements ArtworkDBInterface {
 
     private Artwork getArtObject(DocumentSnapshot collection, String category){
         Artwork artwork = null;
-        switch (category){
-            case "Books":
-                artwork = collection.toObject(VisualArts.class);
-                break;
-            case "Music":
-                artwork = collection.toObject(AppliedArts.class);
-                break;
-            case "Paints":
-                artwork = collection.toObject(Others.class);
-                break;
-            case "Museums":
-                artwork = collection.toObject(Museum.class);
-                break;
-            default:
-                artwork = collection.toObject(FineArts.class);
-                break;
+        if (collection.getData() != null){
+            switch (category){
+                case Values.ART_VISUAL:
+                    artwork = collection.toObject(VisualArts.class);
+                    break;
+                case Values.ART_APPLIED:
+                    artwork = collection.toObject(AppliedArts.class);
+                    break;
+                case Values.ART_OTHERS:
+                    artwork = collection.toObject(Others.class);
+                    break;
+                case Values.ART_MUSEUM:
+                    artwork = collection.toObject(Museum.class);
+                    break;
+                default:
+                    artwork = collection.toObject(FineArts.class);
+                    break;
+            }
         }
         return artwork;
     }
 
+    public void deleteArtwork(String category, String type, String id){
+        DocumentReference docRef = db.collection(Values.ART).document(category).collection(type).document(id);
+        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                db.collection(Values.ART).document(category).collection(type).document(Values.ART_NUM_POSTS).update(Values.ART_NUM_POSTS_VAL, FieldValue.increment(-1));
+                mListener.onDeleteComplete(true, RequestCode.RESULT_ART_DELETE_OK);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                mListener.onDeleteComplete(false, RequestCode.RESULT_DELETE_FAIL);
+            }
+        });
+    }
 
+    public void deleteRecentPath(String id){
+        DocumentReference docRef = db.collection(Values.ART).document(Values.ART_RECENT).collection(Values.ART_RECENT).document(id);
+        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                mListener.onDeleteComplete(true, RequestCode.RESULT_PATH_DELETE_OK);
+            }
+        });
+    }
+
+    public void deleteImages(List<String> list){
+        int size = list.size();
+        for (int i = 0 ; i < size ; i++){
+            StorageReference ref = storage.getReference().child(list.get(i));
+            ref.delete();
+        }
+    }
+
+    @Override
+    public void uploadReport(Map<String, String> map, String id, String email) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Log.d("id", id);
+        Log.d("uid", email);
+        databaseReference.child(Values.REPORT).child(id).child(email).setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                mListener.onFileUploadComplete(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                mListener.onFileUploadComplete(false);
+            }
+        });
+    }
+
+    @Override
+    public void updateLike(String category, String type, String id, int value) {
+        DocumentReference docRef = db.collection(Values.ART).document(category).collection(type).document(id);
+        docRef.update(Values.ART_VAL_LIKE, FieldValue.increment(value));
+    }
 
 }

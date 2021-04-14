@@ -4,22 +4,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sg.asmallmuseum.Domain.Artwork;
+import sg.asmallmuseum.Domain.RequestCode;
 import sg.asmallmuseum.Domain.User;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.persistence.EmailUserDB;
 import sg.asmallmuseum.persistence.UserDBInterface;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserLoadListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPathDeleteListener;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPostExistsListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPostLoadCompleteListener;
 
 public class UserManager implements UserDBListener {
     private UserDBInterface db;
     private UserLoadListener userLoadListener;
     private UserPostLoadCompleteListener userPostLoadListener;
-
-    private static final int REQUEST_EXIST = 3301;
-    private static final int REQUEST_USER = 3302;
-    private static final int REQUEST_USER_LIST = 3303;
-    private static final int RESULT_POST_OK = 3304;
-    private static final int RESULT_POST_FAIL = 3305;
+    private UserPathDeleteListener userPathDeleteListener;
+    private UserPostExistsListener userPostExistsListener;
 
     public void setUserLoadListener(UserLoadListener userLoadListener){
         this.userLoadListener = userLoadListener;
@@ -27,6 +28,14 @@ public class UserManager implements UserDBListener {
 
     public void setUserPostLoadListener(UserPostLoadCompleteListener userPostLoadListener){
         this.userPostLoadListener = userPostLoadListener;
+    }
+
+    public void setUserPathDeleteListener(UserPathDeleteListener mListener){
+        this.userPathDeleteListener = mListener;
+    }
+
+    public void setUserPostExistsListener(UserPostExistsListener mListener){
+        this.userPostExistsListener = mListener;
     }
 
     /***Set a Db***/
@@ -39,7 +48,6 @@ public class UserManager implements UserDBListener {
     public void addNewUser(String uNick, String lastname, String firstname, String email, String birth, String method) {
 
         User user = new User(uNick, lastname, firstname, email, birth, method);
-
         db.addUser(user);
 
     }
@@ -62,15 +70,14 @@ public class UserManager implements UserDBListener {
 
     }
 
-    public boolean hasExisted(String email){
-        getUserInfo(email, REQUEST_EXIST);
+    public boolean exists(String email){
+        getUserInfo(email, RequestCode.REQUEST_EXIST);
         return true;
     }
 
-    /*public void getAllUser(){
-        db.getAllUser();
-
-    }*/
+    public void existsIn(String field, String email, Artwork artwork){
+        db.exists(email, field, artwork.getaID().getId());
+    }
 
     public void getUserPosting(String uEmail, String field){
         db.getUserPosting(uEmail, field);
@@ -84,8 +91,16 @@ public class UserManager implements UserDBListener {
     public void updateUserPost(String uEmail, String field, String path){
         String[] paths = path.split("/");
         Map<String, String> map = new HashMap<>();
-        map.put("path", path);
+        map.put(Values.PATH, path);
         db.addUserPosting(uEmail, field, paths[paths.length-1], map);
+    }
+
+    public void deletePath(User user, Artwork artwork, String field){
+        db.deletePath(user.getuEmail(), field, artwork.getaID().getId());
+    }
+
+    public void deletePath(String email, Artwork artwork, String field){
+        db.deletePath(email, field, artwork.getaID().getId());
     }
 
     public void deleteUser(String email){
@@ -106,24 +121,15 @@ public class UserManager implements UserDBListener {
     public void onUserPostLoadComplete(List<String> posts, int request_code) {
         userPostLoadListener.onUserPostLoadComplete(posts);
     }
-    /***this method is for other sign-up methods. It does not get a password.***/
-    /*public User addNewUser(FirebaseAuth mAuth, String uNick, String lastName,
-                           String firstName, String eMail, @Nullable String birth) throws CustomException{
-        //Create user object.
-        User user = new User(uNick, lastName, firstName, eMail, birth);
 
-        //check validation
-        ValidateUser validateUser = new ValidateUser();
-        validateUser.validUser(user);
+    @Override
+    public void onPathDeleteComplete(boolean result) {
+        userPathDeleteListener.onUserPathDeleteComplete(result);
+    }
 
-        //send user to firebase db.
-        //database.addUser(mAuth, user);
-        return user;
-    }*/
-
-
-
-
-
+    @Override
+    public void onPostExists(boolean result) {
+        userPostExistsListener.onUserPostExists(result);
+    }
 
 }

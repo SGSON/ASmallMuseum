@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.presentation.SignIn.SignInActivity;
+import sg.asmallmuseum.presentation.UserProfile.UserProfileActivity;
 
 public class MainMenuWelcomeFragment extends Fragment implements View.OnClickListener{
 
@@ -48,7 +49,8 @@ public class MainMenuWelcomeFragment extends Fragment implements View.OnClickLis
             startActivity(intent);
         }
         else if (id == R.id.fragment_main_menu_welcome_support){
-
+            Intent intent = new Intent(getContext(), SupportActivity.class);
+            startActivity(intent);
         }
     }
 }
