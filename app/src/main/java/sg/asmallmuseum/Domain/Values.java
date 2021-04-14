@@ -19,6 +19,7 @@ public class Values {
     public static final String ART_VAL_POST_NUM = "aPostNum";
     public static final String ART_VAL_FILE_LOC = "aFileLoc";
     public static final String ART_VAL_LIKE = "aLike";
+    public static final String ART_VAL_TIME = "aTime";
 
     public static final String ART_MUSEUM = "Museums";
     public static final String ART_FINE = "Fine Arts";
@@ -49,4 +50,6 @@ public class Values {
     public static final String TIME = "Time";
 
     public static final String REPORT = "Report";
+
+    public static final String EMPTY = "EMPTY";
 }

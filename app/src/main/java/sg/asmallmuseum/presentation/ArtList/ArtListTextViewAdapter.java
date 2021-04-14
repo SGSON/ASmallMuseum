@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -85,6 +86,11 @@ public class ArtListTextViewAdapter extends RecyclerView.Adapter<ArtListTextView
     public void updateList(List<Artwork> artworks) {
         mArtList = artworks;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void resetList() {
+        mArtList = new ArrayList<>();
     }
 
     static class ArtListTextViewHolder extends RecyclerView.ViewHolder{

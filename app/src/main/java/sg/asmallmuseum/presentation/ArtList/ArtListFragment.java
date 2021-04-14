@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +50,7 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
 
     private int totalPost;
     private int currentPost;
+    private String last;
 
     public ArtListFragment() {
         // Required empty public constructor
@@ -114,6 +114,13 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
 
     @Override
     public void onRefresh() {
+//        if (isMuseum){
+//            adapter = new ArtListMuseumViewAdapter(new ArrayList<Artwork>());
+//        }
+//        else {
+//            adapter = new ArtListImageViewAdapter(new ArrayList<Artwork>(), manager);
+//        }
+        adapter.resetList();
         manager.getNumPost(mCategory, mType, RequestCode.REQUEST_USER);
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -145,7 +152,12 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
             @Override
             public void onBottomReached() {
                 //manager.getArtInfoList(intent.getStringExtra("Category"), intent.getStringExtra("Type"), currentPost);
-                manager.getArtInfoList(mCategory, mType, currentPost);
+                if (!isMuseum){
+                    manager.getArtInfoList(mCategory, mType, currentPost, last);
+                }
+                else {
+                    manager.getArtInfoList(mCategory, mType, currentPost, Values.EMPTY);
+                }
                 currentPost -= 10;
             }
         });
@@ -164,7 +176,8 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
 
     @Override
     public void onArtworkLoadComplete(List<Artwork> artworks, int request_code) {
-        manager.sortByPostNum(artworks);
+        manager.sortByDate(artworks);
+        last = artworks.get(artworks.size()-1).getaTime();
         updateList(artworks);
     }
 
@@ -173,10 +186,10 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
         totalPost = result;
         currentPost = result-10;
 
-        Log.d("NUM", ""+result);
+//        Log.d("NUM", ""+result);
 //        Intent intent = getActivity().getIntent();
 //        manager.getArtInfoList(intent.getStringExtra("Category"), intent.getStringExtra("Type"), totalPost);
-        manager.getArtInfoList(mCategory, mType, totalPost);
+        manager.getArtInfoList(mCategory, mType, totalPost, Values.EMPTY);
     }
 
     @Override

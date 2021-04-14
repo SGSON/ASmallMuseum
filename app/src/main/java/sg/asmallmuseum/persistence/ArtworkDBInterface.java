@@ -15,7 +15,7 @@ public interface ArtworkDBInterface {
     void uploadArtInfo(Artwork art, List<Uri> paths, List<String> ext);
     void uploadAttachedImage(List<Uri> paths, List<String> refs, String id, Artwork art) throws FileNotFoundException;
     void setListener(ArtWorkDBListener ArtWorkDBListener);
-    void getArtInfoList(String type, String genre, int currPost);
+    void getArtInfoList(String type, String genre, int currPost, String date);
     List<StorageReference> getArtImages(String type, List<String> loc);
     void getArtInfoByPath(String path, int requestCode);
     void getRecent();

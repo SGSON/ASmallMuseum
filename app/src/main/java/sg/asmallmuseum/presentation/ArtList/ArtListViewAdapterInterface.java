@@ -10,4 +10,5 @@ public interface ArtListViewAdapterInterface {
     void setOnClickListener(RecyclerViewOnClickListener listener);
     void setOnBottomReachedListener(OnBottomReachedListener listener);
     void updateList(List<Artwork> artworks);
+    void resetList();
 }
