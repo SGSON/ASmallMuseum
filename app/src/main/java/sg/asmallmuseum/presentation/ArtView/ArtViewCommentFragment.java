@@ -142,21 +142,17 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
             }
         });
 
-        for (int i = 0; i < comments.size(); i++) {
-            Comment data = new Comment();
-            data.setuEmail(comments.get(i).getuEmail());
-            data.setPath(comments.get(i).getPath());
-            data.setContent(comments.get(i).getContent());
-            data.setCommIdx(comments.get(i).getCommIdx());
-
-            if(!(comments.get(0).getContent().equals("null") && comments.get(0).getuEmail().equals("null"))){
-                adapter.addItem(data);
+        if(!(comments.get(0).getContent().equals("null") && comments.get(0).getuEmail().equals("null"))){
+            int size = comments.size();
+            for (int i = 0; i < size; i++) {
+//                Comment data = new Comment();
+//                data.setuEmail(comments.get(i).getuEmail());
+//                data.setPath(comments.get(i).getPath());
+//                data.setContent(comments.get(i).getContent());
+//                data.setCommIdx(comments.get(i).getCommIdx());
+                adapter.addItem(comments.get(i));
             }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
-
-
     }
-
-
 }
