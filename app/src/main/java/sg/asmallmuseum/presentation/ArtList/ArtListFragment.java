@@ -176,7 +176,12 @@ public class ArtListFragment extends Fragment implements RecyclerViewOnClickList
 
     @Override
     public void onArtworkLoadComplete(List<Artwork> artworks, int request_code) {
-        manager.sortByDate(artworks);
+        if (!isMuseum){
+            manager.sortByDate(artworks);
+        }
+        else {
+            manager.sortByPostNum(artworks);
+        }
         last = artworks.get(artworks.size()-1).getaTime();
         updateList(artworks);
     }
