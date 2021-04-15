@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,6 +69,8 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     private int numImages;
     private Artwork artwork;
 
+    private ArtViewCommentFragment mArtViewCommentFragment;
+
     private boolean like;
 
     public ArtViewFragment() {
@@ -92,9 +96,11 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         userManager.setUserPathDeleteListener(this);
         userManager.setUserPostExistsListener(this);
 
+        mArtViewCommentFragment = new ArtViewCommentFragment();
+
         setButtons();
         getArtInfo();
-        setReviewRecyclerView();
+//        setReviewRecyclerView();
         isExpanded = true;
 
         return view;
@@ -104,6 +110,9 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(ArtViewViewModel.class);
+        viewModel.setmPath(getActivity().getIntent().getStringExtra(Values.DOCUMENT_PATH));
+
+        setReviewWindow();
     }
 
     @Override
@@ -111,6 +120,15 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         super.onStart();
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+    }
+
+    private void setReviewWindow(){
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.add(R.id.fragment_art_comment_container, mArtViewCommentFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     private void setButtons(){
@@ -164,10 +182,10 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     }
 
     private void setReviewRecyclerView(){
-        RecyclerView reviewLayout = (RecyclerView) view.findViewById(R.id.fragment_art_scroll_view);
-        ArtViewRecyclerViewAdapter adapter = new ArtViewRecyclerViewAdapter();
-        reviewLayout.setLayoutManager(new LinearLayoutManager(getActivity()));
-        reviewLayout.setAdapter(adapter);
+//        RecyclerView reviewLayout = (RecyclerView) view.findViewById(R.id.fragment_art_scroll_view);
+//        ArtViewRecyclerViewAdapter adapter = new ArtViewRecyclerViewAdapter();
+//        reviewLayout.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        reviewLayout.setAdapter(adapter);
     }
 
     @Override
@@ -248,8 +266,8 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         Intent intent = getActivity().getIntent();
         artworkManager.getSingleArtInfoByPath(intent.getStringExtra(Values.DOCUMENT_PATH));
         //manager.getSingleArtInfoByPath(intent.getStringExtra("DocPath"));
-        String path = intent.getStringExtra("DocPath");
-        viewModel.setmPath(path);
+        String path = intent.getStringExtra(Values.DOCUMENT_PATH);
+
     }
 
     @Override

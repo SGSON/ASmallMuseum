@@ -51,7 +51,6 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment.
         view = inflater.inflate(R.layout.fragment_art_view_comment, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(ArtViewViewModel.class);
         fUser = FirebaseAuth.getInstance().getCurrentUser();
 
         commInputBtn = (Button) view.findViewById(R.id.comment_input_button);
@@ -60,7 +59,7 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
         commManager = new CommentManager();
         commManager.setCommentListener(this);
 
-        getCommentLoad();
+
 
         return view;
     }
@@ -68,7 +67,8 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        viewModel = new ViewModelProvider(requireActivity()).get(ArtViewViewModel.class);
+        getCommentLoad();
     }
 
     private void getCommentLoad(){
@@ -101,7 +101,7 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
         commInput = (EditText) view.findViewById(R.id.comment_input);
         String content = commInput.getText().toString();
         String commDate = simpleDateFormat.format(mDate);
-        String email = fUser.getEmail();
+
         String ref = arr[3] ;
         String idx = "";
         String category = arr[1];
@@ -109,6 +109,7 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
         String path = "";
 
         if(fUser != null && content.trim().length() > 0){
+            String email = fUser.getEmail();
             Comment comment = new Comment(idx, ref, path, email, content, commDate);
 
             commInput.setText("");
