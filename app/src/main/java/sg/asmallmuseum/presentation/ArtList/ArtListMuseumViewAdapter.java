@@ -56,6 +56,7 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), ArtViewActivity.class);
                     mListener.onItemClick(position, intent);
+                    Log.d("onItem", "onItemClick: l888");
                 }
             });
         }

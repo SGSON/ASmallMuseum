@@ -2,6 +2,8 @@ package sg.asmallmuseum.presentation.ArtList;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,21 +21,30 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Values;
+import sg.asmallmuseum.Domain.Comment;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
+import sg.asmallmuseum.logic.CommentManager;
 import sg.asmallmuseum.presentation.ArtView.ArtViewActivity;
+import sg.asmallmuseum.presentation.CustomListenerInterfaces.CommentLoadListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.OnBottomReachedListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
-public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageViewAdapter.ArtListImageViewHolder> implements ArtListViewAdapterInterface {
+public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageViewAdapter.ArtListImageViewHolder> implements ArtListViewAdapterInterface{
     private List<Artwork> mArtList;
     private RecyclerViewOnClickListener mListener;
     private ArtworkManager manager;
     private OnBottomReachedListener mBottomReachedListener;
+    private CommentManager commentManager;
 
     public ArtListImageViewAdapter(List<Artwork> mArtList, ArtworkManager manager){
         this.mArtList = mArtList;
         this.manager = manager;
+    }
+
+    @Override
+    public void setOnClickListener(RecyclerViewOnClickListener mListener){
+        this.mListener = mListener;
     }
 
     @Override
@@ -78,11 +89,6 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
     @Override
     public int getItemCount() {
         return mArtList.size();
-    }
-
-    @Override
-    public void setOnClickListener(RecyclerViewOnClickListener mListener){
-        this.mListener = mListener;
     }
 
     public void updateList(List<Artwork> artworks){
