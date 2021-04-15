@@ -92,10 +92,16 @@ public class ArtListImageViewAdapter extends RecyclerView.Adapter<ArtListImageVi
     }
 
     public void updateList(List<Artwork> artworks){
-        this.mArtList = artworks;
-        notifyDataSetChanged();
+        int start = mArtList.size();
+        this.mArtList.addAll(artworks);
+        notifyItemRangeChanged(start, artworks.size());
+        //notifyDataSetChanged();
     }
 
+    @Override
+    public void resetList() {
+        mArtList = new ArrayList<>();
+    }
 
     static class ArtListImageViewHolder extends RecyclerView.ViewHolder{
         private ImageView mImage;

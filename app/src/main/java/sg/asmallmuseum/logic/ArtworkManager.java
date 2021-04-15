@@ -106,9 +106,9 @@ public class ArtworkManager implements ArtWorkDBListener {
     /***End***/
 
     /***Get a image and image info from the Firestore and the storage***/
-    public void getArtInfoList(String category, String type, int currPost){
+    public void getArtInfoList(String category, String type, int currPost, String date){
         if (currPost > 0){
-            db.getArtInfoList(category, type, currPost);
+            db.getArtInfoList(category, type, currPost, date);
         }
     }
 
@@ -181,14 +181,12 @@ public class ArtworkManager implements ArtWorkDBListener {
     }
 
     private void removeInvalidArt(List<Artwork> list){
-        if(list.contains(null)){
-            int size = list.size();
-            for (int i = 0 ; i < size ; i++){
-                if (list.get(i) == null){
-                    list.remove(i);
-                    size--;
-                    i--;
-                }
+        int size = list.size();
+        for (int i = 0 ; i < size ; i++){
+            if (list.get(i).getaDate() == null){
+                list.remove(i);
+                size--;
+                i--;
             }
         }
     }

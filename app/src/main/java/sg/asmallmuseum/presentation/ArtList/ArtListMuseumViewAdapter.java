@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -71,11 +72,16 @@ public class ArtListMuseumViewAdapter extends RecyclerView.Adapter<ArtListMuseum
         this.mListener = listener;
     }
 
-
     @Override
     public void updateList(List<Artwork> artworks) {
+        int start = mArtList.size();
         this.mArtList.addAll(artworks);
-        notifyDataSetChanged();
+        notifyItemRangeChanged(start, artworks.size());
+    }
+
+    @Override
+    public void resetList() {
+        mArtList = new ArrayList<>();
     }
 
     static class MuseumViewHolder extends RecyclerView.ViewHolder{

@@ -105,7 +105,7 @@ public class ArtworkDB implements ArtworkDBInterface {
     }
 
     /***Get a image and a info***/
-    public void getArtInfoList(String category, String type, int currPost){
+    public void getArtInfoList(String category, String type, int currPost, String date){
         List<Artwork> list = new ArrayList<>();
 
         int numPost = MAX_LIST_SIZE;
@@ -114,7 +114,8 @@ public class ArtworkDB implements ArtworkDBInterface {
         }
 
         CollectionReference colRef = db.collection(Values.ART).document(category).collection(type);
-        colRef.whereLessThanOrEqualTo(Values.ART_VAL_POST_NUM, currPost).orderBy(Values.ART_VAL_POST_NUM, Query.Direction.DESCENDING).limit(numPost).get().addOnCompleteListener(task -> {
+        if (!date.equals(Values.EMPTY)){
+            colRef.orderBy(Values.ART_VAL_TIME, Query.Direction.DESCENDING).startAt(date).limit(numPost).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
                     Artwork artwork = getArtObject(collection, category);
@@ -125,6 +126,31 @@ public class ArtworkDB implements ArtworkDBInterface {
                 mListener.onFileDownloadComplete(list, 0);
             }
         });
+        }
+        else{
+            colRef.whereLessThanOrEqualTo(Values.ART_VAL_POST_NUM, currPost).orderBy(Values.ART_VAL_POST_NUM, Query.Direction.DESCENDING).limit(numPost).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
+                    Artwork artwork = getArtObject(collection, category);
+                    if (artwork != null){
+                        list.add(artwork);
+                    }
+                }
+                mListener.onFileDownloadComplete(list, 0);
+            }
+        });
+        }
+//        colRef.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()){
+//                for (QueryDocumentSnapshot collection : Objects.requireNonNull(task.getResult())){
+//                    Artwork artwork = getArtObject(collection, category);
+//                    if (artwork != null){
+//                        list.add(artwork);
+//                    }
+//                }
+//                mListener.onFileDownloadComplete(list, 0);
+//            }
+//        });
     }
 
     @Override
