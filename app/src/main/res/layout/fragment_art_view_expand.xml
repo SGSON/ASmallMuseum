@@ -23,7 +23,7 @@
 
         <TextView
             android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:id="@+id/fragment_large_num_pages"
             android:textColor="@color/white"
             android:gravity="center"

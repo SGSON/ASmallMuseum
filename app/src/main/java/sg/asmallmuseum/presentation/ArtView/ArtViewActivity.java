@@ -9,6 +9,7 @@ import sg.asmallmuseum.R;
 import sg.asmallmuseum.presentation.General.MainMenuFragment;
 import sg.asmallmuseum.presentation.General.MainMenuViewModel;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,9 +18,9 @@ import com.google.firebase.auth.FirebaseUser;
 public class ArtViewActivity extends AppCompatActivity {
     private Fragment mArtViewFragment;
     private Fragment mArtViewExpandFragment;
+//    private Fragment mArtViewCommentFragment;
     private ArtViewViewModel viewModel;
     private MainMenuViewModel menuViewModel;
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -31,10 +32,13 @@ public class ArtViewActivity extends AppCompatActivity {
 
         mArtViewFragment = new ArtViewFragment();
         mArtViewExpandFragment = new ArtViewExpandFragment();
+//        mArtViewCommentFragment = new ArtViewCommentFragment();
+
         viewModel = new ViewModelProvider(this).get(ArtViewViewModel.class);
         menuViewModel = new ViewModelProvider(this).get(MainMenuViewModel.class);
 
         replaceFragment(null);
+
     }
 
     @Override
@@ -50,6 +54,8 @@ public class ArtViewActivity extends AppCompatActivity {
 
         if (fragment == null || fragment instanceof ArtViewExpandFragment){
             fragmentTransaction.replace(R.id.fragment_art_view_container, mArtViewFragment);
+            //fragmentTransaction.replace(R.id.fragment_art_view_comment_container, mArtViewCommentFragment);
+
         }
         else if (fragment instanceof ArtViewFragment){
             fragmentTransaction.replace(R.id.fragment_art_view_container, mArtViewExpandFragment);
@@ -58,6 +64,8 @@ public class ArtViewActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+
 
     public void openMenuFragment(){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -68,6 +76,7 @@ public class ArtViewActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
 
     @Override
     public void onBackPressed() {

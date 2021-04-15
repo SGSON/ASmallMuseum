@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -209,7 +210,9 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
     /***Start an activity what user clicked***/
     @Override
     public void onItemClick(int position, Intent intent) {
+        Log.d("onItem", "onItemClick: "+position + " /"+ intent);
         startActivity(intent);
+
     }
 
     @Override

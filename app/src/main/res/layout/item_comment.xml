@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="4dp"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/text_view1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="nick"
+            android:textSize="15dp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/text_view2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="date"
+            android:textSize="14dp"
+            android:textColor="@android:color/darker_gray"/>
+
+        <EditText
+            android:id="@+id/text_view3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="content"
+            android:textSize="14dp"/>
+
+
+    </LinearLayout>
+    <!--
+    <Button
+        android:id="@+id/button1"
+        android:text="edit"
+        android:textSize="15dp"
+        android:layout_margin="5dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"/>
+    <Button
+        android:id="@+id/button2"
+        android:text="delete"
+        android:textSize="15dp"
+        android:layout_margin="5dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"/>
+    <Button
+        android:id="@+id/button3"
+        android:text="send"
+        android:textSize="15dp"
+        android:layout_margin="5dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"/-->
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_margin="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="edit"/>
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_margin="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="delete"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button3"
+                android:backgroundTint="@color/black"
+                android:layout_margin="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="edit"/>
+
+            <Button
+                android:id="@+id/button4"
+                android:backgroundTint="@color/black"
+                android:layout_margin="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="delete"/>
+
+        </LinearLayout>
+
+
+
+
+    </FrameLayout>
+
+
+</LinearLayout>
