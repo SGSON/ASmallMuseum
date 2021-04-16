@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import sg.asmallmuseum.Domain.Comment;
 import sg.asmallmuseum.R;
@@ -22,7 +23,7 @@ import sg.asmallmuseum.logic.CommentManager;
 
 public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecyclerViewAdapter.ItemViewHolder> implements View.OnClickListener {
     private CommentManager commentManager;
-    private ArrayList<Comment> listData = new ArrayList<>();
+    private List<Comment> listData;
     private EditText editText;
     private int selectedPosition = -1;
     private FirebaseUser fUser;
@@ -35,6 +36,8 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment, parent, false);
+
+        listData = new ArrayList<>();
         commentManager = new CommentManager();
 
         fUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -191,9 +194,13 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
         return listData.size();
     }
 
-    void addItem(Comment data) {
+    public void addItem(Comment data) {
 
         listData.add(data);
+    }
+
+    public void updateList(List<Comment> comments){
+        listData = comments;
     }
 
 
