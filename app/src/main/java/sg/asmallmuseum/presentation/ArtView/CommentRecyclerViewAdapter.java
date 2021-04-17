@@ -30,6 +30,10 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
     private Button button3;
     private Button button4;
     private String fEmail;
+    
+    public CommentRecyclerViewAdapter(){
+        listData = new ArrayList<>();
+    }
 
     @NonNull
     @Override
@@ -37,7 +41,6 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment, parent, false);
 
-        listData = new ArrayList<>();
         commentManager = new CommentManager();
 
         fUser = FirebaseAuth.getInstance().getCurrentUser();
