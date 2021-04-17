@@ -31,13 +31,16 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
     private Button button4;
     private String fEmail;
 
+    public CommentRecyclerViewAdapter(){
+        listData = new ArrayList<>();
+    }
+
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment, parent, false);
 
-        listData = new ArrayList<>();
         commentManager = new CommentManager();
 
         fUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -200,7 +203,8 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
     }
 
     public void updateList(List<Comment> comments){
-        listData = comments;
+        listData.addAll(comments);
+//        notifyDataSetChanged();
     }
 
 

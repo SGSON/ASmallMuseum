@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -74,9 +75,10 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        fragmentTransaction.replace(R.id.fragment_main_container, mMainFragment);
+        fragmentTransaction.add(R.id.fragment_main_container, mMainFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+
     }
 
     public void openMenuFragment(Fragment fragment){
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
         fragmentTransaction.replace(R.id.fragment_main_container, mMainMenuFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+
     }
 
     public void openVerifyFragment(){
@@ -121,12 +124,8 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
     public void onBackPressed() {
         super.onBackPressed();
         FragmentManager fragmentManager = getSupportFragmentManager();
-
-        if (fragmentManager.getBackStackEntryCount() <= 1){
+        if (fragmentManager.getBackStackEntryCount() <= 0){
             finish();
-        }
-        else {
-            fragmentManager.popBackStack();
         }
     }
 
