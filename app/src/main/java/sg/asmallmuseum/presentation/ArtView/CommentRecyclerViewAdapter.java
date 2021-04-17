@@ -35,10 +35,6 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
         listData = new ArrayList<>();
     }
 
-    public CommentRecyclerViewAdapter(){
-        listData = new ArrayList<>();
-    }
-
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -207,8 +203,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
     }
 
     public void updateList(List<Comment> comments){
-        listData.addAll(comments);
-//        notifyDataSetChanged();
+        listData = comments;
     }
 
 
