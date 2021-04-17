@@ -30,6 +30,10 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
     private Button button3;
     private Button button4;
     private String fEmail;
+    
+    public CommentRecyclerViewAdapter(){
+        listData = new ArrayList<>();
+    }
 
     public CommentRecyclerViewAdapter(){
         listData = new ArrayList<>();
