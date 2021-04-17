@@ -142,7 +142,7 @@ public class UserProfileViewHistoryFragment extends Fragment implements View.OnC
             String text = Integer.toString(numPosts);
             mNumPost.setText(text);
         }
-        else if (type.equals(Values.USER_REVIEW)){
+        else if (type.equals(Values.USER_COMMENTS)){
             TextView mNumPost = (TextView) view.findViewById(R.id.fragment_user_history_review);
             String text = Integer.toString(numPosts);
             mNumPost.setText(text);

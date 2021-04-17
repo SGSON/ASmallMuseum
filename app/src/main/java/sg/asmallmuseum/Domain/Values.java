@@ -32,6 +32,7 @@ public class Values {
     public static final String USER_TYPE_FACEBOOK = "Facebook";
     public static final String USER_POST = "Posts";
     public static final String USER_REVIEW = "Reviews";
+    public static final String USER_COMMENTS = "Comments";
     public static final String USER_LIKE = "Like";
 
     public static final String USER_POST_FIELD = "Field";
@@ -43,12 +44,14 @@ public class Values {
     public static final String USER_VAL_LAST = "uLastName";
     public static final String USER_VAL_BIRTH = "uBirth";
     public static final String USER_VAL_NICK = "uNick";
+    public static final String USER_VAL_EMAIL = "uEmail";
 
     public static final String DOCUMENT_PATH = "DocPath";
     public static final String PATH = "Path";
     public static final String DATE = "Date";
     public static final String TIME = "Time";
 
+    public static final String COMMENT_CONTENT = "content";
     public static final String REPORT = "Report";
 
     public static final String EMPTY = "EMPTY";

@@ -23,7 +23,7 @@ public class UserHistoryViewPagerAdapter extends FragmentStateAdapter {
         if (position == 0) {
             bundle.putString(Values.USER_POST_FIELD, Values.USER_POST);
         } else if (position == 1){
-            bundle.putString(Values.USER_POST_FIELD, Values.USER_REVIEW);
+            bundle.putString(Values.USER_POST_FIELD, Values.USER_COMMENTS);
         } else {
             bundle.putString(Values.USER_POST_FIELD, Values.USER_LIKE);
         }

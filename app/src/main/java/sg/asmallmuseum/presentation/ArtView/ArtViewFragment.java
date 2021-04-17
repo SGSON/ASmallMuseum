@@ -300,7 +300,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         ((TextView) view.findViewById(R.id.fragment_art_title)).setText(artwork.getaTitle());
         ((TextView) view.findViewById(R.id.fragment_art_author)).setText(artwork.getaAuthor());
         ((TextView) view.findViewById(R.id.fragment_art_desc)).setText(artwork.getaDesc());
-        ((RatingBar) view.findViewById(R.id.fragment_art_rating)).setRating(artwork.getaRating());
+//        ((RatingBar) view.findViewById(R.id.fragment_art_rating)).setRating(artwork.getaRating());
     }
 
     @Override

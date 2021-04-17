@@ -17,11 +17,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.Comment;
 import sg.asmallmuseum.Domain.CommentPath;
+import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.CommentDBListener;
 
 public class CommentDB implements CommentDBInterface {
@@ -41,21 +44,23 @@ public class CommentDB implements CommentDBInterface {
 
     @Override
     public void addComment(Comment comment, String category, String type, String ref) {
-        DocumentReference docRef = db.collection("Art").document(category).collection(type).document(ref).collection("Comments").document();
+        DocumentReference docRef = db.collection(Values.ART).document(category).collection(type).document(ref).collection(Values.USER_COMMENTS).document();
         String refs[] = docRef.getPath().split("/");
         comment.setCommIdx(refs[5]);
         comment.setPath(docRef.getPath());
-        CommentPath commentPath = new CommentPath();
-        commentPath.setPath(docRef.getPath());
-        db.collection("Art").document(category).collection(type).document(ref).collection("Comments").document(refs[5]).set(comment);
-        db.collection("Users").document("eMailUser").collection("Users").document(comment.getuEmail()).collection("Comments").document(refs[5]).set(commentPath);
+//        CommentPath commentPath = new CommentPath();
+//        commentPath.setPath(docRef.getPath());
+        Map<String, String> map = new HashMap<>();
+        map.put(Values.PATH, docRef.getPath());
+        db.collection(Values.ART).document(category).collection(type).document(ref).collection(Values.USER_COMMENTS).document(refs[5]).set(comment);
+        db.collection(Values.USER).document(Values.USER_EMAIL).collection(Values.USER).document(comment.getuEmail()).collection(Values.USER_COMMENTS).document(refs[5]).set(map);
     }
 
     @Override
     public void getComment(String category, String type, String path) {
         List<Comment> list = new ArrayList<>();
 
-        db.collection("Art").document(category).collection(type).document(path).collection("Comments")
+        db.collection(Values.ART).document(category).collection(type).document(path).collection(Values.USER_COMMENTS)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -84,7 +89,7 @@ public class CommentDB implements CommentDBInterface {
     public void getRefreshComment(String category, String type, String path) {
         List<Comment> list = new ArrayList<>();
 
-        db.collection("Art").document(category).collection(type).document(path).collection("Comments")
+        db.collection(Values.ART).document(category).collection(type).document(path).collection(Values.USER_COMMENTS)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -117,8 +122,8 @@ public class CommentDB implements CommentDBInterface {
     public void getCommentByUser(String email) {
         List<Comment> list = new ArrayList<>();
 
-        db.collection("Comments")
-                .whereEqualTo("uEmail", email)
+        db.collection(Values.USER_COMMENTS)
+                .whereEqualTo(Values.USER_VAL_EMAIL, email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -145,9 +150,9 @@ public class CommentDB implements CommentDBInterface {
         String type = path[2];
         String ref = path[3];
         String commIdx = comment.getCommIdx();
-        DocumentReference doc = db.collection("Art").document(category).collection(type).document(ref).collection("Comments").document(commIdx);
+        DocumentReference doc = db.collection(Values.ART).document(category).collection(type).document(ref).collection(Values.USER_COMMENTS).document(commIdx);
 
-        doc.update("content", comment.getContent())
+        doc.update(Values.COMMENT_CONTENT, comment.getContent())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -165,7 +170,7 @@ public class CommentDB implements CommentDBInterface {
     @Override
     public void deleteComment(String category, String type, String ref, String commIdx, String uEmail) {
 
-        db.collection("Art").document(category).collection(type).document(ref).collection("Comments").document(commIdx)
+        db.collection(Values.ART).document(category).collection(type).document(ref).collection(Values.USER_COMMENTS).document(commIdx)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -180,7 +185,7 @@ public class CommentDB implements CommentDBInterface {
                     }
                 });
 
-        db.collection("Users").document("eMailUser").collection("Users").document(uEmail).collection("Comments").document(commIdx)
+        db.collection(Values.USER).document(Values.USER_EMAIL).collection(Values.USER).document(uEmail).collection(Values.USER_COMMENTS).document(commIdx)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

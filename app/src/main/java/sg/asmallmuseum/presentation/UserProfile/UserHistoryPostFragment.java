@@ -7,10 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.Observer;
@@ -99,7 +101,27 @@ public class UserHistoryPostFragment extends Fragment implements ArtWorkLoadComp
 
     @Override
     public void onUserPostLoadComplete(List<String> posts) {
-        mArtworkManager.getMultipleArtInfoByPath(posts);
+        if (mField.equals(Values.USER_COMMENTS)){
+            List<String> path = getArtPath(posts);
+            mArtworkManager.getMultipleArtInfoByPath(path);
+        }
+        else {
+            mArtworkManager.getMultipleArtInfoByPath(posts);
+        }
+    }
+
+    private List<String> getArtPath(List<String> commentPath){
+        List<String> path = new ArrayList<>();
+        int size = commentPath.size();
+
+        for (int i = 0 ; i < size ; i++){
+            String[] tempPath = commentPath.get(i).split("/");
+            String artPath = tempPath[0] + "/" + tempPath[1] + "/" + tempPath[2] + "/" + tempPath[3];
+            Log.d("Path", artPath);
+            path.add(artPath);
+        }
+
+        return path;
     }
 
     @Override
