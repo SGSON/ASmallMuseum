@@ -1,6 +1,7 @@
 package sg.asmallmuseum.presentation.ArtView;
 
 import android.net.Uri;
+import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,13 @@ public class ArtViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         ArtViewImageFragment fragment = new ArtViewImageFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("Position", position);
+
         fragment.setImage(mList.get(position));
         fragment.setZoomable(zoomable);
+        fragment.setArguments(bundle);
         return fragment;
     }
 

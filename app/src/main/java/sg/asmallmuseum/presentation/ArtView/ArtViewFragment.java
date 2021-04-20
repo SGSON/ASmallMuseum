@@ -26,6 +26,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -100,7 +101,6 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
 
         setButtons();
         getArtInfo();
-//        setReviewRecyclerView();
         isExpanded = true;
 
         return view;
@@ -181,13 +181,6 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         viewPager.setAdapter(adapter);
     }
 
-    private void setReviewRecyclerView(){
-//        RecyclerView reviewLayout = (RecyclerView) view.findViewById(R.id.fragment_art_scroll_view);
-//        ArtViewRecyclerViewAdapter adapter = new ArtViewRecyclerViewAdapter();
-//        reviewLayout.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        reviewLayout.setAdapter(adapter);
-    }
-
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -226,11 +219,15 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
                 userManager.updateUserPost(email, Values.ART_LIKE, artwork.getaID().getPath());
                 artworkManager.updateArtwork(artwork, Values.ART_VAL_LIKE, 1);
                 button.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.image_like_filled));
+
+                Toast.makeText(getContext(), "Like Added", Toast.LENGTH_SHORT).show();
             }
             else {
                 userManager.deletePath(email, artwork, Values.ART_LIKE);
                 artworkManager.updateArtwork(artwork, Values.ART_VAL_LIKE, -1);
                 button.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.image_like));
+
+                Toast.makeText(getContext(), "Removed", Toast.LENGTH_SHORT).show();
             }
             like = !like;
         }
