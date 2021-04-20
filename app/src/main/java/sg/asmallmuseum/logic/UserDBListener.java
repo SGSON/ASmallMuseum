@@ -8,6 +8,6 @@ public interface UserDBListener {
     void onUserLoadComplete(User user, int request_code);
     void onAllUserLoadComplete(List<String> list);
     void onUserPostLoadComplete(List<String> posts, int request_code);
-    void onPathDeleteComplete(boolean result);
+    void onPathDeleteComplete(boolean result, String field);
     void onPostExists(boolean result);
 }

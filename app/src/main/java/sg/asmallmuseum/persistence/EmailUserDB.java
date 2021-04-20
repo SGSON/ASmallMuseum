@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import sg.asmallmuseum.Domain.User;
 import sg.asmallmuseum.Domain.Values;
@@ -90,12 +89,12 @@ public class EmailUserDB implements UserDBInterface {
         docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                userDbListener.onPathDeleteComplete(true);
+                userDbListener.onPathDeleteComplete(true, field);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                userDbListener.onPathDeleteComplete(false);
+                userDbListener.onPathDeleteComplete(false, field);
             }
         });
     }

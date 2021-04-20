@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,11 +21,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,8 +36,6 @@ import java.util.List;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.RequestCode;
@@ -48,7 +43,6 @@ import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
-import sg.asmallmuseum.presentation.ArtUpload.ArtUploadPageActivity;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtworkDeleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPathDeleteListener;
@@ -318,8 +312,8 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     }
 
     @Override
-    public void onUserPathDeleteComplete(boolean result) {
-        if (result){
+    public void onUserPathDeleteComplete(boolean result, String field) {
+        if (result && field.equals(Values.USER_POST)){
             artworkManager.deleteArtworkRecentPath(artwork);
         }
         else {
