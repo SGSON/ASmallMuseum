@@ -57,7 +57,7 @@ public class ArtViewActivity extends AppCompatActivity {
             //fragmentTransaction.replace(R.id.fragment_art_view_comment_container, mArtViewCommentFragment);
 
         }
-        else if (fragment instanceof ArtViewFragment){
+        else if (fragment instanceof ArtViewFragment || fragment instanceof ArtViewImageFragment){
             fragmentTransaction.replace(R.id.fragment_art_view_container, mArtViewExpandFragment);
         }
 

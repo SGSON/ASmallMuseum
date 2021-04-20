@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        fragmentTransaction.add(R.id.fragment_main_container, mMainFragment);
+        fragmentTransaction.replace(R.id.fragment_main_container, mMainFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 

@@ -123,8 +123,8 @@ public class UserManager implements UserDBListener {
     }
 
     @Override
-    public void onPathDeleteComplete(boolean result) {
-        userPathDeleteListener.onUserPathDeleteComplete(result);
+    public void onPathDeleteComplete(boolean result, String field) {
+        userPathDeleteListener.onUserPathDeleteComplete(result, field);
     }
 
     @Override

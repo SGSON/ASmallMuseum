@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,8 +36,6 @@ import java.util.List;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import sg.asmallmuseum.Domain.Artwork;
 import sg.asmallmuseum.Domain.RequestCode;
@@ -47,7 +43,6 @@ import sg.asmallmuseum.Domain.Values;
 import sg.asmallmuseum.R;
 import sg.asmallmuseum.logic.ArtworkManager;
 import sg.asmallmuseum.logic.UserManager;
-import sg.asmallmuseum.presentation.ArtUpload.ArtUploadPageActivity;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.ArtworkDeleteListener;
 import sg.asmallmuseum.presentation.CustomListenerInterfaces.UserPathDeleteListener;
@@ -100,7 +95,6 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
 
         setButtons();
         getArtInfo();
-//        setReviewRecyclerView();
         isExpanded = true;
 
         return view;
@@ -181,13 +175,6 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         viewPager.setAdapter(adapter);
     }
 
-    private void setReviewRecyclerView(){
-//        RecyclerView reviewLayout = (RecyclerView) view.findViewById(R.id.fragment_art_scroll_view);
-//        ArtViewRecyclerViewAdapter adapter = new ArtViewRecyclerViewAdapter();
-//        reviewLayout.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        reviewLayout.setAdapter(adapter);
-    }
-
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -226,11 +213,15 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
                 userManager.updateUserPost(email, Values.ART_LIKE, artwork.getaID().getPath());
                 artworkManager.updateArtwork(artwork, Values.ART_VAL_LIKE, 1);
                 button.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.image_like_filled));
+
+                Toast.makeText(getContext(), "Like Added", Toast.LENGTH_SHORT).show();
             }
             else {
                 userManager.deletePath(email, artwork, Values.ART_LIKE);
                 artworkManager.updateArtwork(artwork, Values.ART_VAL_LIKE, -1);
                 button.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.image_like));
+
+                Toast.makeText(getContext(), "Removed", Toast.LENGTH_SHORT).show();
             }
             like = !like;
         }
@@ -321,8 +312,8 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     }
 
     @Override
-    public void onUserPathDeleteComplete(boolean result) {
-        if (result){
+    public void onUserPathDeleteComplete(boolean result, String field) {
+        if (result && field.equals(Values.USER_POST)){
             artworkManager.deleteArtworkRecentPath(artwork);
         }
         else {
