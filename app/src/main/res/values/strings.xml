@@ -82,6 +82,7 @@
     <string name="author">Author:</string>
     <string name="title">Title: </string>
     <string name="view_detail">View detail</string>
+    <string name="review_text">Write your thoughts.</string>
 
     <string name="recent_text">Latest images</string>
     <string name="recommend_text">Recommend images</string>
