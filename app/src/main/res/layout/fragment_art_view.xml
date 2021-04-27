@@ -53,25 +53,25 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:id="@+id/fragment_art_desc_view"
-            android:maxHeight="200dp"
-            android:minHeight="50dp"
             app:layout_constraintTop_toBottomOf="@id/fragment_art_view"
             app:layout_constraintBottom_toTopOf="@id/fragment_art_comment_container"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <Button
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/fragment_art_expand_button"
-                android:background="@drawable/button_more"
-                android:foreground="@drawable/expand"
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/fragment_art_title_text"
+                android:text="@string/title"
+                android:gravity="start|center"
+                android:layout_marginStart="10dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/fragment_art_author"
-                app:layout_constraintEnd_toStartOf="@id/fragment_art_title"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/fragment_art_title" />
+
             <TextView
                 android:id="@+id/fragment_art_title"
                 android:layout_width="0dp"
@@ -83,7 +83,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/fragment_art_author"
                 app:layout_constraintEnd_toStartOf="@id/fragment_art_like_button"
-                app:layout_constraintStart_toEndOf="@id/fragment_art_expand_button" />
+                app:layout_constraintStart_toEndOf="@id/fragment_art_title_text" />
 
             <Button
                 android:layout_width="40dp"
@@ -108,33 +108,40 @@
                 app:layout_constraintStart_toEndOf="@id/fragment_art_like_button"/>
 
             <TextView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/fragment_art_author_text"
+                android:text="@string/author"
+                android:gravity="center|start"
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toBottomOf="@id/fragment_art_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/fragment_art_author"/>
+
+            <TextView
                 android:id="@+id/fragment_art_author"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
                 android:gravity="center|start"
                 android:text="@string/test1"
                 app:layout_constraintTop_toBottomOf="@id/fragment_art_title"
-                app:layout_constraintBottom_toTopOf="@id/fragment_art_desc"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-            <TextView
-                android:id="@+id/fragment_art_desc"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:gravity="center|start"
-                android:text="@string/test3"
-                app:layout_constraintTop_toBottomOf="@id/fragment_art_author"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toStartOf="@id/fragment_art_view_detail"
+                app:layout_constraintStart_toEndOf="@id/fragment_art_author_text" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/fragment_art_view_detail"
+                android:text="@string/view_detail"
+                android:textColor="@color/com_facebook_blue"
+                android:background="@android:color/transparent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_art_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fragment_art_author"
+                app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

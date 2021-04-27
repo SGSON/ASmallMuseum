@@ -126,15 +126,17 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     }
 
     private void setButtons(){
-        Button mExpandTitle = (Button) view.findViewById(R.id.fragment_art_expand_button);
+//        Button mExpandTitle = (Button) view.findViewById(R.id.fragment_art_expand_button);
         Button mMore = (Button) view.findViewById(R.id.fragment_art_more_button);
         Button mExpand = (Button) view.findViewById(R.id.fragment_art_pager_expand_button);
         Button mLike = (Button) view.findViewById(R.id.fragment_art_like_button);
+        Button detail = (Button) view.findViewById(R.id.fragment_art_view_detail);
 
-        mExpandTitle.setOnClickListener(this);
+//        mExpandTitle.setOnClickListener(this);
         mExpand.setOnClickListener(this);
         mMore.setOnClickListener(this);
         mLike.setOnClickListener(this);
+        detail.setOnClickListener(this);
 
         Button mBack = (Button) view.findViewById(R.id.back_button);
         Button mTopMenu = (Button) view.findViewById(R.id.top_menu_button);
@@ -179,10 +181,10 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     public void onClick(View view) {
         int id = view.getId();
 
-        if(id == R.id.fragment_art_expand_button){
-            resizeDescLayout();
-        }
-        else if (id == R.id.fragment_art_more_button){
+//        if(id == R.id.fragment_art_expand_button){
+//            resizeDescLayout();
+//        }
+        if (id == R.id.fragment_art_more_button){
             showPopup();
         }
         else if (id == R.id.fragment_art_pager_expand_button){
@@ -201,6 +203,9 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
         }
         else if (id == R.id.back_button){
             getActivity().finish();
+        }
+        else if (id == R.id.fragment_art_view_detail){
+            Toast.makeText(getContext(), "Detail", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -232,25 +237,25 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
     }
 
     private void resizeDescLayout(){
-        ConstraintLayout descLayout = (ConstraintLayout) view.findViewById(R.id.fragment_art_desc_view);
-        //ConstraintLayout titleLayout = (ConstraintLayout)view.findViewById(R.id.fragment_art_title_layout);
-
-        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) descLayout.getLayoutParams();
-        //ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) titleLayout.getLayoutParams();
-
-        Button button = (Button) view.findViewById(R.id.fragment_art_expand_button);
-
-        if (isExpanded){
-            params.height = descLayout.getMinHeight();
-            button.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.collapse, getActivity().getTheme()));
-        }
-        else {
-            params.height = descLayout.getMaxHeight();
-            button.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.expand, getActivity().getTheme()));
-        }
-
-        isExpanded = !isExpanded;
-        descLayout.setLayoutParams(params);
+//        ConstraintLayout descLayout = (ConstraintLayout) view.findViewById(R.id.fragment_art_desc_view);
+//        //ConstraintLayout titleLayout = (ConstraintLayout)view.findViewById(R.id.fragment_art_title_layout);
+//
+//        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) descLayout.getLayoutParams();
+//        //ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) titleLayout.getLayoutParams();
+//
+//        Button button = (Button) view.findViewById(R.id.fragment_art_expand_button);
+//
+//        if (isExpanded){
+//            params.height = descLayout.getMinHeight();
+//            button.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.collapse, getActivity().getTheme()));
+//        }
+//        else {
+//            params.height = descLayout.getMaxHeight();
+//            button.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.expand, getActivity().getTheme()));
+//        }
+//
+//        isExpanded = !isExpanded;
+//        descLayout.setLayoutParams(params);
     }
 
     private void getArtInfo(){
@@ -290,7 +295,7 @@ public class ArtViewFragment extends Fragment implements View.OnClickListener, A
 
         ((TextView) view.findViewById(R.id.fragment_art_title)).setText(artwork.getaTitle());
         ((TextView) view.findViewById(R.id.fragment_art_author)).setText(artwork.getaAuthor());
-        ((TextView) view.findViewById(R.id.fragment_art_desc)).setText(artwork.getaDesc());
+//        ((TextView) view.findViewById(R.id.fragment_art_desc)).setText(artwork.getaDesc());
 //        ((RatingBar) view.findViewById(R.id.fragment_art_rating)).setRating(artwork.getaRating());
     }
 
