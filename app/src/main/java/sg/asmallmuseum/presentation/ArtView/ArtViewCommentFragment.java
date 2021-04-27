@@ -122,7 +122,7 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
 //        }
 
 
-    }
+//    }
 
     @Override
     public void commentLoadListener(List<Comment> comments) {
