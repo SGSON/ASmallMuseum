@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -56,6 +57,9 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
         commInputBtn = (Button) view.findViewById(R.id.comment_input_button);
         commInputBtn.setOnClickListener(this);
 
+        TextView inputText = (TextView) view.findViewById(R.id.comment_input);
+        inputText.setOnClickListener(this);
+
         commManager = new CommentManager();
         commManager.setCommentListener(this);
 
@@ -85,37 +89,37 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
     public void onClick(View v) {
         int id = v.getId();
 
-        if(id == R.id.comment_input_button){
-            commentInput();
+        if(id == R.id.comment_input_button || id == R.id.comment_input){
+//            commentInput();
         }
     }
 
-    private void commentInput(){
-        fUser = FirebaseAuth.getInstance().getCurrentUser();
-        MutableLiveData<String> path2 = viewModel.getmPath();
-        String[] arr = path2.getValue().split("/");
-
-        long now = System.currentTimeMillis();
-        Date mDate = new Date(now);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        commInput = (EditText) view.findViewById(R.id.comment_input);
-        String content = commInput.getText().toString();
-        String commDate = simpleDateFormat.format(mDate);
-
-        String ref = arr[3] ;
-        String idx = "";
-        String category = arr[1];
-        String type = arr[2];
-        String path = "";
-
-        if(fUser != null && content.trim().length() > 0){
-            String email = fUser.getEmail();
-            Comment comment = new Comment(idx, ref, path, email, content, commDate);
-
-            commInput.setText("");
-            commManager.addComment(comment, category, type, ref);
-            commManager.getRefreshComment(category,type,ref);
-        }
+//    private void commentInput(){
+//        fUser = FirebaseAuth.getInstance().getCurrentUser();
+//        MutableLiveData<String> path2 = viewModel.getmPath();
+//        String[] arr = path2.getValue().split("/");
+//
+//        long now = System.currentTimeMillis();
+//        Date mDate = new Date(now);
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//        commInput = (EditText) view.findViewById(R.id.comment_input);
+//        String content = commInput.getText().toString();
+//        String commDate = simpleDateFormat.format(mDate);
+//
+//        String ref = arr[3] ;
+//        String idx = "";
+//        String category = arr[1];
+//        String type = arr[2];
+//        String path = "";
+//
+//        if(fUser != null && content.trim().length() > 0){
+//            String email = fUser.getEmail();
+//            Comment comment = new Comment(idx, ref, path, email, content, commDate);
+//
+//            commInput.setText("");
+//            commManager.addComment(comment, category, type, ref);
+//            commManager.getRefreshComment(category,type,ref);
+//        }
 
 
     }
