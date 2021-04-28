@@ -122,7 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:id="@+id/fragment_user_history_review_text"
-                    android:text="@string/review"
+                    android:text="@string/reviews"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/fragment_user_history_review"
                     app:layout_constraintStart_toStartOf="parent"
