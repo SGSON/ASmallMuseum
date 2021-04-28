@@ -53,7 +53,7 @@ public class CommentManager implements CommentDBListener {
 
     @Override
     public void onCommentLoadComplete(List<Comment> comments) {
-        Log.d("commentDB", "onCommentLoadComplete: " + comments);
+//        Log.d("commentDB", "onCommentLoadComplete: " + comments);
         commentLoadListener.commentLoadListener(comments);
     }
 

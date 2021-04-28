@@ -12,7 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,7 +67,6 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
         commManager.setCommentListener(this);
 
 
-
         return view;
     }
 
@@ -72,12 +74,19 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(ArtViewViewModel.class);
-        getCommentLoad();
+        viewModel.getmPath().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String path) {
+                if (path != null) {
+                    getCommentLoad(path);
+                }
+            }
+        });
+
     }
 
-    private void getCommentLoad(){
-        MutableLiveData<String> path = viewModel.getmPath();
-        String[] path2 = path.getValue().split("/");
+    private void getCommentLoad(String path){
+        String[] path2 = path.split("/");
 
         String ref = path2[3] ;
         String category = path2[1];
@@ -91,38 +100,13 @@ public class ArtViewCommentFragment extends Fragment implements CommentLoadListe
 
         if(id == R.id.comment_input_button || id == R.id.comment_input){
 //            commentInput();
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_art_view_container, new ArtViewWritingFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
     }
 
-//    private void commentInput(){
-//        fUser = FirebaseAuth.getInstance().getCurrentUser();
-//        MutableLiveData<String> path2 = viewModel.getmPath();
-//        String[] arr = path2.getValue().split("/");
-//
-//        long now = System.currentTimeMillis();
-//        Date mDate = new Date(now);
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//        commInput = (EditText) view.findViewById(R.id.comment_input);
-//        String content = commInput.getText().toString();
-//        String commDate = simpleDateFormat.format(mDate);
-//
-//        String ref = arr[3] ;
-//        String idx = "";
-//        String category = arr[1];
-//        String type = arr[2];
-//        String path = "";
-//
-//        if(fUser != null && content.trim().length() > 0){
-//            String email = fUser.getEmail();
-//            Comment comment = new Comment(idx, ref, path, email, content, commDate);
-//
-//            commInput.setText("");
-//            commManager.addComment(comment, category, type, ref);
-//            commManager.getRefreshComment(category,type,ref);
-//        }
-
-
-//    }
 
     @Override
     public void commentLoadListener(List<Comment> comments) {
