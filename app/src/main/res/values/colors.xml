@@ -8,9 +8,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="main_theme">#ff5f4d</color>
+<!--    <color name="main_theme">#ff5f4d</color>-->
     <color name="main_theme_clicked">#d2675b</color>
-    <color name="main_theme_sub">#ed4330</color>
+<!--    <color name="main_theme_sub">#ed4330</color>-->
+
+    <color name="main_theme">#febcd4</color>
+    <color name="main_theme_sub">#e5a4bc</color>
 
     <color name="like_color">#fb3958</color>
 
