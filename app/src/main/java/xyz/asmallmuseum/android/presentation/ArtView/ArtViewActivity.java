@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.presentation.General.MainMenuFragment;
 import xyz.asmallmuseum.android.presentation.General.MainMenuViewModel;
 

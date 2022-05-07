@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import androidx.lifecycle.ViewModelProvider;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 
 
 public class ArtViewImageFragment extends Fragment {//implements View.OnTouchListener {

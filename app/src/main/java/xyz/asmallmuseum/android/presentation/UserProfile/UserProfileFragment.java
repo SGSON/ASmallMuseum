@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import xyz.asmallmuseum.android.Domain.RequestCode;
 import xyz.asmallmuseum.android.Domain.User;
 import xyz.asmallmuseum.android.Domain.Values;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 
 public class UserProfileFragment extends Fragment implements View.OnClickListener{
 

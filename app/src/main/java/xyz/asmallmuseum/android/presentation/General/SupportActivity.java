@@ -1,7 +1,7 @@
 package xyz.asmallmuseum.android.presentation.General;
 
 import androidx.appcompat.app.AppCompatActivity;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 
 import android.os.Bundle;
 import android.view.View;

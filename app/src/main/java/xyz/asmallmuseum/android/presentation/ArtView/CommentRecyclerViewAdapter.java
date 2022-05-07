@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xyz.asmallmuseum.android.Domain.Comment;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.logic.CommentManager;
 
 public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecyclerViewAdapter.ItemViewHolder> implements View.OnClickListener {

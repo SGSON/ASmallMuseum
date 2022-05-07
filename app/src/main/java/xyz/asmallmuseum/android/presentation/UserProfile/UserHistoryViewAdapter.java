@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import xyz.asmallmuseum.android.Domain.Artwork;
 import xyz.asmallmuseum.android.Domain.Values;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.logic.ArtworkManager;
 import xyz.asmallmuseum.android.presentation.ArtView.ArtViewActivity;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;

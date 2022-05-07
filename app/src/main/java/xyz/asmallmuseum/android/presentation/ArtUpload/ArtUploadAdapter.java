@@ -12,7 +12,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 
 public class ArtUploadAdapter extends RecyclerView.Adapter<ArtUploadAdapter.UploadViewHolder> {
     private List<Uri> mList;

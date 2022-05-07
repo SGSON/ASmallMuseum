@@ -27,7 +27,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import xyz.asmallmuseum.android.Domain.RequestCode;
 import xyz.asmallmuseum.android.Domain.User;
 import xyz.asmallmuseum.android.Domain.Values;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 
 public class UserProfileViewHistoryFragment extends Fragment implements View.OnClickListener {
 

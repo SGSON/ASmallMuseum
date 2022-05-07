@@ -25,7 +25,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import xyz.asmallmuseum.android.Domain.Artwork;
 import xyz.asmallmuseum.android.Domain.RequestCode;
 import xyz.asmallmuseum.android.Domain.Values;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.logic.ArtworkManager;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;

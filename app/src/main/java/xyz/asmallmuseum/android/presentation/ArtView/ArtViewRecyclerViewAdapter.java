@@ -11,7 +11,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 
 public class ArtViewRecyclerViewAdapter extends RecyclerView.Adapter<ArtViewRecyclerViewAdapter.ArtView2ViewHolder> {
     private List<String[]> mList;

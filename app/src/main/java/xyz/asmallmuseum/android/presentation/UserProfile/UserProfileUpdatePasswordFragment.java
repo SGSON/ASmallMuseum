@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import xyz.asmallmuseum.android.Domain.RequestCode;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 
 public class UserProfileUpdatePasswordFragment extends Fragment implements View.OnClickListener{
 

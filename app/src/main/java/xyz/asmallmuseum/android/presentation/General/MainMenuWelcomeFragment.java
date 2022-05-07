@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.presentation.SignIn.SignInActivity;
 
 public class MainMenuWelcomeFragment extends Fragment implements View.OnClickListener{

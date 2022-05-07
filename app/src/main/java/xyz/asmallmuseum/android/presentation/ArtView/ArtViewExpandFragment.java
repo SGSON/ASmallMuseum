@@ -18,7 +18,7 @@ import java.util.List;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
-import xyz.asmallmuseum.R;
+import xyz.asmallmuseum.android.R;
 
 
 public class ArtViewExpandFragment extends Fragment implements View.OnClickListener{
