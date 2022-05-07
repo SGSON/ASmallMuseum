@@ -1,0 +1,93 @@
+{
+  "project_info": {
+    "project_number": "337560859409",
+    "firebase_url": "https://asmallmuseum-default-rtdb.firebaseio.com",
+    "project_id": "asmallmuseum",
+    "storage_bucket": "asmallmuseum.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337560859409:android:b9d2859f57dc20f09412b0",
+        "android_client_info": {
+          "package_name": "sg.asmallmuseum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337560859409-21a88bstq6f7ltiedo2406g8rivpmnqc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.asmallmuseum",
+            "certificate_hash": "fa60333f12bb65e2d367092d5b205756c486f311"
+          }
+        },
+        {
+          "client_id": "337560859409-2nf9f9go17gn50mm4mhqofebtltuq7r2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.asmallmuseum",
+            "certificate_hash": "2dcc4c2e86e8103cfe235a3c86261e7e2dfa2853"
+          }
+        },
+        {
+          "client_id": "337560859409-j9peofndhg5obo62mnf4l6u0qcn2lgvd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.asmallmuseum",
+            "certificate_hash": "1a97a3a6b1867d133fed8e9ae1db049f85d229bc"
+          }
+        },
+        {
+          "client_id": "337560859409-6fklu1aicc01ood0t2bqv9jijm4h5tma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsZTS_YgEPT7j6PR2z4rkkUgNM9FX2REI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337560859409-6fklu1aicc01ood0t2bqv9jijm4h5tma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337560859409:android:755d578b2015802b9412b0",
+        "android_client_info": {
+          "package_name": "xyz.asmallmuseum.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337560859409-6fklu1aicc01ood0t2bqv9jijm4h5tma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsZTS_YgEPT7j6PR2z4rkkUgNM9FX2REI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337560859409-6fklu1aicc01ood0t2bqv9jijm4h5tma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
