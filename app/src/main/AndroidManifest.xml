@@ -14,7 +14,8 @@
         android:theme="@style/Theme.ASmallMuseum">
         <activity android:name=".presentation.General.SupportActivity"></activity>
         <activity android:name=".presentation.SignIn.SignInActivity" />
-        <activity android:name=".presentation.ArtUpload.ArtUploadPageActivity">
+        <activity android:name=".presentation.ArtUpload.ArtUploadPageActivity"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
             </intent-filter>
@@ -30,23 +31,8 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
-        <activity
-            android:name="com.facebook.CustomTabActivity"
+        <activity android:name=".presentation.General.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".presentation.General.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
