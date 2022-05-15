@@ -103,9 +103,9 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
             }
         }
 
-        else if (id == R.id.fragment_sign_in_google){
+//        else if (id == R.id.fragment_sign_in_google){
 //            googleSignIn();
-        }
+//        }
         else if (id == R.id.back_button){
             getActivity().finish();
         }
