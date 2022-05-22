@@ -17,7 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import xyz.asmallmuseum.android.Domain.RequestCode;
+import xyz.asmallmuseum.android.domain.RequestCode;
 import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.presentation.General.MainActivity;
 

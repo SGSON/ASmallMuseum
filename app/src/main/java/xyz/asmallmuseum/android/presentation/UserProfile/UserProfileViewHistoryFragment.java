@@ -24,9 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
-import xyz.asmallmuseum.android.Domain.RequestCode;
-import xyz.asmallmuseum.android.Domain.User;
-import xyz.asmallmuseum.android.Domain.Values;
+import xyz.asmallmuseum.android.domain.RequestCode;
+import xyz.asmallmuseum.android.domain.User;
+import xyz.asmallmuseum.android.domain.Values;
 import xyz.asmallmuseum.android.R;
 
 public class UserProfileViewHistoryFragment extends Fragment implements View.OnClickListener {

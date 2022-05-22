@@ -1,4 +1,4 @@
-package xyz.asmallmuseum.android.Domain;
+package xyz.asmallmuseum.android.domain;
 
 
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package xyz.asmallmuseum.android.Domain.Messages;
+package xyz.asmallmuseum.android.domain.Messages;
 
 public class CustomException extends Exception {
     private String errorMsg;

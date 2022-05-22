@@ -25,7 +25,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import xyz.asmallmuseum.android.Domain.Values;
+import xyz.asmallmuseum.android.domain.Values;
 import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.presentation.ArtList.ArtListActivity;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.MainMenuOnClickListener;

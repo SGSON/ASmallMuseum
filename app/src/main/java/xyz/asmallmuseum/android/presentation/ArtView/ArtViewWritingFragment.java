@@ -20,7 +20,7 @@ import java.util.Date;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import xyz.asmallmuseum.android.Domain.Comment;
+import xyz.asmallmuseum.android.domain.Comment;
 import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.logic.CommentManager;
 

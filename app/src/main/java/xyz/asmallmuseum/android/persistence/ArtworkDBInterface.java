@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
-import xyz.asmallmuseum.android.Domain.Artwork;
+import xyz.asmallmuseum.android.domain.Artwork;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.ArtWorkDBListener;
 
 public interface ArtworkDBInterface {

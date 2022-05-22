@@ -10,14 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import xyz.asmallmuseum.android.Domain.Artwork;
-import xyz.asmallmuseum.android.Domain.RequestCode;
-import xyz.asmallmuseum.android.Domain.Values;
-import xyz.asmallmuseum.android.Domain.VisualArts;
-import xyz.asmallmuseum.android.Domain.Messages.CustomException;
-import xyz.asmallmuseum.android.Domain.AppliedArts;
-import xyz.asmallmuseum.android.Domain.Others;
-import xyz.asmallmuseum.android.Domain.FineArts;
+import xyz.asmallmuseum.android.domain.Artwork;
+import xyz.asmallmuseum.android.domain.RequestCode;
+import xyz.asmallmuseum.android.domain.Values;
+import xyz.asmallmuseum.android.domain.VisualArts;
+import xyz.asmallmuseum.android.domain.Messages.CustomException;
+import xyz.asmallmuseum.android.domain.AppliedArts;
+import xyz.asmallmuseum.android.domain.Others;
+import xyz.asmallmuseum.android.domain.FineArts;
 import xyz.asmallmuseum.android.persistence.ArtworkDB;
 import xyz.asmallmuseum.android.persistence.ArtworkDBInterface;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.ArtWorkLoadCompleteListener;
@@ -26,8 +26,8 @@ import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.ArtworkDel
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.NumPostLoadCompleteListener;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.UploadCompleteListener;
 
-import static xyz.asmallmuseum.android.Domain.RequestCode.RESULT_UPLOAD_FAIL;
-import static xyz.asmallmuseum.android.Domain.RequestCode.RESULT_UPLOAD_INFO_OK;
+import static xyz.asmallmuseum.android.domain.RequestCode.RESULT_UPLOAD_FAIL;
+import static xyz.asmallmuseum.android.domain.RequestCode.RESULT_UPLOAD_INFO_OK;
 
 public class ArtworkManager implements ArtWorkDBListener {
     private final ArtworkDBInterface db;

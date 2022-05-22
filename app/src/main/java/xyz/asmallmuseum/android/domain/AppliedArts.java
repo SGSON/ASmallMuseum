@@ -1,4 +1,4 @@
-package xyz.asmallmuseum.android.Domain;
+package xyz.asmallmuseum.android.domain;
 
 public class AppliedArts extends Artwork {
     public AppliedArts(String aCategory, String aType, String aTitle, String aAuthor, String aDate, String aTime, String aDesc, String aUserID) {

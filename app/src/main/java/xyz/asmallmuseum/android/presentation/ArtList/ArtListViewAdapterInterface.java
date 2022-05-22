@@ -2,7 +2,7 @@ package xyz.asmallmuseum.android.presentation.ArtList;
 
 import java.util.List;
 
-import xyz.asmallmuseum.android.Domain.Artwork;
+import xyz.asmallmuseum.android.domain.Artwork;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.OnBottomReachedListener;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 

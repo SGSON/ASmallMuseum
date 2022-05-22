@@ -1,4 +1,4 @@
-package xyz.asmallmuseum.android.Domain;
+package xyz.asmallmuseum.android.domain;
 
 public class RequestCode {
     public final static int REQUEST_SINGLE = 2;

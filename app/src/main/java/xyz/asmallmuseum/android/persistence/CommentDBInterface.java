@@ -1,6 +1,6 @@
 package xyz.asmallmuseum.android.persistence;
 
-import xyz.asmallmuseum.android.Domain.Comment;
+import xyz.asmallmuseum.android.domain.Comment;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.CommentDBListener;
 
 public interface CommentDBInterface {

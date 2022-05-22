@@ -1,4 +1,4 @@
-package xyz.asmallmuseum.android.Domain.Messages;
+package xyz.asmallmuseum.android.domain.Messages;
 
 public class UserBirthError extends CustomException {
     public UserBirthError(String errorMsg) {

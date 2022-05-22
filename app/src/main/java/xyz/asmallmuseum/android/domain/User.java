@@ -1,6 +1,4 @@
-package xyz.asmallmuseum.android.Domain;
-
-import androidx.loader.content.Loader;
+package xyz.asmallmuseum.android.domain;
 
 import java.io.Serializable;
 

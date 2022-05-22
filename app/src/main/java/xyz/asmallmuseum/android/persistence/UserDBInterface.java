@@ -3,7 +3,7 @@ package xyz.asmallmuseum.android.persistence;
 import java.util.List;
 import java.util.Map;
 
-import xyz.asmallmuseum.android.Domain.User;
+import xyz.asmallmuseum.android.domain.User;
 import xyz.asmallmuseum.android.logic.UserDBListener;
 
 public interface UserDBInterface {

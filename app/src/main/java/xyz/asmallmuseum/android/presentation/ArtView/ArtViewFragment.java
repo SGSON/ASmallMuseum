@@ -8,9 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -37,9 +35,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
-import xyz.asmallmuseum.android.Domain.Artwork;
-import xyz.asmallmuseum.android.Domain.RequestCode;
-import xyz.asmallmuseum.android.Domain.Values;
+import xyz.asmallmuseum.android.domain.Artwork;
+import xyz.asmallmuseum.android.domain.RequestCode;
+import xyz.asmallmuseum.android.domain.Values;
 import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.logic.ArtworkManager;
 import xyz.asmallmuseum.android.logic.UserManager;

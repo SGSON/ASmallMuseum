@@ -3,12 +3,12 @@ package xyz.asmallmuseum.android.logic;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import xyz.asmallmuseum.android.Domain.Messages.CustomException;
-import xyz.asmallmuseum.android.Domain.Messages.UserBirthError;
-import xyz.asmallmuseum.android.Domain.Messages.UserNameError;
-import xyz.asmallmuseum.android.Domain.User;
-import xyz.asmallmuseum.android.Domain.Messages.UserEmailError;
-import xyz.asmallmuseum.android.Domain.Messages.UserPasswordError;
+import xyz.asmallmuseum.android.domain.Messages.CustomException;
+import xyz.asmallmuseum.android.domain.Messages.UserBirthError;
+import xyz.asmallmuseum.android.domain.Messages.UserNameError;
+import xyz.asmallmuseum.android.domain.User;
+import xyz.asmallmuseum.android.domain.Messages.UserEmailError;
+import xyz.asmallmuseum.android.domain.Messages.UserPasswordError;
 
 public class ValidateUser {
     private static final int MAX_LENGTH = 20;

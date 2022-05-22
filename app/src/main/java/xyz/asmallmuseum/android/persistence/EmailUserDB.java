@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import xyz.asmallmuseum.android.Domain.User;
-import xyz.asmallmuseum.android.Domain.Values;
+import xyz.asmallmuseum.android.domain.User;
+import xyz.asmallmuseum.android.domain.Values;
 import xyz.asmallmuseum.android.logic.UserDBListener;
 
 public class EmailUserDB implements UserDBInterface {
