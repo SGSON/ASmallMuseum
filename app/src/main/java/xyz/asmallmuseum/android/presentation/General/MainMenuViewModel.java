@@ -5,7 +5,7 @@ import com.google.firebase.auth.FirebaseUser;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import xyz.asmallmuseum.android.Domain.User;
+import xyz.asmallmuseum.android.domain.User;
 
 public class MainMenuViewModel extends ViewModel {
     private final MutableLiveData<FirebaseUser> mFirebaseUser = new MutableLiveData<>();

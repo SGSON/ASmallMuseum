@@ -3,7 +3,7 @@ package xyz.asmallmuseum.android.presentation.SignIn;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import xyz.asmallmuseum.android.Domain.User;
+import xyz.asmallmuseum.android.domain.User;
 import xyz.asmallmuseum.android.logic.UserManager;
 
 public class SignInViewModel extends ViewModel {

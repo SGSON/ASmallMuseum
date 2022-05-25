@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-import xyz.asmallmuseum.android.Domain.Values;
+import xyz.asmallmuseum.android.domain.Values;
 
 public class UserHistoryViewPagerAdapter extends FragmentStateAdapter {
 

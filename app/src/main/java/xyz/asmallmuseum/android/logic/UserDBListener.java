@@ -2,7 +2,7 @@ package xyz.asmallmuseum.android.logic;
 
 import java.util.List;
 
-import xyz.asmallmuseum.android.Domain.User;
+import xyz.asmallmuseum.android.domain.User;
 
 public interface UserDBListener {
     void onUserLoadComplete(User user, int request_code);

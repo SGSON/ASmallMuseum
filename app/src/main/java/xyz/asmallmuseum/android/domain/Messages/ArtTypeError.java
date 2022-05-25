@@ -1,4 +1,4 @@
-package xyz.asmallmuseum.android.Domain.Messages;
+package xyz.asmallmuseum.android.domain.Messages;
 
 public class ArtTypeError extends CustomException {
     public ArtTypeError(String errorMsg) {

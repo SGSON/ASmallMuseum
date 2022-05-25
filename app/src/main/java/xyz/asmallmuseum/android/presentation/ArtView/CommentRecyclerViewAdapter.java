@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-import xyz.asmallmuseum.android.Domain.Comment;
+import xyz.asmallmuseum.android.domain.Comment;
 import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.logic.CommentManager;
 

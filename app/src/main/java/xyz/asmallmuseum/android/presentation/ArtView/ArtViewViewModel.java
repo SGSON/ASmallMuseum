@@ -7,7 +7,7 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import xyz.asmallmuseum.android.Domain.Artwork;
+import xyz.asmallmuseum.android.domain.Artwork;
 
 public class ArtViewViewModel extends ViewModel {
     private final MutableLiveData<List<Uri>> mUriList = new MutableLiveData<>();

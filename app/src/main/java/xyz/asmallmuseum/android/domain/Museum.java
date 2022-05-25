@@ -1,4 +1,4 @@
-package xyz.asmallmuseum.android.Domain;
+package xyz.asmallmuseum.android.domain;
 
 public class Museum extends Artwork {
     private String aThumbnail;

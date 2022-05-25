@@ -29,15 +29,15 @@ import java.util.Map;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
-import xyz.asmallmuseum.android.Domain.Artwork;
-import xyz.asmallmuseum.android.Domain.NumPosts;
-import xyz.asmallmuseum.android.Domain.RequestCode;
-import xyz.asmallmuseum.android.Domain.Values;
-import xyz.asmallmuseum.android.Domain.VisualArts;
-import xyz.asmallmuseum.android.Domain.Museum;
-import xyz.asmallmuseum.android.Domain.AppliedArts;
-import xyz.asmallmuseum.android.Domain.Others;
-import xyz.asmallmuseum.android.Domain.FineArts;
+import xyz.asmallmuseum.android.domain.Artwork;
+import xyz.asmallmuseum.android.domain.NumPosts;
+import xyz.asmallmuseum.android.domain.RequestCode;
+import xyz.asmallmuseum.android.domain.Values;
+import xyz.asmallmuseum.android.domain.VisualArts;
+import xyz.asmallmuseum.android.domain.Museum;
+import xyz.asmallmuseum.android.domain.AppliedArts;
+import xyz.asmallmuseum.android.domain.Others;
+import xyz.asmallmuseum.android.domain.FineArts;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.ArtWorkDBListener;
 
 public class ArtworkDB implements ArtworkDBInterface {

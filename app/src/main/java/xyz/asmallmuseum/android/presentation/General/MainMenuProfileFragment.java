@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import xyz.asmallmuseum.android.Domain.User;
+import xyz.asmallmuseum.android.domain.User;
 import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.presentation.ArtUpload.ArtUploadPageActivity;
 import xyz.asmallmuseum.android.presentation.UserProfile.UserProfileActivity;

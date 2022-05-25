@@ -1,10 +1,8 @@
 package xyz.asmallmuseum.android.presentation.CustomListenerInterfaces;
 
-import android.content.Intent;
-
 import java.util.List;
 
-import xyz.asmallmuseum.android.Domain.Comment;
+import xyz.asmallmuseum.android.domain.Comment;
 
 public interface CommentLoadListener {
     void commentLoadListener(List<Comment> comments);

@@ -1,4 +1,4 @@
-package xyz.asmallmuseum.android.Domain.Messages;
+package xyz.asmallmuseum.android.domain.Messages;
 
 public class ArtCategoryError extends CustomException {
     public ArtCategoryError(String errorMsg) {

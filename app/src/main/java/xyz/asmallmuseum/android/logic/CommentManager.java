@@ -1,17 +1,14 @@
 package xyz.asmallmuseum.android.logic;
 
-import android.content.Intent;
 import android.util.Log;
 
 import java.util.List;
 
-import xyz.asmallmuseum.android.Domain.Artwork;
-import xyz.asmallmuseum.android.Domain.Comment;
+import xyz.asmallmuseum.android.domain.Comment;
 import xyz.asmallmuseum.android.persistence.CommentDB;
 import xyz.asmallmuseum.android.persistence.CommentDBInterface;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.CommentDBListener;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.CommentLoadListener;
-import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.UserLoadListener;
 
 public class CommentManager implements CommentDBListener {
     private CommentDBInterface db;

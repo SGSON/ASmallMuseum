@@ -1,6 +1,5 @@
 package xyz.asmallmuseum.android.persistence;
 
-import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,8 +9,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -21,10 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import xyz.asmallmuseum.android.Domain.Artwork;
-import xyz.asmallmuseum.android.Domain.Comment;
-import xyz.asmallmuseum.android.Domain.CommentPath;
-import xyz.asmallmuseum.android.Domain.Values;
+import xyz.asmallmuseum.android.domain.Comment;
+import xyz.asmallmuseum.android.domain.Values;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.CommentDBListener;
 
 public class CommentDB implements CommentDBInterface {

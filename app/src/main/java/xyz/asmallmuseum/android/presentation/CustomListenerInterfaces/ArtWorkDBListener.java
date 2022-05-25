@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import java.util.List;
 
-import xyz.asmallmuseum.android.Domain.Artwork;
+import xyz.asmallmuseum.android.domain.Artwork;
 
 public interface ArtWorkDBListener {
     void onRecentFileDownloadComplete(List<String> list);

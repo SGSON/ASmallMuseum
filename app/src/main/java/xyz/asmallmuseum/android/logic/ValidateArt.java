@@ -4,12 +4,12 @@ import android.net.Uri;
 
 import java.util.List;
 
-import xyz.asmallmuseum.android.Domain.Messages.ArtAttachedError;
-import xyz.asmallmuseum.android.Domain.Messages.ArtDescError;
-import xyz.asmallmuseum.android.Domain.Messages.ArtTitleError;
-import xyz.asmallmuseum.android.Domain.Messages.ArtTypeError;
-import xyz.asmallmuseum.android.Domain.Messages.ArtCategoryError;
-import xyz.asmallmuseum.android.Domain.Messages.CustomException;
+import xyz.asmallmuseum.android.domain.Messages.ArtAttachedError;
+import xyz.asmallmuseum.android.domain.Messages.ArtDescError;
+import xyz.asmallmuseum.android.domain.Messages.ArtTitleError;
+import xyz.asmallmuseum.android.domain.Messages.ArtTypeError;
+import xyz.asmallmuseum.android.domain.Messages.ArtCategoryError;
+import xyz.asmallmuseum.android.domain.Messages.CustomException;
 
 public class ValidateArt {
     private static final String CATEGORY_ERROR = "Please select a category.";

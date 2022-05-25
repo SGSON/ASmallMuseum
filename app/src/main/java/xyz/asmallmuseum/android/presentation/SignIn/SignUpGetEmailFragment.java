@@ -16,9 +16,9 @@ import java.util.List;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import xyz.asmallmuseum.android.Domain.Messages.CustomException;
-import xyz.asmallmuseum.android.Domain.RequestCode;
-import xyz.asmallmuseum.android.Domain.User;
+import xyz.asmallmuseum.android.domain.Messages.CustomException;
+import xyz.asmallmuseum.android.domain.RequestCode;
+import xyz.asmallmuseum.android.domain.User;
 import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.logic.UserManager;
 import xyz.asmallmuseum.android.logic.ValidateUser;

@@ -24,8 +24,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import xyz.asmallmuseum.android.Domain.Artwork;
-import xyz.asmallmuseum.android.Domain.Values;
+import xyz.asmallmuseum.android.domain.Artwork;
+import xyz.asmallmuseum.android.domain.Values;
 import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.logic.ArtworkManager;
 import xyz.asmallmuseum.android.presentation.ArtList.ArtListImageViewAdapter;
@@ -34,7 +34,7 @@ import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.NumPostLoa
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.OnBottomReachedListener;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.RecyclerViewOnClickListener;
 
-import static xyz.asmallmuseum.android.Domain.RequestCode.REQUEST_RANDOM;
+import static xyz.asmallmuseum.android.domain.RequestCode.REQUEST_RANDOM;
 
 public class MainFragment extends Fragment implements RecyclerViewOnClickListener, SwipeRefreshLayout.OnRefreshListener,
         ArtWorkLoadCompleteListener, View.OnClickListener, NumPostLoadCompleteListener {
