@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="LoginButtonView">
-        <attr name="snsType" format="string" />
-        <attr name="darkTheme" format="boolean" />
+    <declare-styleable name="SnsLoginButtonView">
+        <attr name="sns_type" format="string">
+            <enum name="email" value="0"/>
+            <enum name="google" value="1"/>
+            <enum name="naver" value="2"/>
+            <enum name="kakao" value="3"/>
+        </attr>
+        <attr name="dark_theme" format="boolean" />
     </declare-styleable>
 </resources>

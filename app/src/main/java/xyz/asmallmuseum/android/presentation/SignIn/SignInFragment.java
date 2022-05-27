@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.List;
 
 import androidx.lifecycle.ViewModelProvider;
+
+import xyz.asmallmuseum.android.customview.SnsLoginButtonView;
 import xyz.asmallmuseum.android.domain.Messages.CustomException;
 import xyz.asmallmuseum.android.domain.Messages.UserEmailError;
 import xyz.asmallmuseum.android.domain.Messages.UserPasswordError;
@@ -109,7 +111,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
     private void setButtons(){
         Button loginBtn = (Button) view.findViewById(R.id.fragment_sign_in_button);
 
-        SignInButton googleLoginBtn = (SignInButton) view.findViewById(R.id.fragment_sign_in_google);
+        SnsLoginButtonView googleLoginBtn = (SnsLoginButtonView) view.findViewById(R.id.fragment_sign_in_google);
         Button signUpBtn = (Button) view.findViewById(R.id.fragment_sign_in_sign_up);
 
         Button mBack = (Button) view.findViewById(R.id.back_button);
