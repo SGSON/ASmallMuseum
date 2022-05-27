@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ASmallMuseum">
-        <activity android:name=".presentation.General.SupportActivity"></activity>
+        <activity android:name=".presentation.General.SupportActivity" />
         <activity android:name=".presentation.SignIn.SignInActivity" />
         <activity android:name=".presentation.ArtUpload.ArtUploadPageActivity"
             android:exported="false">
@@ -37,6 +37,20 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
+                <data android:host="oauth"
+                    android:scheme="kakaoc50a813624536802e6c534ff8a1279de" />
             </intent-filter>
         </activity>
     </application>

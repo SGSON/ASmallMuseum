@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +15,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.kakao.sdk.auth.model.OAuthToken;
+import com.kakao.sdk.common.KakaoSdk;
+import com.kakao.sdk.user.UserApiClient;
+import com.navercorp.nid.NaverIdLoginSDK;
+import com.navercorp.nid.oauth.OAuthLoginCallback;
 
 import java.util.List;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function2;
 import xyz.asmallmuseum.android.customview.SnsLoginButtonView;
 import xyz.asmallmuseum.android.domain.Messages.CustomException;
 import xyz.asmallmuseum.android.domain.Messages.UserEmailError;
@@ -216,25 +227,28 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
                 }
                 break;
             case GOOGLE:
+                googleSignIn();
                 break;
             case NAVER:
+                loginWithNaver();
                 break;
             case KAKAO:
+                loginWithKakao();
                 break;
         }
     }
 
     //Sign-In Google
-//    private void googleSignIn(){
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build();
-//        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-//
-//        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-//        startActivityForResult(signInIntent, RequestCode.REQUEST_OTHER_SIGN_IN);
-//    }
+    private void googleSignIn(){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.google_login_api_key))
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RequestCode.REQUEST_OTHER_SIGN_IN);
+    }
 //
 //    private void firebaseAuthWithGoogle(String idToken) {
 //        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -258,5 +272,50 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
 //                });
 //    }
 
+
+    //Naver Login
+    private void loginWithNaver() {
+        NaverIdLoginSDK.INSTANCE.initialize(getContext(), getString(R.string.naver_client_id), getString(R.string.naver_client_pw), getString(R.string.naver_client_name));
+        NaverIdLoginSDK.INSTANCE.authenticate(getContext(), new OAuthLoginCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d("Naver", "Success");
+            }
+
+            @Override
+            public void onFailure(int i, @NonNull String s) {
+                Log.d("Naver", "Failed "+s);
+            }
+
+            @Override
+            public void onError(int i, @NonNull String s) {
+                Log.d("Naver", s);
+            }
+        });
+    }
+
+    private void loginWithKakao() {
+        KakaoSdk.init(getContext(), getString(R.string.kakao_native_app_key));
+
+        if (UserApiClient.getInstance().isKakaoTalkLoginAvailable(getContext())) {
+            UserApiClient.getInstance().loginWithKakaoTalk(getContext(), new Function2<OAuthToken, Throwable, Unit>() {
+                @Override
+                public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
+                    Log.d("Kakao", oAuthToken.toString());
+                    return null;
+                }
+            });
+        }
+        else {
+            UserApiClient.getInstance().loginWithKakaoAccount(getContext(), new Function2<OAuthToken, Throwable, Unit>() {
+                @Override
+                public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
+                    Log.d("Kakao", oAuthToken != null? oAuthToken.getAccessToken(): throwable.toString());
+                    return null;
+                }
+            });
+        }
+
+    }
 
 }

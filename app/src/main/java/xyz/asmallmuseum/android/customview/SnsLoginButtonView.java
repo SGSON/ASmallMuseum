@@ -68,10 +68,7 @@ public class SnsLoginButtonView extends ConstraintLayout implements View.OnClick
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SnsLoginButtonView);
         int snsType = typedArray.getInt(R.styleable.SnsLoginButtonView_sns_type, 0);
         this.snsType = SnsLoginType.values()[snsType];
-
-        LayerDrawable drawable = (LayerDrawable) ContextCompat.getDrawable(getContext(), R.drawable.login_border);
-        GradientDrawable gradientDrawable = (GradientDrawable) drawable.findDrawableByLayerId(R.id.login_border_line);
-
+        
         switch (snsType) {
             case 0:
                 setButtonView(R.string.email_login, R.drawable.image_email,
