@@ -2,7 +2,9 @@ package xyz.asmallmuseum.android.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
@@ -19,11 +22,15 @@ import xyz.asmallmuseum.android.R;
 /**
  * TODO: document your custom view class.
  */
-public class SnsLoginButtonView extends ConstraintLayout {
+public class SnsLoginButtonView extends ConstraintLayout implements View.OnClickListener {
+    public enum SnsLoginType {EMAIL, GOOGLE, NAVER, KAKAO}
 
     private ConstraintLayout layout;
     private ImageView imageView;
     private TextView textView;
+    private SnsLoginType snsType;
+
+    private OnClickListener mListener;
 
     public SnsLoginButtonView(Context context) {
         super(context);
@@ -51,50 +58,71 @@ public class SnsLoginButtonView extends ConstraintLayout {
         layout = findViewById(R.id.sns_login_layout);
         imageView = findViewById(R.id.sns_image);
         textView = findViewById(R.id.sns_text);
+
+        layout.setOnClickListener(this);
+        imageView.setOnClickListener(this);
+        textView.setOnClickListener(this);
     }
 
     private void setAttributes(AttributeSet attrs, int defStyle) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SnsLoginButtonView);
         int snsType = typedArray.getInt(R.styleable.SnsLoginButtonView_sns_type, 0);
+        this.snsType = SnsLoginType.values()[snsType];
 
         LayerDrawable drawable = (LayerDrawable) ContextCompat.getDrawable(getContext(), R.drawable.login_border);
         GradientDrawable gradientDrawable = (GradientDrawable) drawable.findDrawableByLayerId(R.id.login_border_line);
 
         switch (snsType) {
             case 0:
-                imageView.setImageResource(R.drawable.image_email);
-                textView.setText(R.string.email_login);
-                textView.setTextColor(getContext().getColor(R.color.black));
-                gradientDrawable.setColor(getContext().getColor(R.color.white));
-                layout.setBackground(drawable);
+                setButtonView(R.string.email_login, R.drawable.image_email,
+                        R.color.main_theme, R.color.black, 0);
                 break;
             case 1:
-                Typeface typeface = getResources().getFont(R.font.roboto_medium);
-
-                imageView.setImageResource(R.drawable.google_logo);
-                textView.setText(R.string.google_login);
-                textView.setTypeface(typeface);
-                textView.setTextColor(getContext().getColor(R.color.google_label));
-                gradientDrawable.setColor(getContext().getColor(R.color.google));
-                layout.setBackground(drawable);
+                setButtonView(R.string.google_login, R.drawable.google_logo,
+                        R.color.google, R.color.google_label, R.font.roboto_medium);
                 break;
             case 2:
-                imageView.setImageResource(R.drawable.naver_logo);
-                textView.setText(R.string.naver_login);
-                textView.setTextColor(getContext().getColor(R.color.naver_label));
-                gradientDrawable.setColor(getContext().getColor(R.color.naver));
-                layout.setBackground(drawable);
+                setButtonView(R.string.naver_login, R.drawable.naver_logo,
+                        R.color.naver, R.color.naver_label, 0);
                 break;
             case 3:
-                imageView.setImageResource(R.drawable.kakao_logo);
-                textView.setText(R.string.kakao_login);
-                textView.setTextColor(getContext().getColor(R.color.kakao_label));
-                gradientDrawable.setColor(getContext().getColor(R.color.kakao));
-                layout.setBackground(drawable);
+                setButtonView(R.string.kakao_login, R.drawable.kakao_logo,
+                        R.color.kakao, R.color.kakao_label, 0);
                 break;
         }
 
         typedArray.recycle();
     }
 
+    private void setButtonView(int text, int logo, int color, int textColor, int font) {
+        LayerDrawable drawable = (LayerDrawable) ContextCompat.getDrawable(getContext(), R.drawable.login_border);
+        GradientDrawable gradientDrawable = (GradientDrawable) drawable.findDrawableByLayerId(R.id.login_border_line);
+
+        if (font != 0) {
+            Typeface typeface = getResources().getFont(font);
+            textView.setTypeface(typeface);
+        }
+
+        imageView.setImageResource(logo);
+        textView.setText(text);
+        textView.setTextColor(getContext().getColor(textColor));
+        gradientDrawable.setColor(getContext().getColor(color));
+        layout.setBackground(drawable);
+    }
+
+    public void setOnClickListener(OnClickListener listener) {
+        this.mListener = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (mListener != null) {
+            mListener.onClick(snsType);
+        }
+    }
+
+    public static interface OnClickListener {
+        void onClick(SnsLoginType snsType);
+    }
 }
+

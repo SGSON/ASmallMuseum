@@ -3,7 +3,7 @@
     <string name="facebook_app_id">1731723653672740</string>
     <string name="fb_login_protocol_scheme">fb1731723653672740</string>
 
-    <string name="email_login">SIGN IN WITH EMAIL</string>
+    <string name="email_login">SIGN UP WITH EMAIL</string>
     <string name="google_login">SIGN IN WITH GOOGLE</string>
     <string name="naver_login">SIGN IN WITH NAVER</string>
     <string name="kakao_login">SIGN IN WITH KAKAO</string>

@@ -37,7 +37,7 @@ import xyz.asmallmuseum.android.logic.ValidateUser;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.UserLoadListener;
 
 
-public class SignInFragment extends Fragment implements View.OnClickListener, UserLoadListener {
+public class SignInFragment extends Fragment implements View.OnClickListener, UserLoadListener, SnsLoginButtonView.OnClickListener {
 
     private View view;
     private SignInViewModel viewModel;
@@ -89,15 +89,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
         if (id == R.id.fragment_sign_in_button){
             getUserAccount();
         }
-        else if (id == R.id.fragment_sign_in_sign_up){
-            if (getActivity() instanceof SignInActivity){
-                ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_GET_EMAIL);
-            }
-        }
-
-//        else if (id == R.id.fragment_sign_in_google){
-//            googleSignIn();
-//        }
         else if (id == R.id.back_button){
             getActivity().finish();
         }
@@ -111,15 +102,19 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
     private void setButtons(){
         Button loginBtn = (Button) view.findViewById(R.id.fragment_sign_in_button);
 
+        SnsLoginButtonView signUpBtn = (SnsLoginButtonView) view.findViewById(R.id.fragment_sign_in_sign_up);
         SnsLoginButtonView googleLoginBtn = (SnsLoginButtonView) view.findViewById(R.id.fragment_sign_in_google);
-        Button signUpBtn = (Button) view.findViewById(R.id.fragment_sign_in_sign_up);
+        SnsLoginButtonView naverLoginBtn = (SnsLoginButtonView) view.findViewById(R.id.fragment_sign_in_naver);
+        SnsLoginButtonView kakaoLoginBtn = (SnsLoginButtonView) view.findViewById(R.id.fragment_sign_in_kakao);
 
         Button mBack = (Button) view.findViewById(R.id.back_button);
         Button mMenu = (Button) view.findViewById(R.id.top_menu_button);
 
         loginBtn.setOnClickListener(this);
-        signUpBtn.setOnClickListener(this);
-        googleLoginBtn.setOnClickListener(this);
+        signUpBtn.setOnClickListener((SnsLoginButtonView.OnClickListener)this);
+        googleLoginBtn.setOnClickListener((SnsLoginButtonView.OnClickListener)this);
+        naverLoginBtn.setOnClickListener((SnsLoginButtonView.OnClickListener)this);
+        kakaoLoginBtn.setOnClickListener((SnsLoginButtonView.OnClickListener)this);
 
         mBack.setOnClickListener(this);
         mMenu.setOnClickListener(this);
@@ -210,6 +205,23 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onClick(SnsLoginButtonView.SnsLoginType snsType) {
+        switch (snsType) {
+            case EMAIL:
+                if (getActivity() instanceof SignInActivity){
+                    ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_GET_EMAIL);
+                }
+                break;
+            case GOOGLE:
+                break;
+            case NAVER:
+                break;
+            case KAKAO:
+                break;
+        }
     }
 
     //Sign-In Google

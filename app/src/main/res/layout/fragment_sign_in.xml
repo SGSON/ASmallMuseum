@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:custom="http://schemas.android.com/apk/res/xyz.asmallmuseum.android.customview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.SignIn.SignInFragment">
@@ -72,15 +71,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_sign_in_layout" />
 
-        <Button
-            android:id="@+id/fragment_sign_in_sign_up"
+        <xyz.asmallmuseum.android.customview.SnsLoginButtonView
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:text="@string/sign_up"
-            app:layout_constraintBottom_toTopOf="@id/fragment_sign_in_google"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/fragment_sign_in_sign_up"
+            app:sns_type="email"
+            app:layout_constraintTop_toBottomOf="@id/fragment_sign_in_google"
+            app:layout_constraintBottom_toTopOf="@id/fragment_sign_in_or"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_sign_in_or" />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <xyz.asmallmuseum.android.customview.SnsLoginButtonView
             android:layout_width="0dp"
