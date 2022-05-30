@@ -3,6 +3,11 @@ package xyz.asmallmuseum.android.presentation.SignIn;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -60,7 +65,15 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
 
     private FirebaseUser user;
 
+    private ActivityResultLauncher<Intent> mGoogleLogin = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            Intent intent = result.getData();
 
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(intent);
+            handleGoogleSignIn(task);
+        }
+    });
 
     public SignInFragment() {
         // Required empty public constructor
@@ -148,7 +161,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
             if (user == null) {
                 ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_OTHERS);
             }
-            else if (user != null && !mAuth.getCurrentUser().isEmailVerified()){
+            else if (!mAuth.getCurrentUser().isEmailVerified()){
                 ((SignInActivity) getActivity()).replaceFragment(RequestCode.REQUEST_EMAIL_VERIFY);
             }
             else {
@@ -161,18 +174,18 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
         userManager.exists(user.getEmail());
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RequestCode.REQUEST_OTHER_SIGN_IN){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleGoogleSignIn(task);
-        }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == RequestCode.REQUEST_OTHER_SIGN_IN){
+//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+//            handleGoogleSignIn(task);
+//        }
 //        else {
 //            callbackManager.onActivityResult(requestCode, resultCode, data);
 //        }
-    }
+//    }
 
     //Sign-In Email
     private void getUserAccount(){
@@ -241,7 +254,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Us
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RequestCode.REQUEST_OTHER_SIGN_IN);
+        mGoogleLogin.launch(signInIntent);
+//        startActivityForResult(signInIntent, RequestCode.REQUEST_OTHER_SIGN_IN);
     }
 
     private void handleGoogleSignIn(Task<GoogleSignInAccount> task) {
