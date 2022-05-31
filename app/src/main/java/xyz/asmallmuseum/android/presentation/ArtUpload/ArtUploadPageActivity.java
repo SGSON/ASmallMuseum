@@ -1,5 +1,8 @@
 package xyz.asmallmuseum.android.presentation.ArtUpload;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +34,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +51,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,6 +82,14 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     private User mUser;
     private UserManager userManager;
     private ProgressDialog dialog;
+
+    private ActivityResultLauncher<String> mContents = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(), new ActivityResultCallback<List<Uri>>() {
+        @Override
+        public void onActivityResult(List<Uri> result) {
+            Log.d("Result", result.toString());
+            getFiles(result);
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,10 +212,11 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
             uploadArt();
         }
         else if (id == R.id.upload_image_add){
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), RequestCode.REQUEST_CODE);
+            mContents.launch("image/*");
+//            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//            intent.setType("image/*");
+//            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//            startActivityForResult(Intent.createChooser(intent, "Select Picture"), RequestCode.REQUEST_CODE);
         }
     }
 
@@ -379,5 +393,20 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
     @Override
     public void getAllUser(List<String> list) {
 
+    }
+
+    private void getFiles(List<Uri> list) {
+        List<File> files = new ArrayList<>();
+
+        for (int i = 0 ; i < list.size() ; i++) {
+            Uri uri = list.get(i);
+            Log.d("URI "+i, uri.getPath());
+            Log.d("URI "+i, Environment.getExternalStorageDirectory().toString());
+
+            int startInd = uri.getPath().indexOf(Environment.getExternalStorageDirectory().toString());
+            File file = new File(uri.getPath().substring(startInd));
+            Log.d("file exists", file.exists()+" "+startInd);
+            files.add(file);
+        }
     }
 }
