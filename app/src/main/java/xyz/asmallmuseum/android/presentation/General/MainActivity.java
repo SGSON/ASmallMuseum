@@ -9,9 +9,11 @@ import xyz.asmallmuseum.android.domain.User;
 import xyz.asmallmuseum.android.domain.Values;
 import xyz.asmallmuseum.android.R;
 import xyz.asmallmuseum.android.logic.UserManager;
+import xyz.asmallmuseum.android.persistence.UserPreference;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.UserLoadListener;
 import xyz.asmallmuseum.android.presentation.SignIn.SignInEmailVerifyFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,10 +31,14 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
     private FirebaseUser mFirebaseUser;
     private boolean mInit = true;
 
+    public static UserPreference userPreference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userPreference = new UserPreference(getSharedPreferences("USER", Context.MODE_PRIVATE));
 
         //will be move to the upload activity
         //networkConnection();
