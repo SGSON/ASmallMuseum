@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ASmallMuseum</string>
-    <string name="facebook_app_id">1731723653672740</string>
-    <string name="fb_login_protocol_scheme">fb1731723653672740</string>
+    <string name="facebook_app_id" translatable="false">1731723653672740</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1731723653672740</string>
 
     <string name="email_login">SIGN UP WITH EMAIL</string>
     <string name="google_login">SIGN IN WITH GOOGLE</string>
@@ -12,25 +12,25 @@
     <string name="test1">TEST 1</string>
     <string name="test2">LONG TEXT TEST</string>
     <string name="test3">LONG LONG LONG LONG TEXT TEST</string>
-    <string name="test4">2020-01-04</string>
+    <string name="test4" translatable="false">2020-01-04</string>
     <string name="test5">VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY
     LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG TEXT</string>
     <string name="welcome_test">Hi, Welcome to the "'"A Small Museum"'".</string>
 
-    <string name="cat_music">Music</string>
-    <string name="cat_paints">Paints</string>
-    <string name="cat_pictures">Pictures</string>
-    <string name="cat_Upload">Upload</string>
-    <string name="cat_support">Support</string>
-    <string name="cat_profile">Profile</string>
-    <string name="cat_menu">Menu</string>
+    <string name="cat_music" translatable="false">Music</string>
+    <string name="cat_paints" translatable="false">Paints</string>
+    <string name="cat_pictures" translatable="false">Pictures</string>
+    <string name="cat_Upload" translatable="false">Upload</string>
+    <string name="cat_support" translatable="false">Support</string>
+    <string name="cat_profile" translatable="false">Profile</string>
+    <string name="cat_menu" translatable="false">Menu</string>
 
     <string name="up_post">Post</string>
     <string name="up_test_title">Test Title</string>
     <string name="up_title">Title…</string>
     <string name="up_desc">Description…</string>
-    <string name="up_type">Type: </string>
-    <string name="up_genre">Genre: </string>
+    <string name="up_category">"Category: "</string>
+    <string name="up_type">"Type: "</string>
 
     <string name="welcome_sign_in">SignIn/Up</string>
     <string name="main_menu_support">Support</string>
@@ -50,11 +50,11 @@
     <string name="email_verify_text">click next button \n after confirm your email</string>
     <string name="resend">resend verification email</string>
     <string name="next">Next</string>
-    <string name="welcome">Welcome</string>
-    <string name="home">Home</string>
+    <string name="welcome" translatable="false">Welcome</string>
+    <string name="home" translatable="false">Home</string>
 
-    <string name="email_id">Email ID</string>
-    <string name="spinner">\u0040</string>
+    <string name="email_id" translatable="false">Email ID</string>
+    <string name="spinner" translatable="false">\u0040</string>
     <string name="verified_password">Verify password</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
@@ -82,7 +82,7 @@
     <string name="post">Posts</string>
     <string name="reviews">Reviews</string>
     <string name="like">Like</string>
-    <string name="test_0">0</string>
+    <string name="test_0" translatable="false">0</string>
     <string name="report">Report</string>
     <string name="author">Author:</string>
     <string name="title">Title: </string>
@@ -92,15 +92,15 @@
 
     <string name="recent_text">Latest images</string>
     <string name="recommend_text">Recommend images</string>
-    <string name="right_arrow">></string>
+    <string name="right_arrow" translatable="false">></string>
 
 
     <!--    Support     -->
     <string name="support_welcome">Thank you for joining us!</string>
-    <string name="contact_text">If you have any questions or suggestions, \nplease send an email us below:</string>
-    <string name="contact_mail">sonsdevelop@gmail.com</string>
-    <string name="test_version">Version: 0.0.1</string>
-    <string name="test_web_address">asmuseum.com</string>
+    <string name="contact_text" translatable="false">If you have any questions or suggestions, \nplease send an email us below:</string>
+    <string name="contact_mail" translatable="false">sonsdevelop@gmail.com</string>
+    <string name="test_version" translatable="false">Version: 0.0.1</string>
+    <string name="test_web_address" translatable="false">asmuseum.com</string>
 
     <string-array name="arts_categories">
         <item>Select</item>
@@ -179,8 +179,8 @@
 
     <!-- TODO: Error Messages for Artwork -->
     <string name="title_error">Please enter the title.</string>
-    <string name="genre_error">Please select the genre.</string>
-    <string name="type_error">Please select the type</string>
+    <string name="type_error">Please select a type.</string>
+    <string name="category_error">Please select a category.</string>
     <string name="desc_error">Please enter the description of the art.</string>
 
     <!-- TODO: Messages for Art Upload Activity -->
@@ -188,7 +188,7 @@
     <string name="upload_cancel">Cancel</string>
     <string name="upload_message">Are you sure?</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
     <string name="internet_connection_fail">Internet Connection Failed.</string>
     <string name="ok">OK</string>
