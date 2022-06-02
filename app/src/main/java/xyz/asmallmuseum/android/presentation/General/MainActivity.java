@@ -31,14 +31,11 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
     private FirebaseUser mFirebaseUser;
     private boolean mInit = true;
 
-    public static UserPreference userPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        userPreference = new UserPreference(getSharedPreferences("USER", Context.MODE_PRIVATE));
 
         //will be move to the upload activity
         //networkConnection();

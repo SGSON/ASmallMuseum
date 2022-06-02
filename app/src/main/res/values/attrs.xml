@@ -9,4 +9,8 @@
         </attr>
         <attr name="dark_theme" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="ASMActionBar">
+        <attr name="type" format="string"/>
+        <attr name="dark_theme" format="boolean" />
+    </declare-styleable>
 </resources>
