@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".presentation.General.SupportActivity">
 
-    <include layout="@layout/layout_top_bar"
+    <include layout="@layout/asm_action_bar_view"
         android:id="@+id/support_top_bar"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout

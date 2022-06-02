@@ -12,7 +12,7 @@
 
         <include
             android:id="@+id/fragment_sign_in_top_bar"
-            layout="@layout/layout_top_bar"
+            layout="@layout/asm_action_bar_view"
             app:layout_constraintBottom_toTopOf="@id/fragment_sign_in_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
