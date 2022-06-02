@@ -1,6 +1,5 @@
 package xyz.asmallmuseum.android.network
 
-import com.google.android.gms.common.util.SharedPreferencesUtils
 import okhttp3.*
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -13,6 +12,7 @@ class HttpClient {
     val client : OkHttpClient = OkHttpClient()
     val url : String = ""
 
+    //enqueue : Async, execute : sync
     inline fun <reified T> getString(end_point: String, headers: Map<String, String>?, callback: ResponseHandler<T>) {
         var requestHeaders = headers
         if (requestHeaders == null) {
@@ -31,7 +31,7 @@ class HttpClient {
 
             override fun onResponse(call: Call, response: Response) {
                 response.use {
-                    if (!response.isSuccessful) throw okio.IOException()
+                    if (!response.isSuccessful) throw IOException()
 
                     var result: T = T::class.java.newInstance()
                     callback.onSuccess(result)
@@ -53,13 +53,19 @@ class HttpClient {
             .post(json.toRequestBody())
             .build()
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException()
+        client.newCall(request).enqueue(object : Callback{
+            override fun onFailure(call: Call, e: java.io.IOException) {
+                e.printStackTrace()
+            }
 
-            var result : T = T::class.java.newInstance()
-            callback.onSuccess(result)
+            override fun onResponse(call: Call, response: Response) {
+                if (!response.isSuccessful) throw IOException()
 
-        }
+                var result: T = T::class.java.newInstance()
+                callback.onSuccess(result)
+            }
+
+        })
     }
 
     fun postStream(end_point: String) {
@@ -84,13 +90,21 @@ class HttpClient {
             .post(requestBody)
             .build()
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException()
+        client.newCall(request).enqueue(object : Callback{
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
 
-            var result: T = T::class.java.newInstance()
-            callback.onSuccess(result)
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!response.isSuccessful) throw IOException()
 
-        }
+                    var result: T = T::class.java.newInstance()
+                    callback.onSuccess(result)
+
+                }
+            }
+        })
     }
 
     inline fun <reified T> put(end_point: String, json:String, headers: Map<String, String>?, callback: ResponseHandler<T>) {
@@ -105,12 +119,21 @@ class HttpClient {
              .put(json.toRequestBody())
              .build()
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException()
+        client.newCall(request).enqueue(object : Callback{
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
 
-            var result : T = T::class.java.newInstance()
-            callback.onSuccess(result)
-        }
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!response.isSuccessful) throw IOException()
+
+                    var result: T = T::class.java.newInstance()
+                    callback.onSuccess(result)
+
+                }
+            }
+        })
     }
 
     inline fun <reified  T> delete(end_point: String, json: String, headers: Map<String, String>?, callback: ResponseHandler<T>) {
@@ -125,12 +148,22 @@ class HttpClient {
             .delete(json.toRequestBody())
             .build()
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException()
+        client.newCall(request).enqueue(object : Callback{
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
 
-            var result: T = T::class.java.newInstance()
-            callback.onSuccess(result)
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!response.isSuccessful) {
+                        callback.onFailure(response.code, response.message)
+                    }
 
-        }
+                    var result: T = T::class.java.newInstance()
+                    callback.onSuccess(result)
+
+                }
+            }
+        })
     }
 }
