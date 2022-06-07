@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity  implements UserLoadListener {
+public class MainActivity extends BaseActivity  implements UserLoadListener {
     private FirebaseAuth mAuth;
     private final int REQUEST_CODE = 1;
     private MainMenuViewModel viewModel;
@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getWindow().getDecorView().getRootView();
 
         //will be move to the upload activity
         //networkConnection();

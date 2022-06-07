@@ -74,8 +74,8 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
 //        dialog.setCanceledOnTouchOutside(false);
 //        dialog.show();
 
-        Button mMenu = (Button) view.findViewById(R.id.top_menu_button);
-        mMenu.setOnClickListener(this);
+//        Button mMenu = (Button) view.findViewById(R.id.top_menu_button);
+//        mMenu.setOnClickListener(this);
 
         //Set a listener to Artwork Manager
         manager = new ArtworkManager();
@@ -90,8 +90,8 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
         initRandomView();
 
         //Remove the back button.
-        Button mBackButton = (Button)view.findViewById(R.id.back_button);
-        mBackButton.setVisibility(View.INVISIBLE);
+//        Button mBackButton = (Button)view.findViewById(R.id.back_button);
+//        mBackButton.setVisibility(View.INVISIBLE);
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.main_swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
