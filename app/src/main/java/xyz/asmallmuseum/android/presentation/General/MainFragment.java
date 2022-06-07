@@ -149,7 +149,7 @@ public class MainFragment extends Fragment implements RecyclerViewOnClickListene
         });
 
         RecyclerView recent_view = (RecyclerView)view.findViewById(R.id.fragment_main_recycler_random);
-        recent_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recent_view.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recent_view.setAdapter(mRandomAdapter);
 
         if (mRandomList == null){
