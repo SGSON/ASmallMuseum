@@ -1,6 +1,7 @@
 package xyz.asmallmuseum.android.presentation.General;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,7 +14,9 @@ import xyz.asmallmuseum.android.persistence.UserPreference;
 import xyz.asmallmuseum.android.presentation.CustomListenerInterfaces.UserLoadListener;
 import xyz.asmallmuseum.android.presentation.SignIn.SignInEmailVerifyFragment;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
 
         //will be move to the upload activity
         //networkConnection();
-        //requestPermission();
+        requestPermission();
         mAuth = FirebaseAuth.getInstance();
         viewModel = new ViewModelProvider(this).get(MainMenuViewModel.class);
 
@@ -99,21 +102,21 @@ public class MainActivity extends AppCompatActivity  implements UserLoadListener
     }
 
     /***Get a storage access permission***/
-    /*private void requestPermission(){
+    private void requestPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             // You can use the API that requires the permission.
 
-        } *//*else if (shouldShowRequestPermissionRationale(...)) {
+        } //*else if (shouldShowRequestPermissionRationale(...)) {
             // In an educational UI, explain to the user why your app requires this
             // permission for a specific feature to behave as expected. In this UI,
             // include a "cancel" or "no thanks" button that allows the user to
             // continue using your app without granting the permission.
-            showInContextUI(...);*//*
+//            showInContextUI(...);*//*
         else {
             // You can directly ask for the permission.
             requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE }, REQUEST_CODE);
         }
-    }*/
+    }
     /***End***/
 
     @Override

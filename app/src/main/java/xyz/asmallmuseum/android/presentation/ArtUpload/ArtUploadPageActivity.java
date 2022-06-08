@@ -36,6 +36,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -87,7 +88,11 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
         @Override
         public void onActivityResult(List<Uri> result) {
             Log.d("Result", result.toString());
-            getFiles(result);
+            for (int i = 0 ; i < result.size() ; i++){
+                updateList(result.get(i));
+            }
+            adapter.updateList(mPathList, mFileName);
+//            getFiles(result);
         }
     });
 
@@ -307,50 +312,53 @@ public class ArtUploadPageActivity extends AppCompatActivity implements View.OnC
 
     /***End***/
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-        if (requestCode == RequestCode.REQUEST_CODE && resultCode == RESULT_OK && data != null){
-            if (data.getClipData() != null){
-                ClipData clip = data.getClipData();
-                for (int i = 0 ; i < clip.getItemCount() ; i++){
-                    Uri uri = clip.getItemAt(i).getUri();
-                    updateList(uri);
-
-                }
-            }
-            else{
-                if (data.getData() != null){
-                    Uri uri = data.getData();
-                    updateList(uri);
-                }
-            }
-            adapter.updateList(mPathList, mFileName);
-        }
-        else {
-            Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//
+//        if (requestCode == RequestCode.REQUEST_CODE && resultCode == RESULT_OK && data != null){
+//            if (data.getClipData() != null){
+//                ClipData clip = data.getClipData();
+//                for (int i = 0 ; i < clip.getItemCount() ; i++){
+//                    Uri uri = clip.getItemAt(i).getUri();
+//                    updateList(uri);
+//
+//                }
+//            }
+//            else{
+//                if (data.getData() != null){
+//                    Uri uri = data.getData();
+//                    updateList(uri);
+//                }
+//            }
+//            adapter.updateList(mPathList, mFileName);
+//        }
+//        else {
+//            Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     private void updateList(Uri uri){
         String[] paths = {MediaStore.Images.Media.DATA};
 
         String type = getContentResolver().getType(uri);
-        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, paths, null, null, null);
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
 
-        int cursorIndex = cursor.getColumnIndexOrThrow(paths[0]);
+        int cursorIndex = cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME);
         String image = cursor.getString(cursorIndex);
         cursor.close();
 
         String[] extension = type.split("/");
-        String[] file = image.split("/");
+//        String[] file = image.split("/");
 
         mExtensions.add(extension[1]);
-        mFileName.add(file[file.length-1]);
+//        mFileName.add(file[file.length-1]);
+        mFileName.add(image.split("\\.")[0]);
         mPathList.add(uri);
+
+
     }
 
     private Dialog showAlertDialog(){
